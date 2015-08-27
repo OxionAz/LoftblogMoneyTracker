@@ -21,4 +21,12 @@
         android:layout_alignParentRight="true"
         android:text="Sum"/>
 
+    <TextView
+        android:id="@+id/data_text"
+        android:textSize="@dimen/small_main_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/name_text"
+        android:text="Data"/>
+
 </RelativeLayout>

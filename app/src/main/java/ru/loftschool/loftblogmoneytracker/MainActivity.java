@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,22 +29,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Transaction> getDataList(){
-        data.add(new Transaction("Telephone","2000"));
-        data.add(new Transaction("Telephone","3000"));
-        data.add(new Transaction("Telephone","4000"));
-        data.add(new Transaction("Telephone","5000"));
-        data.add(new Transaction("Telephone","2000"));
-        data.add(new Transaction("Telephone","3000"));
-        data.add(new Transaction("Telephone","4000"));
-        data.add(new Transaction("Telephone","5000"));
-        data.add(new Transaction("Telephone","2000"));
-        data.add(new Transaction("Telephone","3000"));
-        data.add(new Transaction("Telephone","4000"));
-        data.add(new Transaction("Telephone","5000"));
-        data.add(new Transaction("Telephone","2000"));
-        data.add(new Transaction("Telephone","3000"));
-        data.add(new Transaction("Telephone","4000"));
-        data.add(new Transaction("Telephone","5000"));
+        Date d = new Date();
+        SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
+        data.add(new Transaction("Telephone",2000,format1.format(d)));
+        data.add(new Transaction("Telephone",3000,format1.format(d)));
+        data.add(new Transaction("Telephone",4000,format1.format(d)));
+        data.add(new Transaction("Telephone",5000,format1.format(d)));
         return data;
     }
 
