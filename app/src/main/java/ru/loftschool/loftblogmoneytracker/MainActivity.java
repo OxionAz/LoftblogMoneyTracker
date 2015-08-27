@@ -3,18 +3,46 @@ package ru.loftschool.loftblogmoneytracker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.ListView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
+    private ListView listView;
+    private List<Transaction> data = new ArrayList<>();
+    private TransactionAdapter transactionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(LOG_TAG, "onCreate method called!");
+        listView = (ListView)findViewById(R.id.main_listview);
+        List<Transaction> adapterData = getDataList();
+        transactionAdapter = new TransactionAdapter(this, adapterData);
+        listView.setAdapter(transactionAdapter);
+    }
+
+    private List<Transaction> getDataList(){
+        data.add(new Transaction("Telephone","2000"));
+        data.add(new Transaction("Telephone","3000"));
+        data.add(new Transaction("Telephone","4000"));
+        data.add(new Transaction("Telephone","5000"));
+        data.add(new Transaction("Telephone","2000"));
+        data.add(new Transaction("Telephone","3000"));
+        data.add(new Transaction("Telephone","4000"));
+        data.add(new Transaction("Telephone","5000"));
+        data.add(new Transaction("Telephone","2000"));
+        data.add(new Transaction("Telephone","3000"));
+        data.add(new Transaction("Telephone","4000"));
+        data.add(new Transaction("Telephone","5000"));
+        data.add(new Transaction("Telephone","2000"));
+        data.add(new Transaction("Telephone","3000"));
+        data.add(new Transaction("Telephone","4000"));
+        data.add(new Transaction("Telephone","5000"));
+        return data;
     }
 
     @Override
@@ -29,25 +57,4 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "onDestroy method called!");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
