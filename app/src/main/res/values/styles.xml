@@ -12,4 +12,8 @@
         <item name="android:padding">@dimen/activity_horizontal_margin</item>
     </style>
 
+    <style name="Container.Background">
+        <item name="android:background">@drawable/bg</item>
+    </style>
+
 </resources>
