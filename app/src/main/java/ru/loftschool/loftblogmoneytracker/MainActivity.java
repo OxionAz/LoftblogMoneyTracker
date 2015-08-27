@@ -34,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
         data.add(new Transaction("Telephone",3000,format1.format(d)));
         data.add(new Transaction("Telephone",4000,format1.format(d)));
         data.add(new Transaction("Telephone",5000,format1.format(d)));
+        data.add(new Transaction("Telephone",2000,format1.format(d)));
+        data.add(new Transaction("Telephone",3000,format1.format(d)));
+        data.add(new Transaction("Telephone",4000,format1.format(d)));
+        data.add(new Transaction("Telephone",5000,format1.format(d)));
+        data.add(new Transaction("Telephone",2000,format1.format(d)));
+        data.add(new Transaction("Telephone",3000,format1.format(d)));
+        data.add(new Transaction("Telephone",4000,format1.format(d)));
+        data.add(new Transaction("Telephone",5000,format1.format(d)));
         return data;
     }
 

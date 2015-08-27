@@ -16,8 +16,6 @@ import java.util.List;
 public class TransactionAdapter extends ArrayAdapter<Transaction> {
     private List<Transaction> transactions;
 
-    int k=0;
-
     public TransactionAdapter(Context context, List<Transaction> transactions) {
         super(context, 0, transactions);
         this.transactions = transactions;
@@ -38,11 +36,7 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         textTitle.setText(transaction.title);
         sumTitle.setText(transaction.getSum());
         dateTitle.setText(transaction.date);
-
-        if (k%2 == 0){
-            listItem.setBackgroundColor(getContext().getResources().getColor(R.color.lightYellow));
-        }
-        k++;
+        listItem.setBackgroundColor(getContext().getResources().getColor(R.color.lightYellow));
         return convertView;
     }
 
