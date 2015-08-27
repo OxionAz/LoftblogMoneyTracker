@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.ListView;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 

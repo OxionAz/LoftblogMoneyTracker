@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  */
 public class TransactionAdapter extends ArrayAdapter<Transaction> {
     private List<Transaction> transactions;
+
+    int k=0;
 
     public TransactionAdapter(Context context, List<Transaction> transactions) {
         super(context, 0, transactions);
@@ -30,10 +33,17 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         TextView textTitle = (TextView) convertView.findViewById(R.id.name_text);
         TextView sumTitle = (TextView) convertView.findViewById(R.id.sum_text);
         TextView dateTitle = (TextView) convertView.findViewById(R.id.data_text);
+        RelativeLayout listItem = (RelativeLayout) convertView.findViewById(R.id.list_item_element);
 
         textTitle.setText(transaction.title);
         sumTitle.setText(transaction.getSum());
         dateTitle.setText(transaction.date);
+
+        if (k%2 == 0){
+            listItem.setBackgroundColor(getContext().getResources().getColor(R.color.lightYellow));
+        }
+        k++;
         return convertView;
     }
+
 }
