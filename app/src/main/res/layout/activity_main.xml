@@ -3,18 +3,28 @@
     style="@style/Container.Background">
 
     <LinearLayout
+        android:id="@+id/button_layout"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <ListView
-            android:id="@+id/main_listview"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/button_first"
+            android:text="@string/first_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="@dimen/divider_height_list">
-        </ListView>
-
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/button_second"
+            android:text="@string/second_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_below="@id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 
 </RelativeLayout>

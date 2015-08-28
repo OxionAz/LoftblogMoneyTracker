@@ -9,27 +9,30 @@
 
     <TextView
         android:id="@+id/name_text"
+        android:textColor="@color/white"
         android:textSize="@dimen/medium_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Name"/>
+        android:text="@string/name_text"/>
 
     <TextView
         android:id="@+id/sum_text"
+        android:textColor="@color/white"
         android:textSize="@dimen/medium_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:textStyle="bold"
-        android:text="Sum"/>
+        android:text="@string/sum_text"/>
 
     <TextView
         android:id="@+id/data_text"
+        android:textColor="@color/white"
         android:textSize="@dimen/small_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/name_text"
-        android:text="Data"/>
+        android:text="@string/data_text"/>
 
 </RelativeLayout>

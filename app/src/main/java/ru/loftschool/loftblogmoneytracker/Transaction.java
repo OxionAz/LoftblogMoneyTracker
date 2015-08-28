@@ -21,11 +21,9 @@ public class Transaction {
     public String getTitle(){
         return title;
     }
-    public String getSum(){
-        return  Integer.toString(sum);
-    }
+    public String getSum(){ return  Integer.toString(sum); }
     public String getDate(){
-        SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy");
-        return  format1.format(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        return  dateFormat.format(date);
     }
 }

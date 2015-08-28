@@ -3,48 +3,34 @@ package ru.loftschool.loftblogmoneytracker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ListView;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String LOG_TAG = MainActivity.class.getSimpleName();
-    private ListView listView;
-    private List<Transaction> data = new ArrayList<>();
-    private TransactionAdapter transactionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(LOG_TAG, "onCreate method called!");
-        listView = (ListView)findViewById(R.id.main_listview);
-        List<Transaction> adapterData = getDataList();
-        transactionAdapter = new TransactionAdapter(this, adapterData);
-        listView.setAdapter(transactionAdapter);
-    }
+        Button firstButtonFragment = (Button) findViewById(R.id.button_first);
+        Button secondButtonFragment = (Button) findViewById(R.id.button_second);
 
-    private Date getDate(){
-        Date d = new Date();
-        return d;
-    }
+        firstButtonFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
+            }
+        });
 
-    private List<Transaction> getDataList(){
-        data.add(new Transaction("Telephone",2000,getDate()));
-        data.add(new Transaction("Telephone",3000,getDate()));
-        data.add(new Transaction("Telephone",4000,getDate()));
-        data.add(new Transaction("Telephone",5000,getDate()));
-        data.add(new Transaction("Telephone",2000,getDate()));
-        data.add(new Transaction("Telephone",3000,getDate()));
-        data.add(new Transaction("Telephone",4000,getDate()));
-        data.add(new Transaction("Telephone",5000,getDate()));
-        data.add(new Transaction("Telephone",2000,getDate()));
-        data.add(new Transaction("Telephone",3000,getDate()));
-        data.add(new Transaction("Telephone",4000,getDate()));
-        data.add(new Transaction("Telephone",5000,getDate()));
-        return data;
+        secondButtonFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
+            }
+        });
     }
 
     @Override

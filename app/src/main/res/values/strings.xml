@@ -2,5 +2,9 @@
     <string name="app_name">LoftblogMoneyTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="money.tracker.title">Это новая строка</string>
+    <string name="first_fragment">First Fragment</string>
+    <string name="second_fragment">Second Fragment</string>
+    <string name="name_text">Name</string>
+    <string name="sum_text">Sum</string>
+    <string name="data_text">Data</string>
 </resources>

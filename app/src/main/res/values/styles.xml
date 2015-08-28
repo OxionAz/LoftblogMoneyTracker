@@ -13,7 +13,14 @@
     </style>
 
     <style name="Container.Background">
-        <item name="android:background">@drawable/bg</item>
+        <item name="android:background">@drawable/background_1</item>
+    </style>
+
+    <style name="Fragments">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:radius">20dp</item>
     </style>
 
 </resources>
