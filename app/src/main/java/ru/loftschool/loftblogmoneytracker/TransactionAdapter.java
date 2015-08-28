@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.List;
 
 /**
@@ -33,9 +32,9 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         TextView dateTitle = (TextView) convertView.findViewById(R.id.data_text);
         RelativeLayout listItem = (RelativeLayout) convertView.findViewById(R.id.list_item_element);
 
-        textTitle.setText(transaction.title);
+        textTitle.setText(transaction.getTitle());
         sumTitle.setText(transaction.getSum());
-        dateTitle.setText(transaction.date);
+        dateTitle.setText(transaction.getDate());
         listItem.setBackgroundColor(getContext().getResources().getColor(R.color.lightYellow));
         return convertView;
     }

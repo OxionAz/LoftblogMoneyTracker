@@ -1,5 +1,6 @@
 package ru.loftschool.loftblogmoneytracker;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -7,17 +8,24 @@ import java.util.Date;
  */
 public class Transaction {
 
-    public String title;
-    public Integer sum;
-    public String date;
+    private String title;
+    private int sum;
+    private Date date;
 
-    public Transaction(String title, Integer sum, String date){
+    public Transaction(String title, int sum, Date date){
         this.sum = sum;
         this.title = title;
         this.date = date;
     }
 
+    public String getTitle(){
+        return title;
+    }
     public String getSum(){
         return  Integer.toString(sum);
+    }
+    public String getDate(){
+        SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy");
+        return  format1.format(date);
     }
 }
