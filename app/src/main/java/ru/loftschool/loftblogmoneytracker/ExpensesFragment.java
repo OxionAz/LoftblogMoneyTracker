@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Александр on 28.08.2015.
  */
-public class SecondFragment extends Fragment {
+public class ExpensesFragment extends Fragment {
 
     private ListView listView;
     private List<Transaction> data = new ArrayList<>();
@@ -24,9 +24,9 @@ public class SecondFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.first_fragment, container, false);
-        getActivity().setTitle(getResources().getString(R.string.second_fragment));
-        listView = (ListView)view.findViewById(R.id.main_listview);
+        View view = inflater.inflate(R.layout.expenses_fragment, container, false);
+        getActivity().setTitle(getResources().getString(R.string.first_fragment));
+        listView = (ListView) view.findViewById(R.id.main_listview);
         List<Transaction> adapterData = getDataList();
         transactionAdapter = new TransactionAdapter(getActivity(), adapterData);
         listView.setAdapter(transactionAdapter);
@@ -34,14 +34,6 @@ public class SecondFragment extends Fragment {
     }
 
     private List<Transaction> getDataList(){
-        data.add(new Transaction("Telephone",2000,new Date()));
-        data.add(new Transaction("Telephone",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Telephone", 5000, new Date()));
-        data.add(new Transaction("Telephone",2000,new Date()));
-        data.add(new Transaction("Telephone",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Telephone", 5000, new Date()));
         data.add(new Transaction("Telephone",2000,new Date()));
         data.add(new Transaction("Telephone",3000,new Date()));
         data.add(new Transaction("Telephone",4000,new Date()));

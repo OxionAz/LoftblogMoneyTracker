@@ -7,4 +7,9 @@
     <string name="name_text">Name</string>
     <string name="sum_text">Sum</string>
     <string name="data_text">Data</string>
+        <!--Строки для NavigationDrawer-->
+    <string name="nav.drawer.expenses">Траты</string>
+    <string name="nav.drawer.categories">Категории</string>
+    <string name="nav.drawer.statistics">Статистика</string>
+    <string name="nav.drawer.settings">Настройки</string>
 </resources>
