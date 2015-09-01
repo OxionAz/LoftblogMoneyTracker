@@ -1,6 +1,7 @@
 package ru.loftschool.loftblogmoneytracker;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -46,11 +47,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 Snackbar.make(container, menuItem.getTitle() + " pressed", Snackbar.LENGTH_SHORT).show();
+                selectItem(menuItem);
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
                 return false;
             }
         });
+    }
+
+    private void selectItem(MenuItem menuItem) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_expenses:
+                fragmentTransaction.replace(R.id.frame_container, new ExpensesFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                break;
+            case R.id.drawer_categories:
+                fragmentTransaction.replace(R.id.frame_container, new CategoriesFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                break;
+            case R.id.drawer_statistics:
+                fragmentTransaction.replace(R.id.frame_container, new StatisticsFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                break;
+            case R.id.drawer_settings:
+                fragmentTransaction.replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                break;
+        }
     }
 
 }

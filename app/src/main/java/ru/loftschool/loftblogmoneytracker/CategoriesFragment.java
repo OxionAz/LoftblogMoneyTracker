@@ -13,9 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Александр on 28.08.2015.
+ * Created by Александр on 01.09.2015.
  */
-public class ExpensesFragment extends Fragment {
+public class CategoriesFragment extends Fragment {
 
     private ListView listView;
     private TransactionAdapter transactionAdapter;
@@ -24,7 +24,7 @@ public class ExpensesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expenses_fragment, container, false);
-        getActivity().setTitle(getResources().getString(R.string.nav_drawer_expenses));
+        getActivity().setTitle(getResources().getString(R.string.nav_drawer_categories));
         listView = (ListView) view.findViewById(R.id.main_listview);
         List<Transaction> adapterData = getDataList();
         transactionAdapter = new TransactionAdapter(getActivity(), adapterData);
@@ -34,18 +34,9 @@ public class ExpensesFragment extends Fragment {
 
     private List<Transaction> getDataList(){
         List<Transaction> data = new ArrayList<>();
-        data.add(new Transaction("PC",2000,new Date()));
-        data.add(new Transaction("Food",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Cloth", 5000, new Date()));
-        data.add(new Transaction("PC",2000,new Date()));
-        data.add(new Transaction("Food",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Cloth", 5000, new Date()));
-        data.add(new Transaction("PC",2000,new Date()));
-        data.add(new Transaction("Food",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Cloth", 5000, new Date()));
+        data.add(new Transaction("Telephone",2000,new Date()));
+        data.add(new Transaction("TV",3000,new Date()));
+        data.add(new Transaction("Ethernet",4000,new Date()));
         return data;
     }
 }
