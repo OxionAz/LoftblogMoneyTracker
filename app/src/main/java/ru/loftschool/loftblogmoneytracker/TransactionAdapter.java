@@ -35,7 +35,6 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         textTitle.setText(transaction.getTitle());
         sumTitle.setText(transaction.getSum());
         dateTitle.setText(transaction.getDate());
-        listItem.setBackgroundColor(getContext().getResources().getColor(R.color.black));
         return convertView;
     }
 

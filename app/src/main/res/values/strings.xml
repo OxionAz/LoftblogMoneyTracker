@@ -15,4 +15,7 @@
     <string name="nav.drawer.statistics">Статистика</string>
     <string name="nav.drawer.settings">Настройки</string>
     <string name="other_text">Other Tex</string>
+    <string name="avatar">Avatar</string>
+    <string name="header_name">Alexandr Zotkin</string>
+    <string name="header_email">oxionaz@gmail.com</string>
 </resources>

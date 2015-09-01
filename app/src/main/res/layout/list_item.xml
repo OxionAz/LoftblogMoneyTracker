@@ -9,7 +9,6 @@
 
     <TextView
         android:id="@+id/name_text"
-        android:textColor="@color/white"
         android:textSize="@dimen/medium_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +16,6 @@
 
     <TextView
         android:id="@+id/sum_text"
-        android:textColor="@color/white"
         android:textSize="@dimen/medium_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +26,6 @@
 
     <TextView
         android:id="@+id/data_text"
-        android:textColor="@color/white"
         android:textSize="@dimen/small_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
