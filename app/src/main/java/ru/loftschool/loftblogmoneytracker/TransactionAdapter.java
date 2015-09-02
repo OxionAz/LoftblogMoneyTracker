@@ -30,7 +30,6 @@ public class TransactionAdapter extends ArrayAdapter<Transaction> {
         TextView textTitle = (TextView) convertView.findViewById(R.id.name_text);
         TextView sumTitle = (TextView) convertView.findViewById(R.id.sum_text);
         TextView dateTitle = (TextView) convertView.findViewById(R.id.data_text);
-        RelativeLayout listItem = (RelativeLayout) convertView.findViewById(R.id.list_item_element);
 
         textTitle.setText(transaction.getTitle());
         sumTitle.setText(transaction.getSum());
