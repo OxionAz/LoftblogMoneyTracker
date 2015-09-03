@@ -12,13 +12,11 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private View container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        container = findViewById(R.id.recycler_view_content);
         initToolbar();
         setUpNavigationDrawer();
 
