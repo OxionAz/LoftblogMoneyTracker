@@ -2,6 +2,8 @@ package ru.loftschool.loftblogmoneytracker;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ public class CategoriesFragment extends Fragment {
 
     private ExpensesAdapter expensesAdapter;
     private RecyclerView recyclerView;
+    private FloatingActionButton floatingActionButton;
 
     @Nullable
     @Override
@@ -26,6 +29,7 @@ public class CategoriesFragment extends Fragment {
         View view = inflater.inflate(R.layout.expenses_fragment, container, false);
         getActivity().setTitle(getResources().getString(R.string.nav_drawer_expenses));
         List<Expense> adapterData = getDataList();
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_content);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -33,6 +37,12 @@ public class CategoriesFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         expensesAdapter = new ExpensesAdapter(adapterData);
         recyclerView.setAdapter(expensesAdapter);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(recyclerView, " pressed", Snackbar.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 
