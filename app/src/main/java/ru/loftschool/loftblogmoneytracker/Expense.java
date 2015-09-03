@@ -6,13 +6,13 @@ import java.util.Date;
 /**
  * Created by Александр on 26.08.2015.
  */
-public class Transaction {
+public class Expense {
 
     private String title;
     private int sum;
     private Date date;
 
-    public Transaction(String title, int sum, Date date){
+    public Expense(String title, int sum, Date date){
         this.sum = sum;
         this.title = title;
         this.date = date;

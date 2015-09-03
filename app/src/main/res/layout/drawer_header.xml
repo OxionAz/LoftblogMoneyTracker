@@ -10,7 +10,7 @@
                 android:orientation="vertical"
                 android:paddingTop="@dimen/drawer_paddingTop"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark">
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
         android:src="@drawable/avatar"
         android:layout_above="@+id/subtitle"

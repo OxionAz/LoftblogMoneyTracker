@@ -19,9 +19,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         container = findViewById(R.id.frame_container);
-
         initToolbar();
         setUpNavigationDrawer();
 
@@ -57,19 +55,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectItem(MenuItem menuItem) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (menuItem.getItemId()) {
             case R.id.drawer_expenses:
-                fragmentTransaction.replace(R.id.frame_container, new ExpensesFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment()).addToBackStack(null).commit();
                 break;
             case R.id.drawer_categories:
-                fragmentTransaction.replace(R.id.frame_container, new CategoriesFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new CategoriesFragment()).addToBackStack(null).commit();
                 break;
             case R.id.drawer_statistics:
-                fragmentTransaction.replace(R.id.frame_container, new StatisticsFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new StatisticsFragment()).addToBackStack(null).commit();
                 break;
             case R.id.drawer_settings:
-                fragmentTransaction.replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).commit();
                 break;
         }
     }
