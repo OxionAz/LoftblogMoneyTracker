@@ -1,7 +1,6 @@
 package ru.loftschool.loftblogmoneytracker;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,9 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        container = findViewById(R.id.frame_container);
-
+        container = findViewById(R.id.recycler_view_content);
         initToolbar();
         setUpNavigationDrawer();
 
@@ -47,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Snackbar.make(container, menuItem.getTitle() + " pressed", Snackbar.LENGTH_SHORT).show();
                 selectItem(menuItem);
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
@@ -57,19 +53,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void selectItem(MenuItem menuItem) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (menuItem.getItemId()) {
             case R.id.drawer_expenses:
-                fragmentTransaction.replace(R.id.frame_container, new ExpensesFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment()).addToBackStack(null).commit();
                 break;
             case R.id.drawer_categories:
-                fragmentTransaction.replace(R.id.frame_container, new CategoriesFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new CategoriesFragment()).addToBackStack(null).commit();
                 break;
             case R.id.drawer_statistics:
-                fragmentTransaction.replace(R.id.frame_container, new StatisticsFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new StatisticsFragment()).addToBackStack(null).commit();
                 break;
             case R.id.drawer_settings:
-                fragmentTransaction.replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).commit();
                 break;
         }
     }

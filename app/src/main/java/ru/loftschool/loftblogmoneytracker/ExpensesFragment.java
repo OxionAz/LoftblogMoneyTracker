@@ -2,12 +2,14 @@ package ru.loftschool.loftblogmoneytracker;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,35 +19,56 @@ import java.util.List;
  */
 public class ExpensesFragment extends Fragment {
 
-    private ListView listView;
-    private TransactionAdapter transactionAdapter;
+    private ExpensesAdapter expensesAdapter;
+    private RecyclerView recyclerView;
+    private FloatingActionButton floatingActionButton;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.expenses_fragment, container, false);
+        final View view = inflater.inflate(R.layout.expenses_fragment, container, false);
         getActivity().setTitle(getResources().getString(R.string.nav_drawer_expenses));
-        listView = (ListView) view.findViewById(R.id.main_listview);
-        List<Transaction> adapterData = getDataList();
-        transactionAdapter = new TransactionAdapter(getActivity(), adapterData);
-        listView.setAdapter(transactionAdapter);
+        List<Expense> adapterData = getDataList();
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_content);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        expensesAdapter = new ExpensesAdapter(adapterData);
+        recyclerView.setAdapter(expensesAdapter);
+        Snackbar.make(recyclerView, getActivity().getTitle() +" pressed", Snackbar.LENGTH_SHORT).show();
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(recyclerView," pressed", Snackbar.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 
-    private List<Transaction> getDataList(){
-        List<Transaction> data = new ArrayList<>();
-        data.add(new Transaction("PC",2000,new Date()));
-        data.add(new Transaction("Food",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Cloth", 5000, new Date()));
-        data.add(new Transaction("PC",2000,new Date()));
-        data.add(new Transaction("Food",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Cloth", 5000, new Date()));
-        data.add(new Transaction("PC",2000,new Date()));
-        data.add(new Transaction("Food",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Cloth", 5000, new Date()));
+    private List<Expense> getDataList(){
+        List<Expense> data = new ArrayList<>();
+        data.add(new Expense("PC",2000,new Date()));
+        data.add(new Expense("Food",3000,new Date()));
+        data.add(new Expense("Telephone",4000,new Date()));
+        data.add(new Expense("Cloth", 5000, new Date()));
+        data.add(new Expense("PC",2000,new Date()));
+        data.add(new Expense("Food",3000,new Date()));
+        data.add(new Expense("Telephone",4000,new Date()));
+        data.add(new Expense("Cloth", 5000, new Date()));
+        data.add(new Expense("PC",2000,new Date()));
+        data.add(new Expense("Food",3000,new Date()));
+        data.add(new Expense("Telephone",4000,new Date()));
+        data.add(new Expense("Cloth", 5000, new Date()));
+        data.add(new Expense("PC",2000,new Date()));
+        data.add(new Expense("Food",3000,new Date()));
+        data.add(new Expense("Telephone",4000,new Date()));
+        data.add(new Expense("Cloth", 5000, new Date()));
+        data.add(new Expense("PC",2000,new Date()));
+        data.add(new Expense("Food",3000,new Date()));
+        data.add(new Expense("Telephone",4000,new Date()));
+        data.add(new Expense("Cloth", 5000, new Date()));
         return data;
     }
 }
