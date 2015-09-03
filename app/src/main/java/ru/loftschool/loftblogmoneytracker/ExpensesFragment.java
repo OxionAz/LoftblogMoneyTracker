@@ -37,6 +37,7 @@ public class ExpensesFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         expensesAdapter = new ExpensesAdapter(adapterData);
         recyclerView.setAdapter(expensesAdapter);
+        Snackbar.make(recyclerView, getActivity().getTitle() +" pressed", Snackbar.LENGTH_SHORT).show();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,7 +1,6 @@
 package ru.loftschool.loftblogmoneytracker;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        container = findViewById(R.id.frame_container);
+        container = findViewById(R.id.recycler_view_content);
         initToolbar();
         setUpNavigationDrawer();
 
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                Snackbar.make(container, menuItem.getTitle() + " pressed", Snackbar.LENGTH_SHORT).show();
                 selectItem(menuItem);
                 menuItem.setChecked(true);
                 drawerLayout.closeDrawers();

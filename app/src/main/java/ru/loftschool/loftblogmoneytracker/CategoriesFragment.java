@@ -27,7 +27,7 @@ public class CategoriesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expenses_fragment, container, false);
-        getActivity().setTitle(getResources().getString(R.string.nav_drawer_expenses));
+        getActivity().setTitle(getResources().getString(R.string.nav_drawer_categories));
         List<Expense> adapterData = getDataList();
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_content);
@@ -37,6 +37,7 @@ public class CategoriesFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         expensesAdapter = new ExpensesAdapter(adapterData);
         recyclerView.setAdapter(expensesAdapter);
+        Snackbar.make(recyclerView, getActivity().getTitle() +" pressed", Snackbar.LENGTH_SHORT).show();
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
