@@ -1,48 +1,76 @@
 package ru.loftschool.loftblogmoneytracker;
-
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final static String LOG_TAG = MainActivity.class.getSimpleName();
+    private DrawerLayout drawerLayout;
+    private View container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(LOG_TAG, "onCreate method called!");
-        Button firstButtonFragment = (Button) findViewById(R.id.button_first);
-        Button secondButtonFragment = (Button) findViewById(R.id.button_second);
 
-        firstButtonFragment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
-            }
-        });
+        container = findViewById(R.id.frame_container);
 
-        secondButtonFragment.setOnClickListener(new View.OnClickListener() {
+        initToolbar();
+        setUpNavigationDrawer();
+
+        if (savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment()).commit();
+        }
+    }
+
+    private void initToolbar(){
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar!= null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void setUpNavigationDrawer(){
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navView = (NavigationView) findViewById(R.id.navigation_view);
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Snackbar.make(container, menuItem.getTitle() + " pressed", Snackbar.LENGTH_SHORT).show();
+                selectItem(menuItem);
+                menuItem.setChecked(true);
+                drawerLayout.closeDrawers();
+                return false;
             }
         });
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        Log.d(LOG_TAG, "onResume method called!");
-    }
-
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        Log.d(LOG_TAG, "onDestroy method called!");
+    private void selectItem(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.drawer_expenses:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.drawer_categories:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new CategoriesFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.drawer_statistics:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new StatisticsFragment()).addToBackStack(null).commit();
+                break;
+            case R.id.drawer_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).commit();
+                break;
+        }
     }
 
 }

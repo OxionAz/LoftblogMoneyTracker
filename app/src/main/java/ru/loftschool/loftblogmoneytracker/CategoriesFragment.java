@@ -13,20 +13,19 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Александр on 28.08.2015.
+ * Created by Александр on 01.09.2015.
  */
-public class FirstFragment extends Fragment {
+public class CategoriesFragment extends Fragment {
 
     private ListView listView;
-    private List<Transaction> data = new ArrayList<>();
     private TransactionAdapter transactionAdapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.first_fragment, container, false);
-        getActivity().setTitle(getResources().getString(R.string.first_fragment));
-        listView = (ListView)view.findViewById(R.id.main_listview);
+        View view = inflater.inflate(R.layout.expenses_fragment, container, false);
+        getActivity().setTitle(getResources().getString(R.string.nav_drawer_categories));
+        listView = (ListView) view.findViewById(R.id.main_listview);
         List<Transaction> adapterData = getDataList();
         transactionAdapter = new TransactionAdapter(getActivity(), adapterData);
         listView.setAdapter(transactionAdapter);
@@ -34,10 +33,10 @@ public class FirstFragment extends Fragment {
     }
 
     private List<Transaction> getDataList(){
+        List<Transaction> data = new ArrayList<>();
         data.add(new Transaction("Telephone",2000,new Date()));
-        data.add(new Transaction("Telephone",3000,new Date()));
-        data.add(new Transaction("Telephone",4000,new Date()));
-        data.add(new Transaction("Telephone", 5000, new Date()));
+        data.add(new Transaction("TV",3000,new Date()));
+        data.add(new Transaction("Ethernet",4000,new Date()));
         return data;
     }
 }

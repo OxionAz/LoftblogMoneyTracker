@@ -7,4 +7,15 @@
     <string name="name_text">Name</string>
     <string name="sum_text">Sum</string>
     <string name="data_text">Data</string>
+    <string name="statistic_text">Здесь будет статистика</string>
+    <string name="settings_text">Здесь будут настройки</string>
+        <!--Строки для NavigationDrawer-->
+    <string name="nav.drawer.expenses">Траты</string>
+    <string name="nav.drawer.categories">Категории</string>
+    <string name="nav.drawer.statistics">Статистика</string>
+    <string name="nav.drawer.settings">Настройки</string>
+    <string name="other_text">Other Tex</string>
+    <string name="avatar">Avatar</string>
+    <string name="header_name">Alexandr Zotkin</string>
+    <string name="header_email">oxionaz@gmail.com</string>
 </resources>
