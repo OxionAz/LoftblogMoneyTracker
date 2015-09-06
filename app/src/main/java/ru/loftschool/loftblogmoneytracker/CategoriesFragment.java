@@ -28,7 +28,7 @@ public class CategoriesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.expenses_fragment, container, false);
         getActivity().setTitle(getResources().getString(R.string.nav_drawer_categories));
-        List<Expense> adapterData = getDataList();
+        final List<Expense> adapterData = getDataList();
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_content);
         recyclerView.setHasFixedSize(true);
@@ -41,7 +41,8 @@ public class CategoriesFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(recyclerView, " pressed", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(recyclerView, "Запись добавлена", Snackbar.LENGTH_SHORT).show();
+                adapterData.add(new Expense("Telephone", 2000, new Date()));
             }
         });
         return view;
