@@ -1,5 +1,6 @@
 package ru.loftschool.loftblogmoneytracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -41,7 +42,8 @@ public class ExpensesFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(recyclerView," pressed", Snackbar.LENGTH_SHORT).show();
+                Intent openActivityIntent = new Intent(getActivity(), AddExpensesActivity.class);
+                getActivity().startActivity(openActivityIntent);
             }
         });
         return view;

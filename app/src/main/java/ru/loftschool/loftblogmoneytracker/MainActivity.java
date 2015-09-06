@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                selectItem(menuItem);
                 menuItem.setChecked(true);
+                selectItem(menuItem);
                 drawerLayout.closeDrawers();
                 return false;
             }
