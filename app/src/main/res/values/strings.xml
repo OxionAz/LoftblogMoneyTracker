@@ -14,8 +14,14 @@
     <string name="nav.drawer.categories">Категории</string>
     <string name="nav.drawer.statistics">Статистика</string>
     <string name="nav.drawer.settings">Настройки</string>
-    <string name="other_text">Other Tex</string>
+    <string name="text_for_other">Other Tex</string>
     <string name="avatar">Avatar</string>
     <string name="header_name">Alexandr Zotkin</string>
     <string name="header_email">oxionaz@gmail.com</string>
+    <string name="add_expenses">Добавить трату</string>
+    <string name="tovar">Товар</string>
+    <string name="summa">Сумма</string>
+    <string name="kategotiya">Категория</string>
+    <string name="data">Дата</string>
+    <string name="segodnya">Сегодня</string>
 </resources>
