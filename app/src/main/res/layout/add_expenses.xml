@@ -35,6 +35,7 @@
             />
 
         <EditText
+            android:id="@+id/etName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
@@ -65,10 +66,12 @@
             android:text="@string/kategotiya"
             />
 
-        <EditText
+        <Spinner
+            android:id="@+id/etCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
+            android:spinnerMode="dropdown"
             />
 
         <TextView
@@ -81,15 +84,19 @@
             />
 
         <EditText
+            android:id="@+id/etDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:hint="@string/segodnya"
             />
 
-        <Button android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Добавить трату"
+        <Button
+            android:id="@+id/add_expense_button"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_expense"
             android:layout_columnSpan="2"/>
     </GridLayout>
 

@@ -24,4 +24,5 @@
     <string name="kategotiya">Категория</string>
     <string name="data">Дата</string>
     <string name="segodnya">Сегодня</string>
+    <string name="add_expense">Добавить трату</string>
 </resources>

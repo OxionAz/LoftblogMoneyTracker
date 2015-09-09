@@ -34,14 +34,13 @@ public class CategoriesFragment extends Fragment {
 
     @AfterViews
     void ready(){
-        List<Expense> adapterData = getDataList();
         getActivity().setTitle(getResources().getString(R.string.nav_drawer_expenses));
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        expensesAdapter = new ExpensesAdapter(adapterData);
-        recyclerView.setAdapter(expensesAdapter);
+        //expensesAdapter = new ExpensesAdapter(adapterData);
+        //recyclerView.setAdapter(expensesAdapter);
         Snackbar.make(recyclerView, getActivity().getTitle() +" pressed", Snackbar.LENGTH_SHORT).show();
     }
 
