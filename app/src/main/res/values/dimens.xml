@@ -12,5 +12,6 @@
     <dimen name="subtitle_size">56dp</dimen>
     <dimen name="header_padding_rl">16dp</dimen>
     <dimen name="header_padding_bottom">8dp</dimen>
-    <dimen name="radius">0dp</dimen>
+    <dimen name="radius">4dp</dimen>
+    <dimen name="item_margin_top">8dp</dimen>
 </resources>
