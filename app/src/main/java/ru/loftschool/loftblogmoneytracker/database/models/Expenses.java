@@ -7,6 +7,9 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
+
+import java.util.Date;
+
 import ru.loftschool.loftblogmoneytracker.database.AppDatabase;
 
 /**
@@ -25,6 +28,9 @@ public class Expenses extends BaseModel {
 
     @Column
     private String price;
+
+    @Column
+    private Date date;
 
     public Expenses(){}
 
@@ -64,5 +70,13 @@ public class Expenses extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

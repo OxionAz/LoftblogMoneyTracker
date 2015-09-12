@@ -37,7 +37,7 @@
         <EditText
             android:id="@+id/etName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
             />
 
@@ -53,8 +53,9 @@
         <EditText
             android:id="@+id/etPrice"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
+            android:numeric="decimal"
             />
 
         <TextView
@@ -69,7 +70,7 @@
         <Spinner
             android:id="@+id/etCategory"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
             android:spinnerMode="dropdown"
             />
@@ -83,11 +84,12 @@
             android:text="@string/data"
             />
 
-        <EditText
+        <TextView
             android:id="@+id/etDate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
+            android:gravity="start|center"
             android:hint="@string/segodnya"
             />
 

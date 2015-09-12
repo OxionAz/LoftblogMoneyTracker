@@ -14,4 +14,5 @@
     <dimen name="header_padding_bottom">8dp</dimen>
     <dimen name="radius">4dp</dimen>
     <dimen name="item_margin_top">8dp</dimen>
+    <dimen name="content_height">44dp</dimen>
 </resources>

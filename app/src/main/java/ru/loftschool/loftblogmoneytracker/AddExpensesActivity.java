@@ -9,12 +9,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
 /**
@@ -33,8 +40,6 @@ public class AddExpensesActivity extends AppCompatActivity {
     @ViewById
     Spinner etCategory;
 
-    String[] data = {"Fun", "Social", "Clothes", "Food", "five"};
-
     @OptionsItem(android.R.id.home)
     void back(){
         onBackPressed();
@@ -46,13 +51,13 @@ public class AddExpensesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.add_expenses));
         // адаптер
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
+        ArrayAdapter<Categories> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getCategories());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         etCategory.setAdapter(adapter);
         etCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "positions: "+position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "positions: " + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -62,17 +67,29 @@ public class AddExpensesActivity extends AppCompatActivity {
         });
     }
 
+    private List<Categories> getCategories(){
+        return new Select().from(Categories.class).queryList();
+    }
+
     @Click(R.id.add_expense_button)
     public  void addExpenseButton(){
+        if (etName.getText().length() == 0 || etPrice.getText().length() == 0){
+            Toast.makeText(this,"Не все поля заполнены!", Toast.LENGTH_SHORT).show();
+        } else {
 
-        Expenses expenses = new Expenses();
-        expenses.setName(etName.getText().toString());
-        expenses.setPrice(etPrice.getText().toString());
-        expenses.insert();
+            Expenses expenses = new Expenses();
+            expenses.setName(etName.getText().toString());
+            expenses.setPrice(etPrice.getText().toString());
+            expenses.setDate(new Date());
+            expenses.insert();
 
-        Toast.makeText(this,
-                etName.getText().toString()+
-                ", "+etPrice.getText().toString(),
-                Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Трата добавлена: "+
+                    etName.getText().toString() +
+                            ", " + etPrice.getText().toString(),
+                    Toast.LENGTH_SHORT).show();
+
+            etName.setText("");
+            etPrice.setText("");
+        }
     }
 }

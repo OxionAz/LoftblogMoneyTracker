@@ -6,10 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.raizlabs.android.dbflow.sql.language.Select;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.List;
+
+import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        setCategories();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -52,6 +60,29 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private List<Categories> getCategories(){
+        return new Select().from(Categories.class).queryList();
+    }
+
+    public void setCategories(){
+        if (getCategories().isEmpty()){
+            Categories categories = new Categories();
+            categories.setName("Food");
+            categories.insert();
+            categories = new Categories();
+            categories.setName("Stuff");
+            categories.insert();
+            categories = new Categories();
+            categories.setName("Clothes");
+            categories.insert();
+            categories = new Categories();
+            categories.setName("Fun");
+            categories.insert();
+            categories = new Categories();
+            categories.setName("Social");
+            categories.insert();}
     }
 
     private void selectItem(MenuItem menuItem) {

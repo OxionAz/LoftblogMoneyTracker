@@ -10,16 +10,17 @@ import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
 /**
  * Created by Александр on 26.08.2015.
  */
-public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardViewHolder> {
-    private  List<Expenses> expenses;
+public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.CardViewHolder> {
+    private  List<Categories> categories;
 
-    public ExpensesAdapter(List<Expenses> expenses){
-        this.expenses = expenses;
+    public CategoriesAdapter(List<Categories> categories){
+        this.categories = categories;
     }
 
     @Override
@@ -30,26 +31,15 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardVi
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
-        Expenses expense = expenses.get(position);
-        holder.name.setText(expense.getName());
-        holder.sum.setText(expense.getPrice());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM y", myDateFormatSymbols);
-        holder.date.setText(dateFormat.format(expense.getDate()).toString());
+        Categories category = categories.get(position);
+        holder.name.setText(category.getName());
+        holder.sum.setText("");
+        holder.date.setText(category.getName());
     }
-
-    private static DateFormatSymbols myDateFormatSymbols = new DateFormatSymbols(){
-
-        @Override
-        public String[] getMonths() {
-            return new String[]{"января", "февраля", "марта", "апреля", "мая", "июня",
-                    "июля", "августа", "сентября", "октября", "ноября", "декабря"};
-        }
-
-    };
 
     @Override
     public int getItemCount() {
-        return expenses.size();
+        return categories.size();
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder{

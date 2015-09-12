@@ -17,7 +17,7 @@ public class SettingsFragment extends Fragment {
 
     @AfterViews
     void ready(){
-        getActivity().setTitle(getResources().getString(R.string.nav_drawer_statistics));
+        getActivity().setTitle(getResources().getString(R.string.nav_drawer_settings));
         textView.setText(getResources().getString(R.string.settings_text));
     }
 }
