@@ -8,19 +8,13 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import com.raizlabs.android.dbflow.sql.language.Select;
-
+import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
-import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
 /**
  * Created by Александр on 01.09.2015.
@@ -81,6 +75,6 @@ public class CategoriesFragment extends Fragment {
     }
 
     private List<Categories> getDataList(){
-        return new Select().from(Categories.class).queryList();
+        return new Select().from(Categories.class).execute();
     }
 }

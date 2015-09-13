@@ -1,82 +1,36 @@
 package ru.loftschool.loftblogmoneytracker.database.models;
 
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ForeignKey;
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
-import com.raizlabs.android.dbflow.structure.container.ForeignKeyContainer;
-
-import java.util.Date;
-
-import ru.loftschool.loftblogmoneytracker.database.AppDatabase;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 
 /**
  * Created by Александр on 08.09.2015.
  */
 
-@Table(databaseName = AppDatabase.NAME)
-public class Expenses extends BaseModel {
+@Table(name = "Expenses")
+public class Expenses extends Model {
 
-    @Column
-    @PrimaryKey(autoincrement = true)
-    private int id;
+    @Column(name = "name")
+    public String name;
 
-    @Column
-    private String name;
+    @Column(name = "sum")
+    public String sum;
 
-    @Column
-    private String price;
+    @Column(name = "date")
+    public String date;
 
-    @Column
-    private Date date;
-
-    public Expenses(){}
-
-    @Column
-    @ForeignKey(
-            references = {@ForeignKeyReference(columnName = "category_id",
-            columnType = Integer.class,
-            foreignColumnName = "id")},
-            saveForeignKeyModel = false
-    )
-    ForeignKeyContainer<Categories> categoriesForeignKeyContainer;
-
-    public void associateCategory(Categories categories){
-        categoriesForeignKeyContainer = new ForeignKeyContainer<>(Categories.class);
-        categoriesForeignKeyContainer.setModel(categories);
+    public Expenses(){
+        super();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    public Expenses(String name, String sum, String date){
+        super();
         this.name = name;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
+        this.sum = sum;
         this.date = date;
     }
+
+    @Column(name = "Categories")
+    public Categories categories;
 }

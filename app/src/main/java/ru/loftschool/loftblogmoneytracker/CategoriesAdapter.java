@@ -5,13 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.List;
-
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
-import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
 /**
  * Created by Александр on 26.08.2015.
@@ -32,9 +27,9 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Categories category = categories.get(position);
-        holder.name.setText(category.getName());
+        holder.name.setText(category.category);
         holder.sum.setText("");
-        holder.date.setText(category.getName());
+        holder.date.setText(category.category);
     }
 
     @Override

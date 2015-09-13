@@ -1,60 +1,30 @@
 package ru.loftschool.loftblogmoneytracker.database.models;
 
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ModelContainer;
-import com.raizlabs.android.dbflow.annotation.OneToMany;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.sql.language.Select;
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import java.util.List;
-import java.util.concurrent.locks.Condition;
-import ru.loftschool.loftblogmoneytracker.database.AppDatabase;
 
 /**
  * Created by Александр on 08.09.2015.
  */
 
-@ModelContainer
-@Table(databaseName = AppDatabase.NAME)
-public class Categories extends BaseModel {
+@Table(name = "Categories")
+public class Categories extends Model {
 
-    @Column
-    @PrimaryKey(autoincrement = true)
-    private int id;
+    @Column(name = "category")
+    public String category;
 
-    @Column
-    private String name;
-
-    public Categories(){}
-
-    List<Expenses> expenses;
-
-    @OneToMany(methods = {OneToMany.Method.SAVE, OneToMany.Method.DELETE}, variableName = "expenses")
-    public List<Expenses> getExpenses(){
-        if (expenses == null){
-            expenses = new Select()
-                    .from(Expenses.class)
-                    .where(com.raizlabs.android.dbflow.sql.builder
-                            .Condition.column(Expenses$Table.CATEGORIESFOREIGNKEYCONTAINER_CATEGORY_ID).is(id))
-                    .queryList();
-        }
-        return expenses;
+    public Categories(){
+        super();
     }
 
-    public int getId() {
-        return id;
+    public Categories(String category){
+        super();
+        this.category = category;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public List<Expenses> expenses() {
+        return getMany(Expenses.class, "Categories");
     }
 }

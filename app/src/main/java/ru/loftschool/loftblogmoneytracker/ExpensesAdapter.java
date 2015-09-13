@@ -31,21 +31,10 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardVi
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Expenses expense = expenses.get(position);
-        holder.name.setText(expense.getName());
-        holder.sum.setText(expense.getPrice());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM y", myDateFormatSymbols);
-        holder.date.setText(dateFormat.format(expense.getDate()).toString());
+        holder.name.setText(expense.name);
+        holder.sum.setText(expense.sum);
+        holder.date.setText(expense.date);
     }
-
-    private static DateFormatSymbols myDateFormatSymbols = new DateFormatSymbols(){
-
-        @Override
-        public String[] getMonths() {
-            return new String[]{"января", "февраля", "марта", "апреля", "мая", "июня",
-                    "июля", "августа", "сентября", "октября", "ноября", "декабря"};
-        }
-
-    };
 
     @Override
     public int getItemCount() {

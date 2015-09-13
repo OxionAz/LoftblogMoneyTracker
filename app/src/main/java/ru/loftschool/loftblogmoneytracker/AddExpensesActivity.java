@@ -8,19 +8,16 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.raizlabs.android.dbflow.sql.language.Select;
-
+import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
@@ -68,20 +65,27 @@ public class AddExpensesActivity extends AppCompatActivity {
     }
 
     private List<Categories> getCategories(){
-        return new Select().from(Categories.class).queryList();
+        return new Select().from(Categories.class).execute();
     }
+
+    private static DateFormatSymbols myDateFormatSymbols = new DateFormatSymbols(){
+
+        @Override
+        public String[] getMonths() {
+            return new String[]{"января", "февраля", "марта", "апреля", "мая", "июня",
+                    "июля", "августа", "сентября", "октября", "ноября", "декабря"};
+        }
+
+    };
 
     @Click(R.id.add_expense_button)
     public  void addExpenseButton(){
         if (etName.getText().length() == 0 || etPrice.getText().length() == 0){
             Toast.makeText(this,"Не все поля заполнены!", Toast.LENGTH_SHORT).show();
         } else {
-
-            Expenses expenses = new Expenses();
-            expenses.setName(etName.getText().toString());
-            expenses.setPrice(etPrice.getText().toString());
-            expenses.setDate(new Date());
-            expenses.insert();
+            new Expenses(etName.getText().toString()
+                    , etPrice.getText().toString()
+                    , new SimpleDateFormat("d MMMM y", myDateFormatSymbols).format(new Date()).toString()).save();
 
             Toast.makeText(this,"Трата добавлена: "+
                     etName.getText().toString() +

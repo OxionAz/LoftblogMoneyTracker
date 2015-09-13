@@ -1,25 +1,18 @@
 package ru.loftschool.loftblogmoneytracker;
 
-import android.content.AsyncTaskLoader;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
-import com.raizlabs.android.dbflow.sql.language.Select;
-
+import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
@@ -79,13 +72,11 @@ public class ExpensesFragment extends Fragment {
 
             @Override
             public void onLoaderReset(Loader<List<Expenses>> loader) {
-
             }
         });
     }
 
     private List<Expenses> getDataList(){
-
-        return new Select().from(Expenses.class).queryList();
+        return new Select().from(Expenses.class).execute();
     }
 }

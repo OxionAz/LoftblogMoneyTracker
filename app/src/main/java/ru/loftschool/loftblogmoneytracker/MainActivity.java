@@ -6,16 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
-import com.raizlabs.android.dbflow.sql.language.Select;
-
+import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
-
 import java.util.List;
-
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 
 @EActivity(R.layout.activity_main)
@@ -63,26 +59,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private List<Categories> getCategories(){
-        return new Select().from(Categories.class).queryList();
+        return new Select().from(Categories.class).execute();
     }
 
     public void setCategories(){
         if (getCategories().isEmpty()){
-            Categories categories = new Categories();
-            categories.setName("Food");
-            categories.insert();
-            categories = new Categories();
-            categories.setName("Stuff");
-            categories.insert();
-            categories = new Categories();
-            categories.setName("Clothes");
-            categories.insert();
-            categories = new Categories();
-            categories.setName("Fun");
-            categories.insert();
-            categories = new Categories();
-            categories.setName("Social");
-            categories.insert();}
+            new Categories("Food").save();
+            new Categories("Stuff").save();
+            new Categories("Clothes").save();
+            new Categories("Fun").save();
+            new Categories("Other").save();
+            }
     }
 
     private void selectItem(MenuItem menuItem) {
