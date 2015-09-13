@@ -38,6 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
+            android:textStyle="italic"
+            android:hint="@string/hint_text_name"
             />
 
         <TextView
@@ -55,6 +57,8 @@
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
             android:numeric="decimal"
+            android:textStyle="italic"
+            android:hint="@string/hint_text_sum"
             />
 
         <TextView
@@ -89,12 +93,13 @@
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textStyle="italic"
             android:hint="@string/segodnya"
             />
 
         <Button
             android:id="@+id/add_expense_button"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/radius"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_expense"

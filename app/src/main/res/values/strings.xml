@@ -26,4 +26,6 @@
     <string name="segodnya">Сегодня</string>
     <string name="add_expense">Добавить трату</string>
     <string name="category_text">Category</string>
+    <string name="hint_text_name">введите наименование</string>
+    <string name="hint_text_sum">введите сумму</string>
 </resources>
