@@ -49,7 +49,7 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Categories>>() {
+        getLoaderManager().restartLoader(1, null, new LoaderManager.LoaderCallbacks<List<Categories>>() {
             @Override
             public Loader<List<Categories>> onCreateLoader(int id, Bundle args) {
                 final android.support.v4.content.AsyncTaskLoader<List<Categories>> loader = new android.support.v4.content.AsyncTaskLoader<List<Categories>>(getContext()) {

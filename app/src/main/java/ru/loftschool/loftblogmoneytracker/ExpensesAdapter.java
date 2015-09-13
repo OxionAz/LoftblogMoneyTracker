@@ -5,9 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
@@ -34,6 +31,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardVi
         holder.name.setText(expense.name);
         holder.sum.setText(expense.sum);
         holder.date.setText(expense.date);
+        holder.category.setText(expense.category.toString());
     }
 
     @Override
@@ -45,12 +43,14 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardVi
         protected TextView name;
         protected TextView sum;
         protected TextView date;
+        protected TextView category;
 
         public CardViewHolder (View itemView){
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name_text);
             sum = (TextView) itemView.findViewById(R.id.sum_text);
             date = (TextView) itemView.findViewById(R.id.data_text);
+            category = (TextView) itemView.findViewById(R.id.category_text);
         }
     }
 }

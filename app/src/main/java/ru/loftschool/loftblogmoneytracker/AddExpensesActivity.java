@@ -37,6 +37,8 @@ public class AddExpensesActivity extends AppCompatActivity {
     @ViewById
     Spinner etCategory;
 
+    SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM y", myDateFormatSymbols);
+
     @OptionsItem(android.R.id.home)
     void back(){
         onBackPressed();
@@ -48,7 +50,7 @@ public class AddExpensesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.add_expenses));
         // адаптер
-        ArrayAdapter<Categories> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getCategories());
+        ArrayAdapter<Categories> adapter = new ArrayAdapter<Categories>(this, android.R.layout.simple_spinner_item, getCategories());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         etCategory.setAdapter(adapter);
         etCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,13 +85,17 @@ public class AddExpensesActivity extends AppCompatActivity {
         if (etName.getText().length() == 0 || etPrice.getText().length() == 0){
             Toast.makeText(this,"Не все поля заполнены!", Toast.LENGTH_SHORT).show();
         } else {
-            new Expenses(etName.getText().toString()
-                    , etPrice.getText().toString()
-                    , new SimpleDateFormat("d MMMM y", myDateFormatSymbols).format(new Date()).toString()).save();
+            new Expenses(
+                    etName.getText().toString(),
+                    etPrice.getText().toString(),
+                    String.valueOf(dateFormat.format(new Date())),
+                    (Categories)etCategory.getSelectedItem()).save();
 
             Toast.makeText(this,"Трата добавлена: "+
-                    etName.getText().toString() +
-                            ", " + etPrice.getText().toString(),
+                    etName.getText().toString()+", "+
+                    etPrice.getText().toString()+", "+
+                    etCategory.getSelectedItem().toString()+", "+
+                    String.valueOf(dateFormat.format(new Date())),
                     Toast.LENGTH_SHORT).show();
 
             etName.setText("");
