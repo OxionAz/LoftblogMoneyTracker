@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/tovar"
             />
 
@@ -37,8 +38,9 @@
             android:id="@+id/etName"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
-            android:layout_gravity="fill"
+            android:layout_gravity="fill|bottom"
             android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
             android:hint="@string/hint_text_name"
             />
 
@@ -48,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/summa"
             />
 
@@ -55,9 +58,10 @@
             android:id="@+id/etPrice"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
-            android:layout_gravity="fill"
+            android:layout_gravity="fill|bottom"
             android:numeric="decimal"
             android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
             android:hint="@string/hint_text_sum"
             />
 
@@ -67,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/kategotiya"
             />
 
@@ -84,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/data"
             />
 
@@ -94,6 +100,7 @@
             android:layout_gravity="fill"
             android:gravity="start|center"
             android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
             android:hint="@string/segodnya"
             />
 

@@ -28,7 +28,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Categories category = categories.get(position);
         holder.name.setText(category.category);
-        holder.date.setText("Здесь могла быть ваша дата");
     }
 
     @Override
@@ -38,12 +37,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
 
     public class CardViewHolder extends RecyclerView.ViewHolder{
         protected TextView name;
-        protected TextView date;
 
         public CardViewHolder (View itemView){
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name_text);
-            date = (TextView) itemView.findViewById(R.id.data_text);
         }
     }
 }

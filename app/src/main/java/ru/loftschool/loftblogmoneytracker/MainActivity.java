@@ -58,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(navView)){
+            drawerLayout.closeDrawer(navView);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
     private List<Categories> getCategories(){
         return new Select().from(Categories.class).execute();
     }
