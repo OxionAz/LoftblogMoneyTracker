@@ -1,4 +1,4 @@
-package ru.loftschool.loftblogmoneytracker;
+package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,10 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import java.util.List;
-
+import ru.loftschool.loftblogmoneytracker.ui.activity.AddExpensesActivity_;
+import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
+import ru.loftschool.loftblogmoneytracker.ui.adapters.ExpensesAdapter;
 
 /**
  * Created by Александр on 28.08.2015.

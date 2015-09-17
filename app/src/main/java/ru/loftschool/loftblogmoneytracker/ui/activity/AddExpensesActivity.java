@@ -1,4 +1,4 @@
-package ru.loftschool.loftblogmoneytracker;
+package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,10 +12,13 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
@@ -28,6 +31,9 @@ public class AddExpensesActivity extends AppCompatActivity {
 
     @ViewById
     Toolbar toolbar;
+
+    @StringRes
+    String expense_name_empty, expense_sum_empty;
 
     @ViewById
     EditText etPrice, etName;
@@ -67,26 +73,40 @@ public class AddExpensesActivity extends AppCompatActivity {
 
     };
 
+    private boolean inputValidation() {
+
+        boolean isValid = true;
+
+        if (etName.getText().toString().isEmpty()) {
+            etName.setError(expense_name_empty);
+            isValid = false;
+        }
+        if (etPrice.getText().toString().isEmpty()) {
+            etPrice.setError(expense_sum_empty);
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
     @Click(R.id.add_expense_button)
     public  void addExpenseButton(){
-        if (etName.getText().length() == 0 || etPrice.getText().length() == 0){
-            Toast.makeText(this,"Не все поля заполнены!", Toast.LENGTH_SHORT).show();
-        } else {
+        if (inputValidation()) {
+
             new Expenses(
                     etName.getText().toString(),
                     etPrice.getText().toString(),
                     String.valueOf(dateFormat.format(new Date())),
-                    (Categories)etCategory.getSelectedItem()).save();
+                    (Categories) etCategory.getSelectedItem()).save();
 
-            Toast.makeText(this,"Трата добавлена: "+
-                    etName.getText().toString()+", "+
-                    etPrice.getText().toString()+", "+
-                    etCategory.getSelectedItem().toString()+", "+
-                    String.valueOf(dateFormat.format(new Date())),
+            Toast.makeText(this, "Трата добавлена: " +
+                            etName.getText().toString() + ", " +
+                            etPrice.getText().toString() + ", " +
+                            etCategory.getSelectedItem().toString() + ", " +
+                            String.valueOf(dateFormat.format(new Date())),
                     Toast.LENGTH_SHORT).show();
-
-            etName.setText("");
-            etPrice.setText("");
         }
+            etName.setText(null);
+            etPrice.setText(null);
     }
 }

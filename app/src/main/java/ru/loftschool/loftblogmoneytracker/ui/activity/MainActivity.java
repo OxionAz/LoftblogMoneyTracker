@@ -1,4 +1,4 @@
-package ru.loftschool.loftblogmoneytracker;
+package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +12,11 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import java.util.List;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment_;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
+import ru.loftschool.loftblogmoneytracker.R;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.SettingsFragment_;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment_;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 
 @EActivity(R.layout.activity_main)

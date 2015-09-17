@@ -1,4 +1,4 @@
-package ru.loftschool.loftblogmoneytracker;
+package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,12 +14,15 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import java.util.List;
+
+import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
+import ru.loftschool.loftblogmoneytracker.ui.adapters.CategoriesAdapter;
 
 /**
  * Created by Александр on 01.09.2015.
  */
-@EFragment(R.layout.expenses_fragment)
+@EFragment(R.layout.categories_fragment)
 public class CategoriesFragment extends Fragment {
 
     private CategoriesAdapter categoriesAdapter;

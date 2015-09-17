@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/registration_content"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              style="@style/Container.Background">
+
+    <include layout="@layout/toolbar"/>
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:layout_marginLeft="@dimen/radius"
+        android:layout_marginRight="@dimen/radius"
+        card_view:cardCornerRadius="@dimen/radius"
+        card_view:contentPadding="@dimen/activity_horizontal_margin"
+        card_view:cardBackgroundColor="@color/white">
+
+    <GridLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/registrationGrid"
+                android:columnCount="1"
+                android:rowCount="3">
+
+        <EditText
+            android:id="@+id/etLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/content_height"
+            android:layout_gravity="fill|bottom"
+            android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
+            android:hint="@string/hint_text_login"
+            />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/content_height"
+            android:layout_gravity="fill|bottom"
+            android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
+            android:hint="@string/hint_text_password"
+            />
+
+        <Button
+            android:id="@+id/registration_button"
+            android:layout_marginTop="@dimen/border_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registration_button"/>
+    </GridLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

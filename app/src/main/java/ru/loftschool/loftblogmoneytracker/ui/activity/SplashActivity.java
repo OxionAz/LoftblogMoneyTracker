@@ -1,10 +1,12 @@
-package ru.loftschool.loftblogmoneytracker;
+package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import ru.loftschool.loftblogmoneytracker.R;
+import ru.loftschool.loftblogmoneytracker.ui.activity.RegistrationActivity_;
 
 /**
  * Created by Александр on 06.09.2015.
@@ -18,7 +20,7 @@ public class SplashActivity extends Activity {
         int secondsDelayed = 1;
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity_.class));
+                startActivity(new Intent(SplashActivity.this, RegistrationActivity_.class));
                 finish();
             }
         }, secondsDelayed * 2500);

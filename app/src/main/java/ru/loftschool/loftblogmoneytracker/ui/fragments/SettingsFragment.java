@@ -1,10 +1,12 @@
-package ru.loftschool.loftblogmoneytracker;
+package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
 import android.support.v4.app.Fragment;
 import android.widget.TextView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
+import ru.loftschool.loftblogmoneytracker.R;
 
 /**
  * Created by Александр on 01.09.2015.
