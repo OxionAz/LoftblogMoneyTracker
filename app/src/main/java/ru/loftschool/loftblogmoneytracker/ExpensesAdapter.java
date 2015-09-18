@@ -7,13 +7,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.List;
 
+import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
+
 /**
  * Created by Александр on 26.08.2015.
  */
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardViewHolder> {
-    private  List<Expense> expenses;
+    private  List<Expenses> expenses;
 
-    public ExpensesAdapter(List<Expense> expenses){
+    public ExpensesAdapter(List<Expenses> expenses){
         this.expenses = expenses;
     }
 
@@ -25,10 +27,11 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardVi
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
-        Expense expense = expenses.get(position);
-        holder.name.setText(expense.getTitle());
-        holder.sum.setText(expense.getSum());
-        holder.date.setText(expense.getDate());
+        Expenses expense = expenses.get(position);
+        holder.name.setText(expense.name);
+        holder.sum.setText(expense.sum);
+        holder.date.setText(expense.date);
+        holder.category.setText(expense.category.toString());
     }
 
     @Override
@@ -40,13 +43,14 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.CardVi
         protected TextView name;
         protected TextView sum;
         protected TextView date;
+        protected TextView category;
 
         public CardViewHolder (View itemView){
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.name_text);
             sum = (TextView) itemView.findViewById(R.id.sum_text);
             date = (TextView) itemView.findViewById(R.id.data_text);
-
+            category = (TextView) itemView.findViewById(R.id.category_text);
         }
     }
 }

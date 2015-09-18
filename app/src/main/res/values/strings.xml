@@ -23,5 +23,9 @@
     <string name="summa">Сумма</string>
     <string name="kategotiya">Категория</string>
     <string name="data">Дата</string>
-    <string name="segodnya">Сегодня</string>
+    <string name="segodnya">сегодня</string>
+    <string name="add_expense">Добавить трату</string>
+    <string name="category_text">Category</string>
+    <string name="hint_text_name">введите наименование</string>
+    <string name="hint_text_sum">введите сумму</string>
 </resources>

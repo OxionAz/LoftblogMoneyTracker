@@ -18,10 +18,10 @@
         card_view:cardCornerRadius="@dimen/radius"
         card_view:contentPadding="@dimen/activity_horizontal_margin"
         card_view:cardBackgroundColor="@color/white">
-        >
 
     <GridLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/addExpenseGrid"
                 android:columnCount="2"
                 android:rowCount="4">
         <TextView
@@ -30,13 +30,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/tovar"
             />
 
         <EditText
+            android:id="@+id/etName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
+            android:layout_height="@dimen/content_height"
+            android:layout_gravity="fill|bottom"
+            android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
+            android:hint="@string/hint_text_name"
             />
 
         <TextView
@@ -45,13 +50,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/summa"
             />
 
         <EditText
+            android:id="@+id/etPrice"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
+            android:layout_height="@dimen/content_height"
+            android:layout_gravity="fill|bottom"
+            android:numeric="decimal"
+            android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
+            android:hint="@string/hint_text_sum"
             />
 
         <TextView
@@ -60,13 +71,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/kategotiya"
             />
 
-        <EditText
+        <Spinner
+            android:id="@+id/etCategory"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
+            android:spinnerMode="dropdown"
             />
 
         <TextView
@@ -75,17 +89,30 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
             android:gravity="start|center"
+            android:textSize="@dimen/small_main_text"
             android:text="@string/data"
             />
 
-        <EditText
+        <TextView
+            android:id="@+id/etDate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
+            android:gravity="start|center"
+            android:textStyle="italic"
+            android:textSize="@dimen/small_main_text"
             android:hint="@string/segodnya"
             />
 
+        <Button
+            android:id="@+id/add_expense_button"
+            android:layout_marginTop="@dimen/radius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_expense"
+            android:layout_columnSpan="2"/>
     </GridLayout>
+
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

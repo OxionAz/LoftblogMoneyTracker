@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
+import java.util.List;
+import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        setCategories();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -52,6 +56,30 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(drawerLayout.isDrawerOpen(navView)){
+            drawerLayout.closeDrawer(navView);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
+    private List<Categories> getCategories(){
+        return new Select().from(Categories.class).execute();
+    }
+
+    public void setCategories(){
+        if (getCategories().isEmpty()){
+            new Categories("Food").save();
+            new Categories("Stuff").save();
+            new Categories("Clothes").save();
+            new Categories("Fun").save();
+            new Categories("Other").save();
+            }
     }
 
     private void selectItem(MenuItem menuItem) {

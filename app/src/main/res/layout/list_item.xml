@@ -5,16 +5,18 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:layout_marginLeft="@dimen/radius"
-        android:layout_marginRight="@dimen/radius"
+        android:layout_margin="@dimen/radius"
         card_view:cardCornerRadius="@dimen/radius"
         card_view:contentPadding="@dimen/activity_horizontal_margin"
         card_view:cardBackgroundColor="@color/white">
 
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
     <RelativeLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/name_text"
@@ -28,10 +30,33 @@
         android:textSize="@dimen/medium_main_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:textStyle="bold"
         android:text="@string/sum_text"/>
+
+        <TextView
+            android:id="@+id/category_text"
+            android:textSize="@dimen/small_main_text"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_text"
+            android:text="@string/category_text"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/container">
+
+        <RelativeLayout
+            android:id="@+id/border"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/border_margin"
+            android:layout_marginBottom="@dimen/item_margin_top"
+            android:layout_height="@dimen/divider_height_list"
+            android:background="@color/silver"/>
 
     <TextView
         android:id="@+id/data_text"
@@ -39,8 +64,9 @@
         android:textStyle="italic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name_text"
+        android:layout_below="@id/border"
         android:text="@string/data_text"/>
+    </RelativeLayout>
 
     </RelativeLayout>
 
