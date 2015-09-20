@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
@@ -85,9 +86,12 @@ public class MainActivity extends AppCompatActivity {
         return new Select().from(Categories.class).execute();
     }
 
+    @Background
     public void postCategories(){
         RestService restService = new RestService();
         AddCategoryModel category = restService.addCategory("Clothes", MoneyTrackerApp.getToken(this));
+        Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
+        restService.addCategory("Food", MoneyTrackerApp.getToken(this));
         Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
         restService.addCategory("Fun", MoneyTrackerApp.getToken(this));
         Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
