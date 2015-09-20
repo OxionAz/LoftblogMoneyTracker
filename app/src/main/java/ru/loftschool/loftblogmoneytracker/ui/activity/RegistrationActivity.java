@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
@@ -42,7 +44,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText etLogin, etPassword;
 
     @StringRes
-    String reg_name_empty, reg_password_empty, no_internet_connection, login_used;
+    String reg_name_empty, reg_password_empty, no_internet_connection, login_used, unknown_error;
 
     @OptionsItem(android.R.id.home)
     void back(){
@@ -94,8 +96,21 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     @UiThread
-    protected void message(){
-        Snackbar.make(registration_content, login_used, Snackbar.LENGTH_SHORT).show();
+    protected void message(boolean flag){
+        if(flag){
+            Snackbar.make(registration_content, login_used, Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(registration_content, unknown_error, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    @UiThread
+    protected void success(){
+        Toast.makeText(this,
+                "Логин: " +
+                etLogin.getText().toString() +
+                ", Пароль: " +
+                etPassword.getText().toString(), Toast.LENGTH_SHORT).show();
     }
 
     @Background
@@ -105,13 +120,14 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Status: " + response.getStatus() + ", ID: " + response.getId());
 
         if (UserRegisterStatus.success.equals(response.getStatus())){
+            success();
             Intent openActivityIntent = new Intent(RegistrationActivity.this, MainActivity_.class);
             startActivity(openActivityIntent);
             finish();
-        }
+        } else
 
         if (UserRegisterStatus.busy.equals(response.getStatus())) {
-            message();
-        }
+            message(true);
+        } else {message(false);}
     }
 }

@@ -5,6 +5,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
@@ -12,6 +13,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import java.util.List;
+import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
+import ru.loftschool.loftblogmoneytracker.rest.RestService;
+import ru.loftschool.loftblogmoneytracker.rest.models.AddCategoryModel;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment_;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
 import ru.loftschool.loftblogmoneytracker.R;
@@ -21,6 +25,8 @@ import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = "MainActivity";
 
     @ViewById
     Toolbar toolbar;
@@ -48,10 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterViews
     void ready(){
+        final String token = MoneyTrackerApp.getToken(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         setCategories();
+        if (!token.equals("1")) postCategories();
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -75,6 +83,18 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Categories> getCategories(){
         return new Select().from(Categories.class).execute();
+    }
+
+    public void postCategories(){
+        RestService restService = new RestService();
+        AddCategoryModel category = restService.addCategory("Clothes", MoneyTrackerApp.getToken(this));
+        Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
+        restService.addCategory("Fun", MoneyTrackerApp.getToken(this));
+        Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
+        restService.addCategory("Social", MoneyTrackerApp.getToken(this));
+        Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
+        restService.addCategory("Other", MoneyTrackerApp.getToken(this));
+        Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
     }
 
     public void setCategories(){

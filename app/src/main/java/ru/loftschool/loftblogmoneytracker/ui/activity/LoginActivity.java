@@ -19,7 +19,6 @@ import org.androidannotations.annotations.res.StringRes;
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
-import ru.loftschool.loftblogmoneytracker.rest.models.AddCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserLoginModel;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserLoginStatus;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
@@ -44,7 +43,9 @@ public class LoginActivity extends AppCompatActivity {
 
     @StringRes
     String reg_name_empty, reg_password_empty,
-           no_internet_connection, login_used, reg_name_wrong, reg_password_wrong, reg_wrong;
+           no_internet_connection, login_used,
+           reg_name_wrong, reg_password_wrong,
+           reg_wrong, unknown_error;
 
     @AfterViews
     void ready() {
@@ -99,8 +100,8 @@ public class LoginActivity extends AppCompatActivity {
         switch (status){
             case UserLoginStatus.wrongLogin: etLogin.setError(reg_name_wrong); break;
             case UserLoginStatus.wrongPassword: etPassword.setError(reg_password_wrong); break;
-            case UserLoginStatus.errorMessage: Snackbar.make(login_content, login_used, Snackbar.LENGTH_SHORT).show(); break;
-            case "unknown": Snackbar.make(login_content, login_used, Snackbar.LENGTH_SHORT).show(); break;
+            case UserLoginStatus.errorMessage: Snackbar.make(login_content, reg_wrong, Snackbar.LENGTH_SHORT).show(); break;
+            case "unknown": Snackbar.make(login_content, unknown_error, Snackbar.LENGTH_SHORT).show(); break;
             default: break;
         }
     }
@@ -113,9 +114,6 @@ public class LoginActivity extends AppCompatActivity {
 
         if (UserLoginStatus.success.equals(login.getStatus())){
             MoneyTrackerApp.setToken(this, login.getAuthToken());
-            AddCategoryModel category = restService.addCategory("Clothes", MoneyTrackerApp.getToken(this));
-            Log.d(LOG_TAG, "Category name: " + category.getData().getTitle() + ", ID: " + category.getData().getId());
-
             Intent openActivityIntent = new Intent(LoginActivity.this, MainActivity_.class);
             startActivity(openActivityIntent);
             finish();

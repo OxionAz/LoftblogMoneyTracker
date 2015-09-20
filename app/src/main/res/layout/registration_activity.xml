@@ -13,9 +13,7 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_margin="@dimen/card_login_margin"
         card_view:cardCornerRadius="@dimen/radius"
         card_view:contentPadding="@dimen/activity_horizontal_margin"
         card_view:cardBackgroundColor="@color/white">
@@ -29,9 +27,9 @@
         <ImageView
             android:id="@+id/icon"
             android:layout_gravity="center"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginBottom="5dp"
+            android:layout_width="@dimen/image"
+            android:layout_height="@dimen/image"
+            android:layout_marginBottom="@dimen/radius"
             android:src="@mipmap/ic_launcher"/>
 
         <EditText
@@ -40,6 +38,7 @@
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill|bottom"
             android:textSize="@dimen/small_main_text"
+            android:maxLength="20"
             android:hint="@string/hint_text_login"
             />
 
@@ -49,6 +48,7 @@
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill|bottom"
             android:inputType="textPassword"
+            android:maxLength="20"
             android:textSize="@dimen/small_main_text"
             android:hint="@string/hint_text_password"
             />

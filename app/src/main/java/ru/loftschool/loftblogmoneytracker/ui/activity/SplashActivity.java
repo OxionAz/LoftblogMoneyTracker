@@ -15,11 +15,10 @@ import ru.loftschool.loftblogmoneytracker.R;
 @EActivity(R.layout.splash_screen)
 public class SplashActivity extends Activity {
 
-    final String token = MoneyTrackerApp.getToken(this);
-
     @AfterViews
     void ready(){
-        int secondsDelayed = 1;
+        final String token = MoneyTrackerApp.getToken(this);
+        final int secondsDelayed = 1;
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 if(token.equals("1")){
