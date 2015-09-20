@@ -13,10 +13,10 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
-import ru.loftschool.loftblogmoneytracker.ui.activity.MainActivity_;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserRegisterModel;
@@ -44,9 +44,16 @@ public class RegistrationActivity extends AppCompatActivity {
     @StringRes
     String reg_name_empty, reg_password_empty, no_internet_connection, login_used;
 
+    @OptionsItem(android.R.id.home)
+    void back(){
+        onBackPressed();
+        finish();
+    }
+
     @AfterViews
     void ready() {
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.registation_bar));
     }
 
@@ -55,7 +62,7 @@ public class RegistrationActivity extends AppCompatActivity {
         hideKeyboard();
         if (inputValidation())
             if(NetworkConnectionUtil.isNetworkConnected(this)) {
-                registrationTest();
+                registration();
             } else {
                 Snackbar.make(registration_content, no_internet_connection, Snackbar.LENGTH_SHORT).show();
             }
@@ -92,7 +99,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     @Background
-    void registrationTest(){
+    void registration(){
         RestService restService = new RestService();
         UserRegisterModel response = restService.register(etLogin.getText().toString(),etPassword.getText().toString());
         Log.d(LOG_TAG, "Status: " + response.getStatus() + ", ID: " + response.getId());

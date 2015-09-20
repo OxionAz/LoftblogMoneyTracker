@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/registration_content"
+              android:id="@+id/login_content"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -48,21 +48,37 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill|bottom"
-            android:inputType="textPassword"
             android:textSize="@dimen/small_main_text"
+            android:inputType="textPassword"
             android:hint="@string/hint_text_password"
             />
 
         <Button
-            android:id="@+id/registration_button"
+            android:id="@+id/login_button"
             android:layout_marginTop="@dimen/border_margin"
             android:background="@color/primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@string/registration_button"/>
+            android:text="@string/login_button"/>
+
     </GridLayout>
 
     </android.support.v7.widget.CardView>
+
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+        android:gravity="bottom">
+
+    <Button
+        android:id="@+id/registration_button"
+        android:background="@color/primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_gravity="clip_horizontal"
+        android:text="@string/login_button_register"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
