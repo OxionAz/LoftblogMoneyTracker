@@ -28,4 +28,18 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
+    <style name="LoginAndRegEditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/content_height</item>
+        <item name="android:textSize">@dimen/small_main_text</item>
+        <item name="android:maxLength">@integer/max_length</item>
+        <item name="android:inputType">textNoSuggestions</item>
+        <item name="android:hint">@string/text_login</item>
+    </style>
+
+    <style name="LoginAndRegEditText.Password">
+        <item name="android:inputType">textNoSuggestions|textPassword</item>
+        <item name="android:hint">@string/text_password</item>
+    </style>
+
 </resources>

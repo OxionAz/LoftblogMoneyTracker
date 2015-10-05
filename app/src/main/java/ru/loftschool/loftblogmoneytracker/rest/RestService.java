@@ -2,6 +2,7 @@ package ru.loftschool.loftblogmoneytracker.rest;
 
 import ru.loftschool.loftblogmoneytracker.rest.models.AddCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserLoginModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.UserLogoutModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserRegisterModel;
 
 /**
@@ -26,5 +27,9 @@ public class RestService {
 
     public AddCategoryModel addCategory(String title, String token){
         return restClient.getAddCategoryAPI().addCategory(title, token);
+    }
+
+    public UserLogoutModel logout(){
+        return restClient.getLogoutAPI().logoutUser();
     }
 }

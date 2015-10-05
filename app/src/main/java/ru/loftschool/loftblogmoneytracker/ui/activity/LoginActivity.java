@@ -2,6 +2,8 @@ package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,17 +13,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
+
+import java.lang.ref.WeakReference;
+
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserLoginModel;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserLoginStatus;
+import ru.loftschool.loftblogmoneytracker.util.LoginAndRegisterMessage;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
+import ru.loftschool.loftblogmoneytracker.util.TextInputCheck;
 
 /**
  * Created by Александр on 06.09.2015.
@@ -30,6 +37,8 @@ import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends AppCompatActivity {
 
+    // to get fields in the main UI thread from background thread use Handler
+    private final WeakRefHandler handler = new WeakRefHandler(this);
     private static final String LOG_TAG = "MainActivity";
 
     @ViewById(R.id.login_content)
@@ -42,10 +51,13 @@ public class LoginActivity extends AppCompatActivity {
     EditText etLogin, etPassword;
 
     @StringRes
-    String reg_name_empty, reg_password_empty,
-           no_internet_connection, login_used,
-           reg_name_wrong, reg_password_wrong,
-           reg_wrong, unknown_error;
+    String no_internet_connection;
+
+    @Bean
+    TextInputCheck check;
+
+    @Bean
+    LoginAndRegisterMessage message;
 
     @AfterViews
     void ready() {
@@ -54,19 +66,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Click(R.id.login_button)
-    public  void loginButton(){
+    public void loginButton(){
         hideKeyboard();
-        if (inputValidation())
+        if (check.inputValidation(etLogin, etPassword))
             if(NetworkConnectionUtil.isNetworkConnected(this)) {
                 login();
             } else {
                 Snackbar.make(login_content, no_internet_connection, Snackbar.LENGTH_SHORT).show();
             }
-
     }
 
     @Click(R.id.registration_button)
-    public void addRegistration(){
+    public void addRegistration() {
         Intent openActivityRegistrationIntent = new Intent(LoginActivity.this, RegistrationActivity_.class);
         startActivity(openActivityRegistrationIntent);
     }
@@ -79,56 +90,40 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean inputValidation() {
-
-        boolean isValid = true;
-
-        if (etLogin.getText().toString().isEmpty()) {
-            etLogin.setError(reg_name_empty);
-            isValid = false;
-        }
-        if (etPassword.getText().toString().isEmpty()) {
-            etPassword.setError(reg_password_empty);
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    @UiThread
-    protected void message(String status){
-        switch (status){
-            case UserLoginStatus.wrongLogin: etLogin.setError(reg_name_wrong); break;
-            case UserLoginStatus.wrongPassword: etPassword.setError(reg_password_wrong); break;
-            case UserLoginStatus.errorMessage: Snackbar.make(login_content, reg_wrong, Snackbar.LENGTH_SHORT).show(); break;
-            case "unknown": Snackbar.make(login_content, unknown_error, Snackbar.LENGTH_SHORT).show(); break;
-            default: break;
-        }
-    }
-
     @Background
     void login(){
         RestService restService = new RestService();
         UserLoginModel login = restService.login(etLogin.getText().toString(), etPassword.getText().toString());
         Log.d(LOG_TAG, "Status: " + login.getStatus() + ", ID: " + login.getId() + ", Token: " + login.getAuthToken());
 
-        if (UserLoginStatus.success.equals(login.getStatus())){
+        if (UserLoginStatus.STATUS_SUCCESS.equals(login.getStatus())){
             MoneyTrackerApp.setToken(this, login.getAuthToken());
             Intent openActivityIntent = new Intent(LoginActivity.this, MainActivity_.class);
             startActivity(openActivityIntent);
             finish();
-        } else
+        } else {message.errorLoginMessage(login.getStatus(), login_content, handler);}
+    }
 
-        if (UserLoginStatus.wrongLogin.equals(login.getStatus())) {
-            message(login.getStatus());
-        } else
+    //to avoid "leak might occur" warning while using handler create custom static class WeakRefHandler
+    private static class WeakRefHandler extends Handler {
+        private final WeakReference<LoginActivity> mActivity;
 
-        if (UserLoginStatus.wrongPassword.equals(login.getStatus())) {
-            message(login.getStatus());
-        } else
+        public WeakRefHandler(LoginActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
 
-        if (UserLoginStatus.errorMessage.equals(login.getStatus())) {
-            message(login.getStatus());
-        } else {message("unknown");}
+        @Override
+        public void handleMessage(Message msg) {
+            LoginActivity activity = mActivity.get();
+            if (activity != null) {
+                if (msg.what == LoginAndRegisterMessage.MESSAGE_USER) {
+                    activity.etLogin.requestFocus();
+                    activity.etLogin.setError((String) msg.obj);
+                } else {
+                    activity.etPassword.requestFocus();
+                    activity.etPassword.setError((String) msg.obj);
+                }
+            }
+        }
     }
 }

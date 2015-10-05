@@ -12,6 +12,7 @@ import com.activeandroid.ActiveAndroid;
 public class MoneyTrackerApp extends Application {
 
     private static final String TOKEN_KEY = "token_key";
+    public static final String DEFAULT_TOKEN_KEY = "1";
 
     @Override
     public void onCreate() {
@@ -28,7 +29,7 @@ public class MoneyTrackerApp extends Application {
 
     public static String getToken(Context context){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        return pref.getString(TOKEN_KEY, "1");
+        return pref.getString(TOKEN_KEY, DEFAULT_TOKEN_KEY);
     }
-}
+}   
 

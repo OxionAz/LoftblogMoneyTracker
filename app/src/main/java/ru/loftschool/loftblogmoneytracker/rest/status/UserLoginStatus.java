@@ -5,8 +5,8 @@ package ru.loftschool.loftblogmoneytracker.rest.status;
  */
 public class UserLoginStatus {
 
-    public static final String success = "success";
-    public static final String wrongPassword = "Wrong password";
-    public static final String wrongLogin = "Wrong login";
-    public static final String errorMessage = "Error";
+    public static final String STATUS_SUCCESS = "success";
+    public static final String STATUS_WRONG_PASSWORD = "Wrong password";
+    public static final String STATUS_WRONG_LOGIN = "Wrong login";
+    public static final String ERROR = "Error";
 }

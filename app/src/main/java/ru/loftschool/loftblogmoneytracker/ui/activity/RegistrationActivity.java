@@ -2,6 +2,8 @@ package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,20 +12,25 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
+
+import java.lang.ref.WeakReference;
+
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserRegisterModel;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserRegisterStatus;
+import ru.loftschool.loftblogmoneytracker.util.LoginAndRegisterMessage;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
+import ru.loftschool.loftblogmoneytracker.util.TextInputCheck;
 
 /**
  * Created by Александр on 06.09.2015.
@@ -32,6 +39,8 @@ import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 @EActivity(R.layout.registration_activity)
 public class RegistrationActivity extends AppCompatActivity {
 
+    // to get fields in the main UI thread from background thread use Handler
+    private final WeakRefHandler handler = new WeakRefHandler(this);
     private static final String LOG_TAG = "MainActivity";
 
     @ViewById
@@ -44,7 +53,13 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText etLogin, etPassword;
 
     @StringRes
-    String reg_name_empty, reg_password_empty, no_internet_connection, login_used, unknown_error;
+    String no_internet_connection;
+
+    @Bean
+    TextInputCheck check;
+
+    @Bean
+    LoginAndRegisterMessage message;
 
     @OptionsItem(android.R.id.home)
     void back(){
@@ -62,13 +77,12 @@ public class RegistrationActivity extends AppCompatActivity {
     @Click(R.id.registration_button)
     public  void addRegistrationButton(){
         hideKeyboard();
-        if (inputValidation())
+        if (check.inputValidation(etLogin,etPassword))
             if(NetworkConnectionUtil.isNetworkConnected(this)) {
                 registration();
             } else {
                 Snackbar.make(registration_content, no_internet_connection, Snackbar.LENGTH_SHORT).show();
             }
-
     }
 
     private void hideKeyboard() {
@@ -76,31 +90,6 @@ public class RegistrationActivity extends AppCompatActivity {
         if (view != null) {
             ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
                     hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
-    private boolean inputValidation() {
-
-        boolean isValid = true;
-
-        if (etLogin.getText().toString().isEmpty()) {
-            etLogin.setError(reg_name_empty);
-            isValid = false;
-        }
-        if (etPassword.getText().toString().isEmpty()) {
-            etPassword.setError(reg_password_empty);
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    @UiThread
-    protected void message(boolean flag){
-        if(flag){
-            Snackbar.make(registration_content, login_used, Snackbar.LENGTH_SHORT).show();
-        } else {
-            Snackbar.make(registration_content, unknown_error, Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -119,15 +108,31 @@ public class RegistrationActivity extends AppCompatActivity {
         UserRegisterModel response = restService.register(etLogin.getText().toString(),etPassword.getText().toString());
         Log.d(LOG_TAG, "Status: " + response.getStatus() + ", ID: " + response.getId());
 
-        if (UserRegisterStatus.success.equals(response.getStatus())){
+        if (UserRegisterStatus.STATUS_SUCCESS.equals(response.getStatus())){
             success();
             Intent openActivityIntent = new Intent(RegistrationActivity.this, MainActivity_.class);
             startActivity(openActivityIntent);
             finish();
-        } else
+        } else if (UserRegisterStatus.STATUS_BISY.equals(response.getStatus())){
+            message.errorRegMessage(true,registration_content,handler);
+        } else {message.errorRegMessage(false,registration_content,handler);}
+    }
 
-        if (UserRegisterStatus.busy.equals(response.getStatus())) {
-            message(true);
-        } else {message(false);}
+    //to avoid "leak might occur" warning while using handler create custom static class WeakRefHandler
+    private static class WeakRefHandler extends Handler {
+        private final WeakReference<RegistrationActivity> mActivity;
+
+        public WeakRefHandler(RegistrationActivity activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            RegistrationActivity activity = mActivity.get();
+            if (activity != null) {
+                activity.etLogin.requestFocus();
+                activity.etLogin.setError((String) msg.obj);
+            }
+        }
     }
 }

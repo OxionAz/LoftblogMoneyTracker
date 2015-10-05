@@ -15,43 +15,46 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/card_login_margin"
         card_view:cardCornerRadius="@dimen/radius"
-        card_view:contentPadding="@dimen/activity_horizontal_margin"
         card_view:cardBackgroundColor="@color/white">
 
-    <GridLayout android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/registrationGrid"
-                android:columnCount="1"
-                android:rowCount="4">
+        <GridLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/drawer_paddingTop"
+                    android:id="@+id/registrationGrid"
+                    android:columnCount="@integer/column_count"
+                    android:rowCount="@integer/row_count">
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_gravity="center"
-            android:layout_width="@dimen/image"
-            android:layout_height="@dimen/image"
-            android:layout_marginBottom="@dimen/radius"
-            android:src="@mipmap/ic_launcher"/>
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/image"
+                android:layout_height="@dimen/image"
+                android:layout_marginBottom="@dimen/radius"
+                android:src="@mipmap/ic_launcher"/>
 
-        <EditText
-            android:id="@+id/etLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/content_height"
-            android:layout_gravity="fill|bottom"
-            android:maxLength="20"
-            android:textSize="@dimen/small_main_text"
-            android:hint="@string/hint_text_login"
-            />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/loginWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/content_height"
-            android:layout_gravity="fill|bottom"
-            android:textSize="@dimen/small_main_text"
-            android:inputType="textPassword"
-            android:maxLength="20"
-            android:hint="@string/hint_text_password"
-            />
+                <EditText
+                    android:id="@+id/etLogin"
+                    style="@style/LoginAndRegEditText"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/passwordWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/etPassword"
+                    style="@style/LoginAndRegEditText.Password"
+                    />
+
+            </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/login_button"
