@@ -18,13 +18,13 @@ public class LoginAndRegisterMessage {
 
     public static final int MESSAGE_USER = 0;
     public static final int MESSAGE_PASSWORD = 1;
-    Message msg = new Message();
 
     @StringRes
     String  reg_name_wrong, login_name_wrong, login_password_wrong, login_wrong, unknown_error;
 
-    @UiThread
     public void errorLoginMessage(String status, View view, Handler handler){
+
+        Message msg = new Message();
 
         switch (status){
             case UserLoginStatus.STATUS_WRONG_LOGIN:
@@ -45,8 +45,10 @@ public class LoginAndRegisterMessage {
         }
     }
 
-    @UiThread
     public void errorRegMessage(boolean flag, View view, Handler handler){
+
+        Message msg = new Message();
+
         if(flag){
             msg.obj = reg_name_wrong;
             handler.sendMessage(msg);

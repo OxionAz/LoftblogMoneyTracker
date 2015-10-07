@@ -1,6 +1,7 @@
 package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.content.Intent;
+import android.support.annotation.MainThread;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -11,18 +12,26 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.activeandroid.query.Select;
+import com.squareup.picasso.Picasso;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+
 import java.util.List;
+
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
+import ru.loftschool.loftblogmoneytracker.rest.RestClient;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
 import ru.loftschool.loftblogmoneytracker.rest.models.AddCategoryModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.GoogleTokenStatusModel;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserCategoriesStatus;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment_;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
@@ -30,6 +39,7 @@ import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.SettingsFragment_;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment_;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
+import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
     @ViewById(R.id.navigation_view)
     NavigationView navView;
+
+    @ViewById
+    ImageView avatar;
+
+    @ViewById
+    TextView user_name, user_email;
 
     @StringRes
     String unknown_error;
@@ -67,8 +83,10 @@ public class MainActivity extends AppCompatActivity {
     void ready(){
         initToolbar();
         initNavigationDrawer();
+        if (!MoneyTrackerApp.getGoogleToken(this).equals("1")
+                && NetworkConnectionUtil.isNetworkConnected(this))getUserInfo();
         setCategories();
-        postCategories();
+        if (NetworkConnectionUtil.isNetworkConnected(this))postCategories();
     }
 
     private void initToolbar(){
@@ -90,6 +108,13 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @UiThread
+    void setUserInfo(GoogleTokenStatusModel userInfo){
+        Picasso.with(this).load(userInfo.getPicture()).into(avatar);
+        user_name.setText(userInfo.getName());
+        user_email.setText(userInfo.getEmail());
     }
 
     @Override
@@ -118,15 +143,28 @@ public class MainActivity extends AppCompatActivity {
         AddCategoryModel addCategoryResp;
 
         for(Categories categories : getCategories()){
-            addCategoryResp = restService.addCategory(categories.category, MoneyTrackerApp.getToken(this));
+            addCategoryResp = restService.addCategory(categories.category,
+                    MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
             if (UserCategoriesStatus.STATUS_SUCCESS.equals(addCategoryResp.getStatus())){
                 Log.d(LOG_TAG,
                         "Category name: " + addCategoryResp.getData().getTitle() +
                         ", ID: " + addCategoryResp.getData().getId());
             } else {
-                Toast.makeText(this, unknown_error, Toast.LENGTH_LONG).show();
                 Log.e(LOG_TAG, unknown_error);
             }
+        }
+    }
+
+    @Background
+    void getUserInfo(){
+        RestClient restClient = new RestClient();
+        GoogleTokenStatusModel userInfo = restClient.getCheckGoogleTokenAPI().googleJson(MoneyTrackerApp.getGoogleToken(this));
+        Log.d(LOG_TAG, "User name: "+userInfo.getName()+", email: "+userInfo.getEmail());
+
+        if (userInfo.getEmail() != null) {
+            setUserInfo(userInfo);
+        } else {
+            Log.e(LOG_TAG, unknown_error);
         }
     }
 
@@ -164,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
     @Background
     public void logout(MenuItem item){
         MoneyTrackerApp.setToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
+        MoneyTrackerApp.setGoogleToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         startLoginActivity();
     }
 

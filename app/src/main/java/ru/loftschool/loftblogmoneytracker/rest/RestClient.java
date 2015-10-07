@@ -5,6 +5,7 @@ import ru.loftschool.loftblogmoneytracker.rest.api.AddCategoryAPI;
 import ru.loftschool.loftblogmoneytracker.rest.api.LoginUserAPI;
 import ru.loftschool.loftblogmoneytracker.rest.api.LogoutAPI;
 import ru.loftschool.loftblogmoneytracker.rest.api.RegistrationUserAPI;
+import ru.loftschool.loftblogmoneytracker.rest.api.CheckGoogleTokenAPI;
 
 /**
  * Created by Александр on 16.09.2015.
@@ -17,8 +18,9 @@ public class RestClient {
     private LoginUserAPI loginUserAPI;
     private AddCategoryAPI addCategoryAPI;
     private LogoutAPI logoutAPI;
+    private CheckGoogleTokenAPI checkGoogleTokenAPI;
 
-    RestClient(){
+    public RestClient(){
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(BASE_URL)
@@ -28,10 +30,12 @@ public class RestClient {
         loginUserAPI = restAdapter.create(LoginUserAPI.class);
         addCategoryAPI = restAdapter.create(AddCategoryAPI.class);
         logoutAPI = restAdapter.create(LogoutAPI.class);
+        checkGoogleTokenAPI = restAdapter.create(CheckGoogleTokenAPI.class);
     }
 
     public RegistrationUserAPI getRegistrationUserAPI(){return registrationUserAPI;}
     public LoginUserAPI getLoginUserAPI(){return loginUserAPI;}
     public AddCategoryAPI getAddCategoryAPI(){return addCategoryAPI;}
     public LogoutAPI getLogoutAPI(){return logoutAPI;}
+    public CheckGoogleTokenAPI getCheckGoogleTokenAPI(){return checkGoogleTokenAPI;}
 }

@@ -10,5 +10,7 @@ import ru.loftschool.loftblogmoneytracker.rest.models.AddCategoryModel;
 public interface AddCategoryAPI {
 
     @GET("/categories/add")
-    AddCategoryModel addCategory(@Query("title") String title, @Query("auth_token") String token);
+    AddCategoryModel addCategory(@Query("title") String title,
+                                 @Query("google_token") String gToken,
+                                 @Query("auth_token") String token);
 }
