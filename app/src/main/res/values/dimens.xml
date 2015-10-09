@@ -16,4 +16,6 @@
     <dimen name="item_margin_top">8dp</dimen>
     <dimen name="content_height">44dp</dimen>
     <dimen name="border_margin">10dp</dimen>
+    <dimen name="card_login_margin">30dp</dimen>
+    <dimen name="image">70dp</dimen>
 </resources>

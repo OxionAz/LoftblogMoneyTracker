@@ -2,6 +2,7 @@
     <string name="app_name">LoftblogMoneyTracker</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_item_logout">Logout</string>
     <string name="first_fragment">First Fragment</string>
     <string name="second_fragment">Second Fragment</string>
     <string name="name_text">Name</string>
@@ -31,15 +32,20 @@
     <string name="hint_text_sum">введите сумму</string>
     <string name="expense_name_empty">Вы не ввели наименование</string>
     <string name="expense_sum_empty">Вы не ввели сумму</string>
-        <!--Строки для RegistrationActivity-->
+        <!--Строки для Registration&LoginActivity-->
     <string name="registation_bar">Регистрация пользователя</string>
     <string name="text_login">Логин</string>
     <string name="text_password">Пароль</string>
-    <string name="hint_text_login">введите ваш логин</string>
-    <string name="hint_text_password">введите ваш пароль</string>
     <string name="reg_name_empty">Вы не ввели логин</string>
     <string name="reg_password_empty">Вы не ввели пароль</string>
+    <string name="reg_name_wrong">Данный логин уже используется</string>
+    <string name="login_name_wrong">Данный логин не зарегистрирован</string>
+    <string name="login_password_wrong">Неверный пароль</string>
+    <string name="login_wrong">Ошибка аутентификации</string>
     <string name="no_internet_connection">Отсутствует подключение к интернету</string>
-    <string name="login_used">Данный логин уже используется</string>
     <string name="registration_button">Зарегистрировать</string>
+    <string name="login_bar">MoneyTracker</string>
+    <string name="login_button">Вход</string>
+    <string name="login_button_register">Регистрация</string>
+    <string name="unknown_error">Ошибка сервера</string>
 </resources>

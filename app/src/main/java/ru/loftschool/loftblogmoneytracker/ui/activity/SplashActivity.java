@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Handler;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
-import ru.loftschool.loftblogmoneytracker.ui.activity.RegistrationActivity_;
 
 /**
  * Created by Александр on 06.09.2015.
@@ -17,11 +17,17 @@ public class SplashActivity extends Activity {
 
     @AfterViews
     void ready(){
-        int secondsDelayed = 1;
+        final String token = MoneyTrackerApp.getToken(this);
+        final int secondsDelayed = 1;
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(SplashActivity.this, RegistrationActivity_.class));
-                finish();
+                if(token.equals("1")){
+                    startActivity(new Intent(SplashActivity.this, LoginActivity_.class));
+                    finish();
+                } else {
+                    startActivity(new Intent(SplashActivity.this, MainActivity_.class));
+                    finish();
+                }
             }
         }, secondsDelayed * 2500);
     }

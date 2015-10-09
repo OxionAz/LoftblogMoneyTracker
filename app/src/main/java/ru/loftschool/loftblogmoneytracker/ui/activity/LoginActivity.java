@@ -11,23 +11,21 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.Toast;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 
 import java.lang.ref.WeakReference;
 
+import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
-import ru.loftschool.loftblogmoneytracker.rest.models.UserRegisterModel;
-import ru.loftschool.loftblogmoneytracker.rest.status.UserRegisterStatus;
+import ru.loftschool.loftblogmoneytracker.rest.models.UserLoginModel;
+import ru.loftschool.loftblogmoneytracker.rest.status.UserLoginStatus;
 import ru.loftschool.loftblogmoneytracker.util.LoginAndRegisterMessage;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 import ru.loftschool.loftblogmoneytracker.util.TextInputCheck;
@@ -36,15 +34,15 @@ import ru.loftschool.loftblogmoneytracker.util.TextInputCheck;
  * Created by Александр on 06.09.2015.
  */
 
-@EActivity(R.layout.registration_activity)
-public class RegistrationActivity extends AppCompatActivity {
+@EActivity(R.layout.login_activity)
+public class LoginActivity extends AppCompatActivity {
 
     // to get fields in the main UI thread from background thread use Handler
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private static final String LOG_TAG = "MainActivity";
 
-    @ViewById
-    View registration_content;
+    @ViewById(R.id.login_content)
+    View login_content;
 
     @ViewById
     Toolbar toolbar;
@@ -61,28 +59,27 @@ public class RegistrationActivity extends AppCompatActivity {
     @Bean
     LoginAndRegisterMessage message;
 
-    @OptionsItem(android.R.id.home)
-    void back(){
-        onBackPressed();
-        finish();
-    }
-
     @AfterViews
     void ready() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(getString(R.string.registation_bar));
+        setTitle(getString(R.string.login_bar));
+    }
+
+    @Click(R.id.login_button)
+    public void loginButton(){
+        hideKeyboard();
+        if (check.inputValidation(etLogin, etPassword))
+            if(NetworkConnectionUtil.isNetworkConnected(this)) {
+                login();
+            } else {
+                Snackbar.make(login_content, no_internet_connection, Snackbar.LENGTH_SHORT).show();
+            }
     }
 
     @Click(R.id.registration_button)
-    public  void addRegistrationButton(){
-        hideKeyboard();
-        if (check.inputValidation(etLogin,etPassword))
-            if(NetworkConnectionUtil.isNetworkConnected(this)) {
-                registration();
-            } else {
-                Snackbar.make(registration_content, no_internet_connection, Snackbar.LENGTH_SHORT).show();
-            }
+    public void addRegistration() {
+        Intent openActivityRegistrationIntent = new Intent(LoginActivity.this, RegistrationActivity_.class);
+        startActivity(openActivityRegistrationIntent);
     }
 
     private void hideKeyboard() {
@@ -93,45 +90,39 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    @UiThread
-    protected void success(){
-        Toast.makeText(this,
-                "Логин: " +
-                etLogin.getText().toString() +
-                ", Пароль: " +
-                etPassword.getText().toString(), Toast.LENGTH_SHORT).show();
-    }
-
     @Background
-    void registration(){
+    void login(){
         RestService restService = new RestService();
-        UserRegisterModel response = restService.register(etLogin.getText().toString(),etPassword.getText().toString());
-        Log.d(LOG_TAG, "Status: " + response.getStatus() + ", ID: " + response.getId());
+        UserLoginModel login = restService.login(etLogin.getText().toString(), etPassword.getText().toString());
+        Log.d(LOG_TAG, "Status: " + login.getStatus() + ", ID: " + login.getId() + ", Token: " + login.getAuthToken());
 
-        if (UserRegisterStatus.STATUS_SUCCESS.equals(response.getStatus())){
-            success();
-            Intent openActivityIntent = new Intent(RegistrationActivity.this, MainActivity_.class);
+        if (UserLoginStatus.STATUS_SUCCESS.equals(login.getStatus())){
+            MoneyTrackerApp.setToken(this, login.getAuthToken());
+            Intent openActivityIntent = new Intent(LoginActivity.this, MainActivity_.class);
             startActivity(openActivityIntent);
             finish();
-        } else if (UserRegisterStatus.STATUS_BISY.equals(response.getStatus())){
-            message.errorRegMessage(true,registration_content,handler);
-        } else {message.errorRegMessage(false,registration_content,handler);}
+        } else {message.errorLoginMessage(login.getStatus(), login_content, handler);}
     }
 
     //to avoid "leak might occur" warning while using handler create custom static class WeakRefHandler
     private static class WeakRefHandler extends Handler {
-        private final WeakReference<RegistrationActivity> mActivity;
+        private final WeakReference<LoginActivity> mActivity;
 
-        public WeakRefHandler(RegistrationActivity activity) {
+        public WeakRefHandler(LoginActivity activity) {
             mActivity = new WeakReference<>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            RegistrationActivity activity = mActivity.get();
+            LoginActivity activity = mActivity.get();
             if (activity != null) {
-                activity.etLogin.requestFocus();
-                activity.etLogin.setError((String) msg.obj);
+                if (msg.what == LoginAndRegisterMessage.MESSAGE_USER) {
+                    activity.etLogin.requestFocus();
+                    activity.etLogin.setError((String) msg.obj);
+                } else {
+                    activity.etPassword.requestFocus();
+                    activity.etPassword.setError((String) msg.obj);
+                }
             }
         }
     }
