@@ -3,7 +3,9 @@ package ru.loftschool.loftblogmoneytracker.ui.activity;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.util.Log;
 
 import com.google.android.gms.auth.GoogleAuthException;
@@ -24,6 +26,7 @@ import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
 import ru.loftschool.loftblogmoneytracker.rest.models.GoogleTokenStatusModel;
+import ru.loftschool.loftblogmoneytracker.sync.TrackerSyncAdapter;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 
 /**
@@ -45,8 +48,15 @@ public class SplashActivity extends Activity {
             "https://www.googleapis.com/auth/userinfo.email";
     public final static String SCOPES = G_PLUS_SCOPE + " " + USERINFO_SCOPE + " " + EMAIL_SCOPE;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TrackerSyncAdapter.initializeSyncAdapter(this);
+    }
+
     @AfterViews
     void ready(){
+
         token = MoneyTrackerApp.getToken(this);
         googleToken = MoneyTrackerApp.getGoogleToken(this);
         restClient = new RestClient();

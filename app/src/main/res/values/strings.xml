@@ -24,7 +24,7 @@
     <string name="tovar">Товар</string>
     <string name="summa">Сумма</string>
     <string name="kategotiya">Категория</string>
-    <string name="data">Дата</string>
+    <string name="addCategoryDataModel">Дата</string>
     <string name="segodnya">сегодня</string>
     <string name="add_expense">Добавить трату</string>
     <string name="category_text">Category</string>
@@ -48,4 +48,7 @@
     <string name="login_button">Вход</string>
     <string name="login_button_register">Регистрация</string>
     <string name="unknown_error">Ошибка сервера</string>
+        <!--Строки для authenticator-->
+    <string name="content_authority">ru.loftschool.loftblogmoneytracker</string>
+    <string name="sync_account_type">loftblogmoneytracker.loftschool.ru</string>
 </resources>

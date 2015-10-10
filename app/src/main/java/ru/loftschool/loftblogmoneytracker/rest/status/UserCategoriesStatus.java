@@ -6,4 +6,5 @@ package ru.loftschool.loftblogmoneytracker.rest.status;
 public class UserCategoriesStatus {
 
     public static final String STATUS_SUCCESS = "success";
+    public static final String STATUS_ERROR = "Error";
 }

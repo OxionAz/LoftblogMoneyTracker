@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 /**
  * Created by Александр on 20.09.2015.
  */
-public class Data {
+public class AddCategoryDataModel {
 
     @Expose
     private String title;

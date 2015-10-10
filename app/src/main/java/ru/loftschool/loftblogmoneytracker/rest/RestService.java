@@ -1,6 +1,10 @@
 package ru.loftschool.loftblogmoneytracker.rest;
 
+import java.util.List;
+
+import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.rest.models.AddCategoryModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.SynchCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserLoginModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserLogoutModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.UserRegisterModel;
@@ -26,10 +30,14 @@ public class RestService {
     }
 
     public AddCategoryModel addCategory(String title, String gToken, String token){
-        return restClient.getAddCategoryAPI().addCategory(title, gToken, token);
+        return restClient.getCategoryAPI().addCategory(title, gToken, token);
     }
 
     public UserLogoutModel logout(){
         return restClient.getLogoutAPI().logoutUser();
+    }
+
+    public SynchCategoryModel synchCategory (List<Categories> categories, String token){
+        return restClient.getCategoryAPI().synchCategory(categories, token);
     }
 }

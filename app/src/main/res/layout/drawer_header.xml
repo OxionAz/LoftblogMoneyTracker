@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/header"
                 android:paddingLeft="@dimen/header_padding_rl"
                 android:paddingRight="@dimen/header_padding_rl"
@@ -16,6 +17,7 @@
         android:layout_above="@+id/subtitle"
         android:layout_width="@dimen/avatar_size"
         android:layout_height="@dimen/avatar_size"
+        app:border_width="@dimen/border_width_zero"
         android:contentDescription="@string/avatar"/>
 
     <LinearLayout
