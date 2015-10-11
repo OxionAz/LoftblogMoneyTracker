@@ -29,7 +29,7 @@ import java.lang.ref.WeakReference;
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
-import ru.loftschool.loftblogmoneytracker.rest.models.UserLoginModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.login.UserLoginModel;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserLoginStatus;
 import ru.loftschool.loftblogmoneytracker.util.LoginAndRegisterMessage;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;

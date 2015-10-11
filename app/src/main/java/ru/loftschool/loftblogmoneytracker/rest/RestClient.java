@@ -5,7 +5,9 @@ import ru.loftschool.loftblogmoneytracker.rest.api.LoginUserAPI;
 import ru.loftschool.loftblogmoneytracker.rest.api.LogoutAPI;
 import ru.loftschool.loftblogmoneytracker.rest.api.RegistrationUserAPI;
 import ru.loftschool.loftblogmoneytracker.rest.api.CheckGoogleTokenAPI;
+import ru.loftschool.loftblogmoneytracker.rest.api.UserBalanceAPI;
 import ru.loftschool.loftblogmoneytracker.rest.api.UserCategoryAPI;
+import ru.loftschool.loftblogmoneytracker.rest.api.UserTransactionAPI;
 
 /**
  * Created by Александр on 16.09.2015.
@@ -16,9 +18,11 @@ public class RestClient {
 
     private RegistrationUserAPI registrationUserAPI;
     private LoginUserAPI loginUserAPI;
-    private UserCategoryAPI categoryAPI;
     private LogoutAPI logoutAPI;
     private CheckGoogleTokenAPI checkGoogleTokenAPI;
+    private UserCategoryAPI userCategoryAPI;
+    private UserTransactionAPI userTransactionAPI;
+    private UserBalanceAPI userBalanceAPI;
 
     public RestClient(){
         RestAdapter restAdapter = new RestAdapter.Builder()
@@ -28,14 +32,18 @@ public class RestClient {
 
         registrationUserAPI = restAdapter.create(RegistrationUserAPI.class);
         loginUserAPI = restAdapter.create(LoginUserAPI.class);
-        categoryAPI = restAdapter.create(UserCategoryAPI.class);
         logoutAPI = restAdapter.create(LogoutAPI.class);
         checkGoogleTokenAPI = restAdapter.create(CheckGoogleTokenAPI.class);
+        userCategoryAPI = restAdapter.create(UserCategoryAPI.class);
+        userTransactionAPI = restAdapter.create(UserTransactionAPI.class);
+        userBalanceAPI = restAdapter.create(UserBalanceAPI.class);
     }
 
     public RegistrationUserAPI getRegistrationUserAPI(){return registrationUserAPI;}
     public LoginUserAPI getLoginUserAPI(){return loginUserAPI;}
-    public UserCategoryAPI getCategoryAPI(){return categoryAPI;}
     public LogoutAPI getLogoutAPI(){return logoutAPI;}
     public CheckGoogleTokenAPI getCheckGoogleTokenAPI(){return checkGoogleTokenAPI;}
+    public UserCategoryAPI getUserCategoryAPI(){return userCategoryAPI;}
+    public UserTransactionAPI getUserTransactionAPI(){return userTransactionAPI;}
+    public UserBalanceAPI getUserBalanceAPI(){return userBalanceAPI;}
 }

@@ -90,7 +90,7 @@
             android:layout_gravity="fill"
             android:gravity="start|center"
             android:textSize="@dimen/small_main_text"
-            android:text="@string/addCategoryDataModel"
+            android:text="@string/categoryDataModel"
             />
 
         <TextView

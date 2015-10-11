@@ -1,16 +1,20 @@
 package ru.loftschool.loftblogmoneytracker.rest.models;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 
 /**
- * Created by Александр on 20.09.2015.
+ * Created by Александр on 11.10.2015.
  */
-public class AddCategoryModel {
+public class BalanceModel {
 
+    @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("balance")
     @Expose
-    private AddCategoryDataModel addCategoryDataModel;
+    private String balance;
 
     /**
      *
@@ -33,18 +37,19 @@ public class AddCategoryModel {
     /**
      *
      * @return
-     * The addCategoryDataModel
+     * The balance
      */
-    public AddCategoryDataModel getAddCategoryDataModel() {
-        return addCategoryDataModel;
+    public String getBalance() {
+        return balance;
     }
 
     /**
      *
-     * @param addCategoryDataModel
-     * The addCategoryDataModel
+     * @param balance
+     * The balance
      */
-    public void setAddCategoryDataModel(AddCategoryDataModel addCategoryDataModel) {
-        this.addCategoryDataModel = addCategoryDataModel;
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
+
 }

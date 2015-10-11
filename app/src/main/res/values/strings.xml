@@ -24,7 +24,7 @@
     <string name="tovar">Товар</string>
     <string name="summa">Сумма</string>
     <string name="kategotiya">Категория</string>
-    <string name="addCategoryDataModel">Дата</string>
+    <string name="categoryDataModel">Дата</string>
     <string name="segodnya">сегодня</string>
     <string name="add_expense">Добавить трату</string>
     <string name="category_text">Category</string>

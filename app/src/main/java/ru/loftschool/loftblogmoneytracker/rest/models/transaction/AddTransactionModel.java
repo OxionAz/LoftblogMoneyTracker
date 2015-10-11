@@ -1,14 +1,17 @@
-package ru.loftschool.loftblogmoneytracker.rest.models;
+package ru.loftschool.loftblogmoneytracker.rest.models.transaction;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Александр on 16.09.2015.
+ * Created by Александр on 10.10.2015.
  */
-public class UserRegisterModel {
+public class AddTransactionModel {
 
+    @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("id")
     @Expose
     private Integer id;
 
@@ -47,5 +50,4 @@ public class UserRegisterModel {
     public void setId(Integer id) {
         this.id = id;
     }
-
 }

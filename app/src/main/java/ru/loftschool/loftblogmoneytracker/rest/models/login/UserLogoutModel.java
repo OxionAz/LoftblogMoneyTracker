@@ -1,4 +1,4 @@
-package ru.loftschool.loftblogmoneytracker.rest.models;
+package ru.loftschool.loftblogmoneytracker.rest.models.login;
 
 import com.google.gson.annotations.Expose;
 

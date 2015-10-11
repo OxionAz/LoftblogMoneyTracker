@@ -1,11 +1,11 @@
-package ru.loftschool.loftblogmoneytracker.rest.models;
+package ru.loftschool.loftblogmoneytracker.rest.models.category;
 
 import com.google.gson.annotations.Expose;
 
 /**
  * Created by Александр on 20.09.2015.
  */
-public class AddCategoryDataModel {
+public class CategoryDataModel {
 
     @Expose
     private String title;

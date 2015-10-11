@@ -1,21 +1,20 @@
-package ru.loftschool.loftblogmoneytracker.rest.models;
+package ru.loftschool.loftblogmoneytracker.rest.models.category;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Александр on 10.10.2015.
+ * Created by Александр on 11.10.2015.
  */
-public class SynchCategoryModel {
+public class GetCategoryModel {
 
-    @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("data")
     @Expose
-    private List<SynchCategoryDataModel> data = new ArrayList<SynchCategoryDataModel>();
+    private List<GetCategoryDataModel> categories = new ArrayList<GetCategoryDataModel>();
 
     /**
      *
@@ -40,16 +39,16 @@ public class SynchCategoryModel {
      * @return
      * The data
      */
-    public List<SynchCategoryDataModel> getData() {
-        return data;
+    public List<GetCategoryDataModel> getCategories() {
+        return categories;
     }
 
     /**
      *
-     * @param data
+     * @param categoriesItems
      * The data
      */
-    public void setData(List<SynchCategoryDataModel> data) {
-        this.data = data;
+    public void setCategories(List<GetCategoryDataModel> categoriesItems) {
+        this.categories = categoriesItems;
     }
 }

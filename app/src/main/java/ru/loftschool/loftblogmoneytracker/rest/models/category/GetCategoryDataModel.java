@@ -1,17 +1,14 @@
-package ru.loftschool.loftblogmoneytracker.rest.models;
+package ru.loftschool.loftblogmoneytracker.rest.models.category;
 
 import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by Александр on 10.10.2015.
+ * Created by Александр on 11.10.2015.
  */
-public class SynchCategoryDataModel {
+public class GetCategoryDataModel {
 
-    @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("title")
     @Expose
     private String title;
 

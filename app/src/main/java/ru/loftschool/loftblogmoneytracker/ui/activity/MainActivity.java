@@ -22,14 +22,20 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import java.util.List;
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
+import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
-import ru.loftschool.loftblogmoneytracker.rest.models.AddCategoryModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.GoogleTokenStatusModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.SynchCategoryDataModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.SynchCategoryModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryDataModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.SynchCategoryDataModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.SynchCategoryModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.transaction.AddTransactionModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.transaction.SynchTransactionDataModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.transaction.SynchTransactionModel;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserCategoriesStatus;
-import ru.loftschool.loftblogmoneytracker.sync.TrackerSyncAdapter;
+import ru.loftschool.loftblogmoneytracker.rest.status.UserTransactionStatus;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment_;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
 import ru.loftschool.loftblogmoneytracker.R;
@@ -81,11 +87,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (!MoneyTrackerApp.getGoogleToken(this).equals("1")
                 && NetworkConnectionUtil.isNetworkConnected(this)) getUserInfo();
-
-        if (NetworkConnectionUtil.isNetworkConnected(this))postCategories();
-
+        if (NetworkConnectionUtil.isNetworkConnected(this)) postCategories();
+        if (NetworkConnectionUtil.isNetworkConnected(this)) postTransactions();
         if (!MoneyTrackerApp.getToken(this).equals("1")
                 && NetworkConnectionUtil.isNetworkConnected(this)) synchCategories();
+        if (!MoneyTrackerApp.getToken(this).equals("1")
+                && NetworkConnectionUtil.isNetworkConnected(this)) synchTransactions();
     }
 
     private void initToolbar(){
@@ -137,19 +144,85 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Background
+    void editCategoryOnServer() {
+        RestService restService = new RestService();
+        CategoryModel editCategoryModel = restService.editCategory("Нечто", 2,
+                MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
+        if (UserTransactionStatus.STATUS_SUCCESS.equalsIgnoreCase(editCategoryModel.getStatus())){
+            Log.e(LOG_TAG, "Status: "+editCategoryModel.getStatus()+
+                           ", Category: "+editCategoryModel.getCategoryDataModel().getTitle()+
+                           ", Id: "+editCategoryModel.getCategoryDataModel().getId());
+        } else {
+            unknownError();
+        }
+
+    }
+
+    @Background
+    void deleteCategoryOnServer() {
+        RestService restService = new RestService();
+        CategoryModel deleteCategoryModel = restService.deleteCategory(2,
+                MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
+        if (UserTransactionStatus.STATUS_SUCCESS.equalsIgnoreCase(deleteCategoryModel.getStatus())){
+            Log.e(LOG_TAG, "Status: "+deleteCategoryModel.getStatus()+
+                    ", Category: "+deleteCategoryModel.getCategoryDataModel().getTitle()+
+                    ", Id: "+deleteCategoryModel.getCategoryDataModel().getId());
+        } else {
+            unknownError();
+        }
+
+    }
+
+    @Background
+    void getAllCategories() {
+        RestService restService = new RestService();
+        GetCategoryModel getAllCategories = restService.getCategory(MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
+        List<GetCategoryDataModel> data = getAllCategories.getCategories();
+        if (UserTransactionStatus.STATUS_SUCCESS.equalsIgnoreCase(getAllCategories.getStatus())){
+            for (int i=0; i < data.size(); i++){
+                Log.d(LOG_TAG, "Status: "+getAllCategories.getStatus()+
+                               "Category: "+data.get(i).getTitle()+
+                               ", Id: "+data.get(i).getId());
+            }
+        } else {
+            unknownError();
+        }
+
+    }
+
+    @Background
     public void postCategories(){
         RestService restService = new RestService();
-        AddCategoryModel addCategoryResp = null;
+        CategoryModel addCategoryResp;
 
         for(Categories categories : getCategories()){
             addCategoryResp = restService.addCategory(categories.category,
                     MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
             if (UserCategoriesStatus.STATUS_SUCCESS.equals(addCategoryResp.getStatus())){
                 Log.d(LOG_TAG,
-                        "Category name: " + addCategoryResp.getAddCategoryDataModel().getTitle() +
-                        ", ID: " + addCategoryResp.getAddCategoryDataModel().getId());
+                        "Category: " + addCategoryResp.getCategoryDataModel().getTitle() +
+                        ", ID: " + addCategoryResp.getCategoryDataModel().getId());
             } else {
                 unknownError();
+            }
+        }
+    }
+
+    @Background
+    public void postTransactions(){
+        RestService restService = new RestService();
+        AddTransactionModel addTransactionModel;
+
+        if (!getExpenses().isEmpty()) {
+            for (Expenses expenses : getExpenses()) {
+                addTransactionModel = restService.addTransaction(expenses.sum, expenses.name, expenses.category.getId(), expenses.date,
+                        MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
+                if (UserTransactionStatus.STATUS_SUCCESS.equals(addTransactionModel.getStatus())) {
+                    Log.d(LOG_TAG,"Status: "+addTransactionModel.getStatus()+
+                                  ", ID: "+addTransactionModel.getId());
+                } else {
+                    unknownError();
+                }
             }
         }
     }
@@ -163,8 +236,29 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Status: "+synchCategoryModel.getStatus());
         if (UserCategoriesStatus.STATUS_SUCCESS.equalsIgnoreCase(synchCategoryModel.getStatus())){
         for (int i=0; i < data.size(); i++){
-            Log.d(LOG_TAG, "Category: "+data.get(i).getTitle());
+            Log.d(LOG_TAG, "Category: "+data.get(i).getTitle()+", id: "+data.get(i).getId());
         }
+        } else {
+            unknownError();
+        }
+    }
+
+    @Background
+    public void synchTransactions(){
+        RestService restService = new RestService();
+        SynchTransactionModel synchTransactionModel = restService.synchTransaction(getExpenses(),
+                MoneyTrackerApp.getToken(this));
+        List<SynchTransactionDataModel> data = synchTransactionModel.getData();
+        Log.d(LOG_TAG, "Status: "+synchTransactionModel.getStatus());
+        if (UserTransactionStatus.STATUS_SUCCESS.equalsIgnoreCase(synchTransactionModel.getStatus())){
+            for (int i=0; i < data.size(); i++){
+                Log.d(LOG_TAG,
+                        "Name: "+data.get(i).getComment()+
+                        ", Id: "+data.get(i).getId()+
+                        ", CatId: "+data.get(i).getCategoryId()+
+                        ", Sum: "+data.get(i).getSum()+
+                        ", Date: "+data.get(i).getTrDate());
+            }
         } else {
             unknownError();
         }
@@ -223,6 +317,10 @@ public class MainActivity extends AppCompatActivity {
         MoneyTrackerApp.setToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         MoneyTrackerApp.setGoogleToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         startLoginActivity();
+    }
+
+    private List<Expenses> getExpenses(){
+        return new Select().from(Expenses.class).execute();
     }
 
     private List<Categories> getCategories(){
