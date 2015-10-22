@@ -31,6 +31,14 @@ public abstract class SelectableAdapter <VH extends RecyclerView.ViewHolder> ext
         notifyItemChanged(position);
     }
 
+    public void SelectedAll(int size){
+        for (int i=0; i<size; i++)
+            if (selectedItems.get(i, true)) {
+                selectedItems.put(i, true);
+                notifyItemChanged(i);
+            }
+    }
+
     public void clearSelection(){
         List<Integer> selection = getSelectedItems();
         selectedItems.clear();

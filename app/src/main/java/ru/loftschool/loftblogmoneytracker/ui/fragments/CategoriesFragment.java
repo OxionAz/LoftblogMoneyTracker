@@ -1,12 +1,13 @@
 package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,13 +20,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
 import java.util.List;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
@@ -47,6 +48,10 @@ public class CategoriesFragment extends Fragment {
 
     @ViewById(R.id.fab)
     FloatingActionButton fab;
+
+    @StringRes
+    String category_add_added_text, category_remove_dialog_title,
+           category_remove_dialog_text, alert_dialog_remove_accept, alert_dialog_text_cancel;
 
     @Bean
     TextInputCheck check;
@@ -137,7 +142,7 @@ public class CategoriesFragment extends Fragment {
             public void onClick(View v) {
                 if (check.inputAddCategoryValidation(editText)) {
                     categoriesAdapter.addCategory(text.toString());
-                    Toast.makeText(getActivity(), "Добавлена категория: " + text.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), category_add_added_text + text.toString(), Toast.LENGTH_SHORT).show();
                     Log.d("AlertDialog", text.toString());
                     dialog.dismiss();
                 }
@@ -169,11 +174,40 @@ public class CategoriesFragment extends Fragment {
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             switch (item.getItemId()){
                 case R.id.menu_remove:
-                    categoriesAdapter.removeItems(categoriesAdapter.getSelectedItems());
-                    mode.finish();
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity(), R.style.AlertDialog)
+                            .setPositiveButton(alert_dialog_remove_accept, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // Accept action
+                                    categoriesAdapter.removeItems(categoriesAdapter.getSelectedItems());
+                                    mode.finish();
+                                }
+                            })
+                            .setNegativeButton(alert_dialog_text_cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // Cancel action
+                                    mode.finish();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setTitle(category_remove_dialog_title)
+                            .setMessage(category_remove_dialog_text)
+                            .create();
+                    alertDialog.show();
+                    return true;
+                case R.id.menu_select_all:
+                    if (categoriesAdapter.getItemCount() != categoriesAdapter.getSelectedItemsCount()) {
+                        categoriesAdapter.SelectedAll(categoriesAdapter.getItemCount());
+                        actionMode.setTitle(String.valueOf(categoriesAdapter.getSelectedItemsCount()));
+                        actionMode.invalidate();
+                    } else {
+                        categoriesAdapter.clearSelection();
+                        mode.finish();
+                    }
                     return true;
                 default: return false;
             }

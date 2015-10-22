@@ -51,10 +51,17 @@
         <!--Строки для authenticator-->
     <string name="content_authority">ru.loftschool.loftblogmoneytracker</string>
     <string name="sync_account_type">loftblogmoneytracker.loftschool.ru</string>
+        <!--Строки для ActionBar-->
     <string name="delete">Delete</string>
-    <string name="alert_dialog_text_title">Введите категорию:</string>
+    <string name="select_all">SelectAll</string>
+        <!--Строки для AlertDialog-->
+    <string name="alert_dialog_text_title">Введите название категории:</string>
     <string name="alert_dialog_text_cancel">Отмена</string>
     <string name="alert_dialog_text_add">Добавить</string>
-
+    <string name="alert_dialog_remove_accept">Удалить</string>
+    <string name="category_add_added_text">"Добавлена категория: "</string>
+    <string name="category_remove_dialog_title">Удалить выбранные категории?</string>
+    <string name="category_remove_dialog_text">"Удаление категорий приведет к удалению соответствующих им трат! Вы действительно хотите удалить категории?</string>
     <string name="category_name_empty">Вы не ввели название категории</string>
+    <string name="category_name_used">Название категории уже используется</string>
 </resources>

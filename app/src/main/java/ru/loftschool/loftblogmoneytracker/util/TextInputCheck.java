@@ -4,6 +4,8 @@ import android.widget.EditText;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.res.StringRes;
 
+import ru.loftschool.loftblogmoneytracker.database.models.Categories;
+
 /**
  * Created by Александр on 04.10.2015.
  */
@@ -12,7 +14,7 @@ import org.androidannotations.annotations.res.StringRes;
 public class TextInputCheck {
 
     @StringRes
-    String reg_name_empty, reg_password_empty, category_name_empty;
+    String reg_name_empty, reg_password_empty, category_name_empty, category_name_used;
 
     public boolean inputValidation(EditText login, EditText password) {
 
@@ -36,6 +38,11 @@ public class TextInputCheck {
 
         if (name.getText().toString().isEmpty()) {
             name.setError(category_name_empty);
+            isValid = false;
+        }
+
+        if (!Categories.selectByNameCaseInsensitive(name.getText().toString()).isEmpty()) {
+            name.setError(category_name_used);
             isValid = false;
         }
 

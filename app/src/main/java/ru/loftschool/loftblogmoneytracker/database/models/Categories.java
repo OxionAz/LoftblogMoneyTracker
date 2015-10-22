@@ -3,6 +3,8 @@ package ru.loftschool.loftblogmoneytracker.database.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.util.SQLiteUtils;
+
 import java.util.List;
 
 /**
@@ -31,5 +33,9 @@ public class Categories extends Model {
 
     public List<Expenses> expenses() {
         return getMany(Expenses.class, "Categories");
+    }
+
+    public static List<Categories> selectByNameCaseInsensitive(String name) {
+        return SQLiteUtils.rawQuery(Categories.class, "SELECT * from Categories where lower(category) = ?", new String[]{name.toLowerCase()});
     }
 }

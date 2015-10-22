@@ -139,6 +139,16 @@ public class ExpensesFragment extends Fragment {
                     expensesAdapter.removeItems(expensesAdapter.getSelectedItems());
                     mode.finish();
                     return true;
+                case R.id.menu_select_all:
+                    if (expensesAdapter.getItemCount() != expensesAdapter.getSelectedItemsCount()) {
+                        expensesAdapter.SelectedAll(expensesAdapter.getItemCount());
+                        actionMode.setTitle(String.valueOf(expensesAdapter.getSelectedItemsCount()));
+                        actionMode.invalidate();
+                    } else {
+                        expensesAdapter.clearSelection();
+                        mode.finish();
+                    }
+                    return true;
                 default: return false;
             }
         }
