@@ -10,6 +10,7 @@ import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
@@ -85,6 +86,10 @@ public class AddExpensesActivity extends AppCompatActivity {
             etPrice.setError(expense_sum_empty);
             isValid = false;
         }
+        if (etCategory.getSelectedItem() == null) {
+            Toast.makeText(this, "Список категорий пуст!", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
 
         return isValid;
     }
@@ -105,8 +110,9 @@ public class AddExpensesActivity extends AppCompatActivity {
                             etCategory.getSelectedItem().toString() + ", " +
                             String.valueOf(dateFormat.format(new Date())),
                     Toast.LENGTH_SHORT).show();
-        }
+
             etName.setText(null);
             etPrice.setText(null);
+        }
     }
 }

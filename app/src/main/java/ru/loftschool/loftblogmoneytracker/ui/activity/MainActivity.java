@@ -87,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (!MoneyTrackerApp.getGoogleToken(this).equals("1")
                 && NetworkConnectionUtil.isNetworkConnected(this)) getUserInfo();
-        if (NetworkConnectionUtil.isNetworkConnected(this)) postCategories();
-        if (NetworkConnectionUtil.isNetworkConnected(this)) postTransactions();
-        if (!MoneyTrackerApp.getToken(this).equals("1")
-                && NetworkConnectionUtil.isNetworkConnected(this)) synchCategories();
-        if (!MoneyTrackerApp.getToken(this).equals("1")
-                && NetworkConnectionUtil.isNetworkConnected(this)) synchTransactions();
+//        if (NetworkConnectionUtil.isNetworkConnected(this)) postCategories();
+//        if (NetworkConnectionUtil.isNetworkConnected(this)) postTransactions();
+//        if (!MoneyTrackerApp.getToken(this).equals("1")
+//                && NetworkConnectionUtil.isNetworkConnected(this)) synchCategories();
+//        if (!MoneyTrackerApp.getToken(this).equals("1")
+//                && NetworkConnectionUtil.isNetworkConnected(this)) synchTransactions();
     }
 
     private void initToolbar(){
@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
                 MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
         if (UserTransactionStatus.STATUS_SUCCESS.equalsIgnoreCase(editCategoryModel.getStatus())){
             Log.e(LOG_TAG, "Status: "+editCategoryModel.getStatus()+
-                           ", Category: "+editCategoryModel.getCategoryDataModel().getTitle()+
-                           ", Id: "+editCategoryModel.getCategoryDataModel().getId());
+                           ", Category: "+editCategoryModel.getData().getTitle()+
+                           ", Id: "+editCategoryModel.getData().getId());
         } else {
             unknownError();
         }
@@ -165,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
                 MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
         if (UserTransactionStatus.STATUS_SUCCESS.equalsIgnoreCase(deleteCategoryModel.getStatus())){
             Log.e(LOG_TAG, "Status: "+deleteCategoryModel.getStatus()+
-                    ", Category: "+deleteCategoryModel.getCategoryDataModel().getTitle()+
-                    ", Id: "+deleteCategoryModel.getCategoryDataModel().getId());
+                    ", Category: "+deleteCategoryModel.getData().getTitle()+
+                    ", Id: "+deleteCategoryModel.getData().getId());
         } else {
             unknownError();
         }
@@ -200,8 +200,8 @@ public class MainActivity extends AppCompatActivity {
                     MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this));
             if (UserCategoriesStatus.STATUS_SUCCESS.equals(addCategoryResp.getStatus())){
                 Log.d(LOG_TAG,
-                        "Category: " + addCategoryResp.getCategoryDataModel().getTitle() +
-                        ", ID: " + addCategoryResp.getCategoryDataModel().getId());
+                        "Category: " + addCategoryResp.getData().getTitle() +
+                        ", ID: " + addCategoryResp.getData().getId());
             } else {
                 unknownError();
             }

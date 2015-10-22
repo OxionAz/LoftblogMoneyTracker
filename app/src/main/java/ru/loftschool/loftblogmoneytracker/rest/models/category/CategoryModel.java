@@ -10,7 +10,7 @@ public class CategoryModel {
     @Expose
     private String status;
     @Expose
-    private CategoryDataModel categoryDataModel;
+    private CategoryDataModel data;
 
     /**
      *
@@ -33,18 +33,18 @@ public class CategoryModel {
     /**
      *
      * @return
-     * The categoryDataModel
+     * The data
      */
-    public CategoryDataModel getCategoryDataModel() {
-        return categoryDataModel;
+    public CategoryDataModel getData() {
+        return data;
     }
 
     /**
      *
-     * @param categoryDataModel
-     * The categoryDataModel
+     * @param data
+     * The data
      */
-    public void setCategoryDataModel(CategoryDataModel categoryDataModel) {
-        this.categoryDataModel = categoryDataModel;
+    public void setData(CategoryDataModel data) {
+        this.data = data;
     }
 }

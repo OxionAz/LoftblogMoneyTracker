@@ -12,18 +12,16 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/item_margin_top"
-        android:layout_marginLeft="@dimen/radius"
-        android:layout_marginRight="@dimen/radius"
+        android:layout_margin="@dimen/card_login_margin"
         card_view:cardCornerRadius="@dimen/radius"
-        card_view:contentPadding="@dimen/activity_horizontal_margin"
         card_view:cardBackgroundColor="@color/white">
 
     <GridLayout android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
                 android:id="@+id/addExpenseGrid"
                 android:columnCount="2"
-                android:rowCount="4">
+                android:rowCount="5">
         <TextView
             android:id="@+id/name_add"
             android:layout_width="wrap_content"
@@ -39,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill|bottom"
+            android:inputType="textNoSuggestions"
             android:textStyle="italic"
             android:textSize="@dimen/small_main_text"
             android:hint="@string/hint_text_name"
@@ -59,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill|bottom"
-            android:numeric="decimal"
+            android:inputType="number|textNoSuggestions"
             android:textStyle="italic"
             android:textSize="@dimen/small_main_text"
             android:hint="@string/hint_text_sum"
@@ -90,7 +89,7 @@
             android:layout_gravity="fill"
             android:gravity="start|center"
             android:textSize="@dimen/small_main_text"
-            android:text="@string/categoryDataModel"
+            android:text="@string/data"
             />
 
         <TextView
@@ -104,14 +103,17 @@
             android:hint="@string/segodnya"
             />
 
+    </GridLayout>
+
         <Button
+            android:layout_marginTop="200dp"
             android:id="@+id/add_expense_button"
-            android:layout_marginTop="@dimen/radius"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:text="@string/add_expense"
-            android:layout_columnSpan="2"/>
-    </GridLayout>
+            android:textColor="@color/white"
+            android:background="@color/primary"/>
 
     </android.support.v7.widget.CardView>
 

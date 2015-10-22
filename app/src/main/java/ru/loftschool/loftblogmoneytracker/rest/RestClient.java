@@ -14,7 +14,7 @@ import ru.loftschool.loftblogmoneytracker.rest.api.UserTransactionAPI;
  */
 public class RestClient {
 
-    private static final String BASE_URL = "http://62.109.17.114/";
+    private static final String BASE_URL = "http://lmt.loftblog.tmweb.ru/";
 
     private RegistrationUserAPI registrationUserAPI;
     private LoginUserAPI loginUserAPI;

@@ -12,7 +12,7 @@ import org.androidannotations.annotations.res.StringRes;
 public class TextInputCheck {
 
     @StringRes
-    String reg_name_empty, reg_password_empty;
+    String reg_name_empty, reg_password_empty, category_name_empty;
 
     public boolean inputValidation(EditText login, EditText password) {
 
@@ -24,6 +24,18 @@ public class TextInputCheck {
         }
         if (password.getText().toString().isEmpty()) {
             password.setError(reg_password_empty);
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    public boolean inputAddCategoryValidation(EditText name) {
+
+        boolean isValid = true;
+
+        if (name.getText().toString().isEmpty()) {
+            name.setError(category_name_empty);
             isValid = false;
         }
 
