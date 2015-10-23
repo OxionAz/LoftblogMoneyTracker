@@ -10,15 +10,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
+import org.androidannotations.api.BackgroundExecutor;
+
 import java.util.List;
 import ru.loftschool.loftblogmoneytracker.ui.activity.AddExpensesActivity_;
 import ru.loftschool.loftblogmoneytracker.R;
@@ -30,17 +37,25 @@ import ru.loftschool.loftblogmoneytracker.ui.adapters.ExpensesAdapter;
  */
 
 @EFragment(R.layout.expenses_fragment)
+@OptionsMenu(R.menu.search_menu)
 public class ExpensesFragment extends Fragment {
 
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private ActionMode actionMode;
     private ExpensesAdapter expensesAdapter;
+    private final static String FILTER_ID = "filter_id";
 
     @ViewById(R.id.recycler_view_content)
     RecyclerView recyclerView;
 
     @ViewById(R.id.fab)
     FloatingActionButton fab;
+
+    @OptionsMenuItem(R.id.search_actionbar)
+    MenuItem menuItem;
+
+    @StringRes
+    String search_hint;
 
     @Click
     void fab() {
@@ -55,20 +70,51 @@ public class ExpensesFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        if (!getDataList().isEmpty())
-            for (Expenses expense : getDataList()) Log.d("Category: ", String.valueOf(expense.category));
+        if (!getDataList(null).isEmpty())
+            for (Expenses expense : getDataList(null)) Log.d("Category: ", String.valueOf(expense.category));
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        final android.widget.SearchView searchView = (android.widget.SearchView) menuItem.getActionView();
+        searchView.setQueryHint(search_hint);
+        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("TextSubmit: ", query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("TextChange: ", newText);
+                BackgroundExecutor.cancelAll(FILTER_ID, true);
+                delayedSearch(newText);
+                return false;
+            }
+        });
+    }
+
+    @Background(delay = 600, id = FILTER_ID)
+    void delayedSearch(String filter){
+        loadData(filter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Expenses>>(){
+        loadData("");
+    }
+
+    private void loadData(final String filter) {
+        getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Expenses>>() {
             @Override
             public Loader<List<Expenses>> onCreateLoader(int id, Bundle args) {
                 final android.support.v4.content.AsyncTaskLoader<List<Expenses>> loader = new android.support.v4.content.AsyncTaskLoader<List<Expenses>>(getContext()) {
                     @Override
                     public List<Expenses> loadInBackground() {
-                        return getDataList();
+                        return getDataList(filter);
                     }
                 };
                 loader.forceLoad();
@@ -77,17 +123,17 @@ public class ExpensesFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<List<Expenses>> loader, List<Expenses> data) {
-                expensesAdapter = new ExpensesAdapter(getDataList(), new ExpensesAdapter.CardViewHolder.ClickListener() {
+                expensesAdapter = new ExpensesAdapter(getDataList(filter), new ExpensesAdapter.CardViewHolder.ClickListener() {
                     @Override
                     public void OnItemClicked(int position) {
-                        if(actionMode != null){
+                        if (actionMode != null) {
                             toggleSelection(position);
                         }
                     }
 
                     @Override
                     public boolean OnItemLongClicked(int position) {
-                        if (actionMode == null){
+                        if (actionMode == null) {
                             AppCompatActivity activity = (AppCompatActivity) getActivity();
                             actionMode = activity.startSupportActionMode(actionModeCallback);
                         }
@@ -115,8 +161,12 @@ public class ExpensesFragment extends Fragment {
         }
     }
 
-    private List<Expenses> getDataList(){
-        return new Select().from(Expenses.class).execute();
+    private List<Expenses> getDataList(String filter){
+        return new Select()
+                .from(Expenses.class)
+                .where("name LIKE ?", new String[]{'%' + filter + '%'})
+                .orderBy("date DESC")
+                .execute();
     }
 
     private class ActionModeCallback implements ActionMode.Callback{

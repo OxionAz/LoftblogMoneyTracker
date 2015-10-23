@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@drawable/background_3"
     android:id="@+id/drawer_layout"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/Container.Background">
+    <RelativeLayout style="@style/Container">
 
         <include layout="@layout/toolbar"/>
 

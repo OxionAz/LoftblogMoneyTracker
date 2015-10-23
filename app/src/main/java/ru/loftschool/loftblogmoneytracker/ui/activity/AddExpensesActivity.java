@@ -111,8 +111,9 @@ public class AddExpensesActivity extends AppCompatActivity {
                             String.valueOf(dateFormat.format(new Date())),
                     Toast.LENGTH_SHORT).show();
 
-            etName.setText(null);
-            etPrice.setText(null);
+//            etName.setText(null);
+//            etPrice.setText(null);
+            onBackPressed();
         }
     }
 }

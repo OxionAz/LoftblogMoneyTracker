@@ -64,4 +64,6 @@
     <string name="category_remove_dialog_text">"Удаление категорий приведет к удалению соответствующих им трат! Вы действительно хотите удалить категории?</string>
     <string name="category_name_empty">Вы не ввели название категории</string>
     <string name="category_name_used">Название категории уже используется</string>
+
+    <string name="search_hint">Поиск</string>
 </resources>
