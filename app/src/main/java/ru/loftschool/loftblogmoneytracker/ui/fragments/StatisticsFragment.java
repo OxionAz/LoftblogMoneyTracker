@@ -1,24 +1,30 @@
 package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
 import android.support.v4.app.Fragment;
-import android.widget.TextView;
+import android.view.animation.AnimationUtils;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
+import ru.loftschool.loftblogmoneytracker.PieChartView;
 import ru.loftschool.loftblogmoneytracker.R;
 
 /**
  * Created by Александр on 01.09.2015.
  */
-@EFragment(R.layout.other_fragment)
+@EFragment(R.layout.statistics_fragment)
 public class StatisticsFragment extends Fragment {
 
-    @ViewById(R.id.other_text)
-    TextView textView;
+    float[] dataPoints = {3000, 5000, 200, 100, 2300};
+
+    @ViewById(R.id.statistic_pie)
+    PieChartView pieChartView;
 
     @AfterViews
     void ready(){
         getActivity().setTitle(getResources().getString(R.string.nav_drawer_statistics));
-        textView.setText(getResources().getString(R.string.statistic_text));
+        pieChartView.setDatapoints(dataPoints);
+        pieChartView.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.rotate));
     }
 }

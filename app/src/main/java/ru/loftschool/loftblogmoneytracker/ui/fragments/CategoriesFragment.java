@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
@@ -73,6 +74,25 @@ public class CategoriesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        loadData();
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT){
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                categoriesAdapter.removeItem(viewHolder.getAdapterPosition());
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void loadData() {
         getLoaderManager().restartLoader(1, null, new LoaderManager.LoaderCallbacks<List<Categories>>() {
             @Override
             public Loader<List<Categories>> onCreateLoader(int id, Bundle args) {
@@ -122,6 +142,7 @@ public class CategoriesFragment extends Fragment {
         final Dialog dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_category);
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setWindowAnimations(R.style.AlertDialogCategoriesAdd);
         dialog.show();
 
         final EditText editText = (EditText) dialog.findViewById(R.id.dialog_category_edit_text);
@@ -140,7 +161,7 @@ public class CategoriesFragment extends Fragment {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (check.inputAddCategoryValidation(editText)) {
+                if (check.inputAddCategoryValidation(editText, getContext())) {
                     categoriesAdapter.addCategory(text.toString());
                     Toast.makeText(getActivity(), category_add_added_text + text.toString(), Toast.LENGTH_SHORT).show();
                     Log.d("AlertDialog", text.toString());
@@ -197,6 +218,7 @@ public class CategoriesFragment extends Fragment {
                             .setTitle(category_remove_dialog_title)
                             .setMessage(category_remove_dialog_text)
                             .create();
+                    alertDialog.getWindow().setWindowAnimations(R.style.AlertDialogCategoriesDel);
                     alertDialog.show();
                     return true;
                 case R.id.menu_select_all:

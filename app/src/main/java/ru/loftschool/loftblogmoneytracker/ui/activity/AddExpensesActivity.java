@@ -1,7 +1,10 @@
 package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -42,6 +45,9 @@ public class AddExpensesActivity extends AppCompatActivity {
     @ViewById
     Spinner etCategory;
 
+    @ViewById(R.id.add_expense_card)
+    CardView cardView;
+
     SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM y", myDateFormatSymbols);
 
     @OptionsItem(android.R.id.home)
@@ -54,6 +60,10 @@ public class AddExpensesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.add_expenses));
+
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_down_card);
+        cardView.setAnimation(animation);
+
         // адаптер
         ArrayAdapter<Categories> adapter = new ArrayAdapter<Categories>(this, android.R.layout.simple_spinner_item, getCategories());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

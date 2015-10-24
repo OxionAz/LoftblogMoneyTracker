@@ -6,14 +6,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
@@ -22,6 +27,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.api.BackgroundExecutor;
@@ -51,6 +57,9 @@ public class ExpensesFragment extends Fragment {
     @ViewById(R.id.fab)
     FloatingActionButton fab;
 
+    @ViewById(R.id.refresh_expenses)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @OptionsMenuItem(R.id.search_actionbar)
     MenuItem menuItem;
 
@@ -61,6 +70,7 @@ public class ExpensesFragment extends Fragment {
     void fab() {
         Intent openActivityIntent = new Intent(getActivity(), AddExpensesActivity_.class);
         getActivity().startActivity(openActivityIntent);
+        getActivity().overridePendingTransition(R.anim.from_middle, R.anim.to_middle);
     }
 
     @AfterViews
@@ -69,6 +79,13 @@ public class ExpensesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        swipeRefreshLayout.setColorSchemeColors(R.color.primary, R.color.black, R.color.primary_selected);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData("б");
+            }
+        });
         recyclerView.setLayoutManager(linearLayoutManager);
         if (!getDataList(null).isEmpty())
             for (Expenses expense : getDataList(null)) Log.d("Category: ", String.valueOf(expense.category));
@@ -105,6 +122,21 @@ public class ExpensesFragment extends Fragment {
     public void onResume() {
         super.onResume();
         loadData("");
+
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT){
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                expensesAdapter.removeItem(viewHolder.getAdapterPosition());
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void loadData(final String filter) {
@@ -123,6 +155,7 @@ public class ExpensesFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<List<Expenses>> loader, List<Expenses> data) {
+                swipeRefreshLayout.setRefreshing(false);
                 expensesAdapter = new ExpensesAdapter(getDataList(filter), new ExpensesAdapter.CardViewHolder.ClickListener() {
                     @Override
                     public void OnItemClicked(int position) {

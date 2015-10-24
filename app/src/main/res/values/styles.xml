@@ -53,4 +53,14 @@
         <item name="colorAccent">@color/primary</item>
     </style>
 
+    <style name="AlertDialogCategoriesAdd">
+        <item name="@android:windowEnterAnimation">@anim/from_dialog_add</item>
+        <item name="@android:windowExitAnimation">@anim/to_dialog_add</item>
+    </style>
+
+    <style name="AlertDialogCategoriesDel">
+        <item name="@android:windowEnterAnimation">@anim/from_dialog_del</item>
+        <item name="@android:windowExitAnimation">@anim/to_dialog_del</item>
+    </style>
+
 </resources>

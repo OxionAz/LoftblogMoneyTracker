@@ -5,11 +5,18 @@
     android:id="@+id/main_content"
     style="@style/Container">
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_expenses"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_content"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
