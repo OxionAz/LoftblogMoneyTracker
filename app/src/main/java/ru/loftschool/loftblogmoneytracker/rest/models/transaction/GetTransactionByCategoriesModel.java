@@ -15,7 +15,7 @@ public class GetTransactionByCategoriesModel {
     private String title;
     @SerializedName("transactions")
     @Expose
-    private List<Object> transactions = new ArrayList<Object>();
+    private List<GetTransactionDataModel> transactions = new ArrayList<>();
 
     /**
      *
@@ -58,7 +58,7 @@ public class GetTransactionByCategoriesModel {
      * @return
      * The transactions
      */
-    public List<Object> getTransactions() {
+    public List<GetTransactionDataModel> getTransactions() {
         return transactions;
     }
 
@@ -67,7 +67,7 @@ public class GetTransactionByCategoriesModel {
      * @param transactions
      * The transactions
      */
-    public void setTransactions(List<Object> transactions) {
+    public void setTransactions(List<GetTransactionDataModel> transactions) {
         this.transactions = transactions;
     }
 

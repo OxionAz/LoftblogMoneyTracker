@@ -2,6 +2,7 @@ package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -35,10 +36,14 @@ import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.api.BackgroundExecutor;
 
 import java.util.List;
+import java.util.TimerTask;
+
 import ru.loftschool.loftblogmoneytracker.ui.activity.AddExpensesActivity_;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
+import ru.loftschool.loftblogmoneytracker.ui.activity.LoginActivity_;
 import ru.loftschool.loftblogmoneytracker.ui.adapters.ExpensesAdapter;
+import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 
 /**
  * Created by Александр on 28.08.2015.
@@ -134,12 +139,35 @@ public class ExpensesFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 expensesAdapter.removeItem(viewHolder.getAdapterPosition());
+//                delayedDelete(viewHolder);
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
+//    private void delayedDelete(final RecyclerView.ViewHolder viewHolder){
+//        final Handler handler = new Handler();
+//        final Runnable runnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                expensesAdapter.removeExpensesBase(viewHolder.getAdapterPosition());
+//            }
+//        };
+//
+//        expensesAdapter.removeExpensesItem(viewHolder.getAdapterPosition());
+//        Snackbar.make(recyclerView, expensesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена" : "Траты удалены", Snackbar.LENGTH_LONG)
+//                .setAction("Отменить", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        handler.removeCallbacks(runnable);
+//                        expensesAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
+//                    }
+//                })
+//                .show();
+//        handler.postDelayed(runnable, 3500);
+//    }
 
     private void loadData(final String filter) {
         getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Expenses>>() {

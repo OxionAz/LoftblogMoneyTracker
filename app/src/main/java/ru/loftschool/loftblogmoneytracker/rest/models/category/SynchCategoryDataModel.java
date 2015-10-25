@@ -10,7 +10,7 @@ public class SynchCategoryDataModel {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private Integer id;
     @SerializedName("title")
     @Expose
     private String title;
@@ -20,7 +20,7 @@ public class SynchCategoryDataModel {
      * @return
      * The id
      */
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class SynchCategoryDataModel {
      * @param id
      * The id
      */
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

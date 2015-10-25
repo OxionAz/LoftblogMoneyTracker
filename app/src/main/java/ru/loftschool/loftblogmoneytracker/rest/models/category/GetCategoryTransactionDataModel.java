@@ -19,7 +19,7 @@ public class GetCategoryTransactionDataModel {
     private String comment;
     @SerializedName("sum")
     @Expose
-    private Integer sum;
+    private String sum;
     @SerializedName("tr_date")
     @Expose
     private String trDate;
@@ -83,7 +83,7 @@ public class GetCategoryTransactionDataModel {
      * @return
      * The sum
      */
-    public Integer getSum() {
+    public String getSum() {
         return sum;
     }
 
@@ -92,7 +92,7 @@ public class GetCategoryTransactionDataModel {
      * @param sum
      * The sum
      */
-    public void setSum(Integer sum) {
+    public void setSum(String sum) {
         this.sum = sum;
     }
 

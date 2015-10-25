@@ -12,6 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.activeandroid.query.Delete;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -106,6 +108,16 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
     public void removeItem(int position){
         removeExpenses(position);
         notifyItemRemoved(position);
+    }
+
+    public void removeExpensesItem(int positions){
+        expenses.remove(positions);
+        notifyItemRemoved(positions);
+    }
+
+    public void removeExpensesBase(int positions){
+        Expenses item = Expenses.load(Expenses.class, positions);
+        item.delete();
     }
 
     private void removeExpenses(int positions){

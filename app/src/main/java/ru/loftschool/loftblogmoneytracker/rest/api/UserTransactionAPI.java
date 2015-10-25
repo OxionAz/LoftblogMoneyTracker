@@ -1,5 +1,6 @@
 package ru.loftschool.loftblogmoneytracker.rest.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.http.GET;
@@ -32,6 +33,6 @@ public interface UserTransactionAPI {
                                            @Query("auth_token") String token);
 
     @GET("/transcat")
-    GetTransactionByCategoriesModel getTransCat(@Query("google_token") String gToken,
-                                                @Query("auth_token") String token);
+    ArrayList<GetTransactionByCategoriesModel> getTransCat(@Query("google_token") String gToken,
+                                                           @Query("auth_token") String token);
 }

@@ -14,7 +14,7 @@ public interface UserBalanceAPI {
                             @Query("auth_token") String token);
 
     @GET("/balance")
-    BalanceModel setBalance(@Query("set") int balance,
+    BalanceModel setBalance(@Query("set") String balance,
                             @Query("google_token") String gToken,
                             @Query("auth_token") String token);
 }

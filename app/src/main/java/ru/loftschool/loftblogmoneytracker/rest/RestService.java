@@ -1,13 +1,14 @@
 package ru.loftschool.loftblogmoneytracker.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 import ru.loftschool.loftblogmoneytracker.rest.models.BalanceModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.SynchCategoryDataModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.SynchCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.login.UserLoginModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.login.UserLogoutModel;
@@ -61,12 +62,12 @@ public class RestService {
         return restClient.getUserCategoryAPI().getAllCategories(gToken, token);
     }
 
-    public GetCategoryTransactionModel getCT(Integer id, String gToken, String token){
+    public ArrayList<GetCategoryTransactionModel> getCT(int id, String gToken, String token){
         return restClient.getUserCategoryAPI().getCT(id, gToken, token);
     }
 
-    public SynchCategoryModel synchCategory(List<Categories> categories, String token){
-        return restClient.getUserCategoryAPI().synchCategory(categories, token);
+    public SynchCategoryModel synchCategory(List<SynchCategoryDataModel> data, String token){
+        return restClient.getUserCategoryAPI().synchCategory(data, token);
     }
 
     //TransactionsQueries
@@ -79,7 +80,7 @@ public class RestService {
         return restClient.getUserTransactionAPI().getTransaction(gToken, token);
     }
 
-    public GetTransactionByCategoriesModel getTransCat(String gToken, String token){
+    public ArrayList<GetTransactionByCategoriesModel> getTransCat(String gToken, String token){
         return restClient.getUserTransactionAPI().getTransCat(gToken, token);
     }
 
@@ -93,7 +94,7 @@ public class RestService {
         return restClient.getUserBalanceAPI().getBalance(gToken, token);
     }
 
-    public BalanceModel setBalance(int balance, String gToken, String token){
+    public BalanceModel setBalance(String balance, String gToken, String token){
         return restClient.getUserBalanceAPI().setBalance(balance, gToken, token);
     }
 }
