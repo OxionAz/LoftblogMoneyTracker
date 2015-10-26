@@ -139,7 +139,7 @@ public class ExpensesFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 expensesAdapter.removeItem(viewHolder.getAdapterPosition());
-//                delayedDelete(viewHolder);
+                undoSnackbarShow();
             }
         };
 
@@ -147,27 +147,17 @@ public class ExpensesFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-//    private void delayedDelete(final RecyclerView.ViewHolder viewHolder){
-//        final Handler handler = new Handler();
-//        final Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                expensesAdapter.removeExpensesBase(viewHolder.getAdapterPosition());
-//            }
-//        };
-//
-//        expensesAdapter.removeExpensesItem(viewHolder.getAdapterPosition());
-//        Snackbar.make(recyclerView, expensesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена" : "Траты удалены", Snackbar.LENGTH_LONG)
-//                .setAction("Отменить", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        handler.removeCallbacks(runnable);
-//                        expensesAdapter.notifyItemChanged(viewHolder.getAdapterPosition());
-//                    }
-//                })
-//                .show();
-//        handler.postDelayed(runnable, 3500);
-//    }
+    private void undoSnackbarShow() {
+        Snackbar.make(recyclerView, expensesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена" : "Траты удалены", Snackbar.LENGTH_LONG)
+                .setAction("Отменить", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        expensesAdapter.restoreRemovedItems();
+                    }
+                })
+                .show();
+        expensesAdapter.startUndoTimer(3500);
+    }
 
     private void loadData(final String filter) {
         getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<List<Expenses>>() {
@@ -250,6 +240,7 @@ public class ExpensesFragment extends Fragment {
             switch (item.getItemId()){
                 case R.id.menu_remove:
                     expensesAdapter.removeItems(expensesAdapter.getSelectedItems());
+                    undoSnackbarShow();
                     mode.finish();
                     return true;
                 case R.id.menu_select_all:

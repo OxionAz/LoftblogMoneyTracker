@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -85,11 +86,24 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 categoriesAdapter.removeItem(viewHolder.getAdapterPosition());
+                undoSnackbarShow();
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void undoSnackbarShow() {
+        Snackbar.make(recyclerView, categoriesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена" : "Траты удалены", Snackbar.LENGTH_LONG)
+                .setAction("Отменить", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        categoriesAdapter.restoreRemovedItems();
+                    }
+                })
+                .show();
+        categoriesAdapter.startUndoTimer(3500);
     }
 
     private void loadData() {
@@ -204,6 +218,7 @@ public class CategoriesFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // Accept action
                                     categoriesAdapter.removeItems(categoriesAdapter.getSelectedItems());
+                                    undoSnackbarShow();
                                     mode.finish();
                                 }
                             })

@@ -13,9 +13,15 @@ import android.widget.TextView;
 
 import com.activeandroid.query.Delete;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.TreeMap;
+
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
@@ -26,8 +32,13 @@ import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardViewHolder>{
     private List<Categories> categories;
     private CardViewHolder.ClickListener clickListener;
+
     private Context context;
     private int lastPositions = -1;
+    private Timer undoRemoveTimer;
+    private static final long UNDO_TIMEOUT = 3600L;
+    private boolean multipleRemove = false;
+    private Map<Integer, Categories> removedCategoriesMap;
 
     public CategoriesAdapter(List<Categories> categories, CardViewHolder.ClickListener clickListener){
         this.categories = categories;
@@ -58,6 +69,11 @@ public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardV
     }
 
     public void removeItems(List<Integer> positions) {
+        if (positions.size() > 1) {
+            multipleRemove = true;
+        }
+        saveRemovedItems(positions);
+
         Collections.sort(positions, new Comparator<Integer>() {
             @Override
             public int compare(Integer lhs, Integer rhs) {
@@ -75,16 +91,78 @@ public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardV
                 positions.remove(0);
             }
         }
+        multipleRemove = false;
     }
 
     public void removeItem(int position){
+        if (!multipleRemove) {
+            saveRemovedItem(position);
+        }
         removeCategory(position);
         notifyItemRemoved(position);
     }
 
+    private void completelyRemoveExpensesFromDB() {
+        if (removedCategoriesMap != null) {
+            for (Map.Entry<Integer, Categories> pair : removedCategoriesMap.entrySet()) {
+                pair.getValue().delete();
+            }
+            removedCategoriesMap = null;
+        }
+    }
+
+    private void saveRemovedItems(List<Integer> positions) {
+        if (removedCategoriesMap != null) {
+            completelyRemoveExpensesFromDB();
+        }
+        removedCategoriesMap = new TreeMap<>();
+        for (int position : positions) {
+            removedCategoriesMap.put(position, categories.get(position));
+        }
+    }
+
+    private void saveRemovedItem(int position) {
+        if (removedCategoriesMap != null) {
+            completelyRemoveExpensesFromDB();
+        }
+        ArrayList<Integer> positions = new ArrayList<>(1);
+        positions.add(position);
+        saveRemovedItems(positions);
+    }
+
+    public void restoreRemovedItems() {
+        stopUndoTimer();
+        for (Map.Entry<Integer, Categories> pair : removedCategoriesMap.entrySet()){
+            categories.add(pair.getKey(), pair.getValue());
+            notifyItemInserted(pair.getKey());
+        }
+        removedCategoriesMap = null;
+    }
+
+    public void startUndoTimer(long timeout) {
+        stopUndoTimer();
+        this.undoRemoveTimer = new Timer();
+        this.undoRemoveTimer.schedule(new UndoTimer(), timeout > 0 ? timeout : UNDO_TIMEOUT);
+    }
+
+    private void stopUndoTimer() {
+        if (this.undoRemoveTimer != null) {
+            this.undoRemoveTimer.cancel();
+            this.undoRemoveTimer = null;
+        }
+    }
+
+    private class UndoTimer extends TimerTask {
+        @Override
+        public void run() {
+            undoRemoveTimer = null;
+            completelyRemoveExpensesFromDB();
+        }
+    }
+
     private void removeCategory(int positions){
         if (categories.get(positions) != null){
-            categories.get(positions).delete();
+//            categories.get(positions).delete();
             categories.remove(positions);
         }
     }

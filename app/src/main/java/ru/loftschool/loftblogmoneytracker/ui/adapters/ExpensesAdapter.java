@@ -30,10 +30,16 @@ import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
  * Created by Александр on 26.08.2015.
  */
 public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewHolder> {
+
     private List<Expenses> expenses;
     private CardViewHolder.ClickListener clickListener;
+
     private Context context;
     private int lastPositions = -1;
+    private Timer undoRemoveTimer;
+    private static final long UNDO_TIMEOUT = 3600L;
+    private boolean multipleRemove = false;
+    private Map<Integer, Expenses> removedExpensesMap;
 
     public ExpensesAdapter(List<Expenses> expenses, CardViewHolder.ClickListener clickListener){
         this.expenses = expenses;
@@ -67,6 +73,11 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
     }
 
     public void removeItems(List<Integer> positions){
+        if (positions.size() > 1) {
+            multipleRemove = true;
+        }
+        saveRemovedItems(positions);
+
         Collections.sort(positions, new Comparator<Integer>() {
             @Override
             public int compare(Integer lhs, Integer rhs) {
@@ -82,6 +93,7 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
                 positions.remove(0);
             }
         }
+        multipleRemove = false;
 
 //        while (!positions.isEmpty()){
 //            if(positions.size() == 1){
@@ -106,23 +118,75 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
     }
 
     public void removeItem(int position){
+        if (!multipleRemove) {
+            saveRemovedItem(position);
+        }
         removeExpenses(position);
         notifyItemRemoved(position);
     }
 
-    public void removeExpensesItem(int positions){
-        expenses.remove(positions);
-        notifyItemRemoved(positions);
+    private void completelyRemoveExpensesFromDB() {
+        if (removedExpensesMap != null) {
+            for (Map.Entry<Integer, Expenses> pair : removedExpensesMap.entrySet()) {
+                pair.getValue().delete();
+            }
+            removedExpensesMap = null;
+        }
     }
 
-    public void removeExpensesBase(int positions){
-        Expenses item = Expenses.load(Expenses.class, positions);
-        item.delete();
+    private void saveRemovedItems(List<Integer> positions) {
+        if (removedExpensesMap != null) {
+            completelyRemoveExpensesFromDB();
+        }
+        removedExpensesMap = new TreeMap<>();
+        for (int position : positions) {
+            removedExpensesMap.put(position, expenses.get(position));
+        }
+    }
+
+    private void saveRemovedItem(int position) {
+        if (removedExpensesMap != null) {
+            completelyRemoveExpensesFromDB();
+        }
+        ArrayList<Integer> positions = new ArrayList<>(1);
+        positions.add(position);
+        saveRemovedItems(positions);
+    }
+
+    public void restoreRemovedItems() {
+        stopUndoTimer();
+        for (Map.Entry<Integer, Expenses> pair : removedExpensesMap.entrySet()){
+            expenses.add(pair.getKey(), pair.getValue());
+            notifyItemInserted(pair.getKey());
+        }
+        removedExpensesMap = null;
+    }
+
+    public void startUndoTimer(long timeout) {
+        stopUndoTimer();
+        this.undoRemoveTimer = new Timer();
+        this.undoRemoveTimer.schedule(new UndoTimer(), timeout > 0 ? timeout : UNDO_TIMEOUT);
+    }
+
+    private void stopUndoTimer() {
+        if (this.undoRemoveTimer != null) {
+            this.undoRemoveTimer.cancel();
+            this.undoRemoveTimer = null;
+        }
+    }
+
+    private class UndoTimer extends TimerTask {
+        @Override
+        public void run() {
+            undoRemoveTimer = null;
+            completelyRemoveExpensesFromDB();
+            removedExpensesMap = null;
+        }
     }
 
     private void removeExpenses(int positions){
         if (expenses.get(positions) != null){
-            expenses.get(positions).delete();
+//            expenses.get(positions).delete();
             expenses.remove(positions);
         }
     }
