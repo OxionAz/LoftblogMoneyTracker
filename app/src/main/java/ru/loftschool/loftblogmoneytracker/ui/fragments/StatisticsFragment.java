@@ -7,7 +7,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import ru.loftschool.loftblogmoneytracker.PieChartView;
+import ru.loftschool.loftblogmoneytracker.ui.view.PieChartView;
 import ru.loftschool.loftblogmoneytracker.R;
 
 /**
@@ -25,6 +25,6 @@ public class StatisticsFragment extends Fragment {
     void ready(){
         getActivity().setTitle(getResources().getString(R.string.nav_drawer_statistics));
         pieChartView.setDatapoints(dataPoints);
-        pieChartView.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.rotate));
+        pieChartView.setAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.rotate));
     }
 }

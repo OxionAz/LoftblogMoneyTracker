@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:card_view="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:gravity="center_horizontal"
-              android:background="@android:color/transparent"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              style="@style/Container"
+              android:background="@android:color/transparent">
 
     <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/card_login_margin"
-        card_view:cardCornerRadius="@dimen/radius">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/radius"
+    card_view:cardCornerRadius="@dimen/radius">
 
-    <ru.loftschool.loftblogmoneytracker.PieChartView
+    <ru.loftschool.loftblogmoneytracker.ui.view.PieChartView
         android:id="@+id/statistic_pie"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/activity_horizontal_margin"
         android:layout_width="220dp"
         android:layout_height="220dp"/>

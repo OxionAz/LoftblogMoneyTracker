@@ -1,10 +1,12 @@
-package ru.loftschool.loftblogmoneytracker;
+package ru.loftschool.loftblogmoneytracker.ui.view;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -16,7 +18,9 @@ import java.util.Random;
 public class PieChartView extends View {
 
     private Paint slicePaint;
+    private Paint textPaint;
     private RectF rectF;
+    private RectF rectF2;
     private float[] datapoints;
 
     public PieChartView(Context context, AttributeSet attr) {
@@ -25,8 +29,11 @@ public class PieChartView extends View {
         slicePaint.setAntiAlias(true);
         slicePaint.setDither(true);
         slicePaint.setStyle(Paint.Style.FILL);
+
+        textPaint = slicePaint;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onDraw(Canvas canvas) {
         if(datapoints != null){
@@ -34,9 +41,11 @@ public class PieChartView extends View {
             int startLeft = 0;
             int endBottom = getWidth();
             int endRight = endBottom;
+            int scale = 100;
             Random random = new Random();
 
             rectF = new RectF(startLeft, startTop, endRight, endBottom);
+            rectF2 = new RectF(startLeft+scale, startTop+scale, endRight-scale, endBottom-scale);
             float[] scaleValues = scale();
             float sliceStartPoint = 0;
             for (float scaledValue : scaleValues){
@@ -45,6 +54,13 @@ public class PieChartView extends View {
                 canvas.drawArc(rectF, sliceStartPoint, scaledValue, true, slicePaint);
                 sliceStartPoint+=scaledValue;
             }
+            slicePaint.setColor(Color.WHITE);
+            canvas.drawArc(rectF2, 0, 360, true, slicePaint);
+            textPaint.setColor(Color.BLACK);
+            textPaint.setTextAlign(Paint.Align.CENTER);
+            textPaint.setTextSize(80);
+            textPaint.setFakeBoldText(true);
+            canvas.drawText("Категории",endBottom/2, endBottom/2, textPaint);
         }
     }
 
@@ -63,8 +79,7 @@ public class PieChartView extends View {
 
     private float getTotal(){
         float total=0;
-        for(float val : this.datapoints)
-            total+=val;
+        for(float val : this.datapoints) total+=val;
         return total;
     }
 }

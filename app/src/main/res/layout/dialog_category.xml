@@ -16,8 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/activity_horizontal_margin"
-        android:columnCount="2"
-        android:rowCount="3">
+        android:columnCount="@integer/column_count"
+        android:rowCount="@integer/row_count_land">
 
         <TextView
             android:id="@+id/dialog_category_title"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/Container.Background">
+              style="@style/Container_Land">
 
     <include layout="@layout/toolbar"/>
 
@@ -8,9 +8,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/add_expense_card"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/card_weight"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/card_login_margin"
+        android:layout_margin="@dimen/radius"
         card_view:cardCornerRadius="@dimen/radius"
         card_view:cardBackgroundColor="@color/white">
 

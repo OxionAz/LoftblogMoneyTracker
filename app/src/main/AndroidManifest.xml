@@ -27,6 +27,7 @@
             ru.loftschool.loftblogmoneytracker.database.Expenses" />
         <activity
             android:name=".ui.activity.MainActivity_"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -65,6 +66,7 @@
             android:name=".ui.activity.AddExpensesActivity_">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
+                android:configChanges="orientation|screenSize"
                 android:value=".ui.activity.MainActivity_"/>
         </activity>
 

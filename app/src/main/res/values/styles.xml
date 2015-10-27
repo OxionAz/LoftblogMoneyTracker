@@ -15,6 +15,7 @@
     </style>
 
     <style name="Container">
+        <item name="android:orientation">vertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_horizontal</item>
@@ -22,6 +23,14 @@
 
     <style name="Container.Background">
         <item name="android:background">@drawable/background_3</item>
+    </style>
+
+    <style name="Container_Land">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/background_land</item>
     </style>
 
     <style name="Fragments">
