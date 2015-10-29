@@ -1,5 +1,6 @@
 package ru.loftschool.loftblogmoneytracker.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import java.util.List;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
 
 /**
  * Created by Александр on 06.09.2015.
@@ -34,8 +36,6 @@ import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
 @EActivity(R.layout.add_expenses)
 public class AddExpensesActivity extends AppCompatActivity {
-
-    private Bundle bundle;
 
     @ViewById
     Toolbar toolbar;
@@ -57,6 +57,13 @@ public class AddExpensesActivity extends AppCompatActivity {
     @OptionsItem(android.R.id.home)
     void back(){
         onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity_.class));
+        finish();
     }
 
     @AfterViews

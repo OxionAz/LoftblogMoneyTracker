@@ -58,7 +58,7 @@
             <Button
                 android:id="@+id/login_button"
                 android:background="@color/primary"
-                android:layout_width="125dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:text="@string/login_button"/>
@@ -66,8 +66,8 @@
             <com.google.android.gms.common.SignInButton
                 android:id="@+id/sign_in_button"
                 android:layout_gravity="end"
-                android:layout_width="125dp"
-                android:layout_height="wrap_content"/>
+                android:layout_width="120dp"
+                android:layout_height="fill_parent"/>
 
     </GridLayout>
 

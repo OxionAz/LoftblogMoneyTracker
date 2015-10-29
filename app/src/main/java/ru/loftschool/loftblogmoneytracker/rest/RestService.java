@@ -66,10 +66,6 @@ public class RestService {
         return restClient.getUserCategoryAPI().getCT(id, gToken, token);
     }
 
-    public SynchCategoryModel synchCategory(List<SynchCategoryDataModel> data, String token){
-        return restClient.getUserCategoryAPI().synchCategory(data, token);
-    }
-
     //TransactionsQueries
 
     public AddTransactionModel addTransaction(String sum, String comment, Long category_id, String date, String gToken, String token){

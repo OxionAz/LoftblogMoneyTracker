@@ -21,4 +21,7 @@
     <dimen name="border_width_zero">0dp</dimen>
     <dimen name="card_weight">350dp</dimen>
     <dimen name="card_weight_reg">300dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="pie_chart_text1_size">16sp</dimen>
+    <dimen name="pie_chart_text2_size">16dp</dimen>
 </resources>

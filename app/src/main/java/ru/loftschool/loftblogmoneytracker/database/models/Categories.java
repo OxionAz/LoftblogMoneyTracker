@@ -32,7 +32,7 @@ public class Categories extends Model {
     }
 
     public List<Expenses> expenses() {
-        return getMany(Expenses.class, "Categories");
+        return getMany(Expenses.class, "Category");
     }
 
     public static List<Categories> selectByNameCaseInsensitive(String name) {
