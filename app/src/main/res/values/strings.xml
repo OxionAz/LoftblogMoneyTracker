@@ -81,12 +81,15 @@
     <string name="pref_notification_settings_section">Notification settings</string>
     <string name="pref_enable_sound_key" translatable="false">enable_sound</string>
     <string name="pref_enable_sound_label">Sound</string>
+    <string name="pref_enable_sound_default" translatable="false">true</string>
 
-    <string name="pref_enable_vibrate_key" translatable="false">enable_vibrate</string>
-    <string name="pref_enable_vibrate_label">Vibrate</string>
+    <string name="pref_enable_vibration_key" translatable="false">enable_vibrate</string>
+    <string name="pref_enable_vibration_label">Vibration</string>
+    <string name="pref_enable_vibration_default" translatable="false">true</string>
 
     <string name="pref_enable_indicator_key" translatable="false">enable_indicator</string>
     <string name="pref_enable_indicator_label">Lights indicator</string>
+    <string name="pref_enable_indicator_default" translatable="false">true</string>
 
         <!--Строки для notification bar-->
     <string name="notification_message">There is a notification!</string>

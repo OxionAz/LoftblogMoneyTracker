@@ -17,19 +17,19 @@
             android:key="@string/pref_enable_sound_key"
             android:summaryOff="@string/pref_enable_notifications_false"
             android:summaryOn="@string/pref_enable_notifications_true"
-            android:defaultValue="@string/pref_enable_notifications_default"/>
+            android:defaultValue="@string/pref_enable_sound_default"/>
         <CheckBoxPreference
-            android:title="@string/pref_enable_vibrate_label"
-            android:key="@string/pref_enable_vibrate_key"
+            android:title="@string/pref_enable_vibration_label"
+            android:key="@string/pref_enable_vibration_key"
             android:summaryOff="@string/pref_enable_notifications_false"
             android:summaryOn="@string/pref_enable_notifications_true"
-            android:defaultValue="@string/pref_enable_notifications_default"/>
+            android:defaultValue="@string/pref_enable_vibration_default"/>
         <CheckBoxPreference
             android:title="@string/pref_enable_indicator_label"
             android:key="@string/pref_enable_indicator_key"
             android:summaryOff="@string/pref_enable_notifications_false"
             android:summaryOn="@string/pref_enable_notifications_true"
-            android:defaultValue="@string/pref_enable_notifications_default"/>
+            android:defaultValue="@string/pref_enable_indicator_default"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
