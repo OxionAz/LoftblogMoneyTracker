@@ -15,6 +15,7 @@ import retrofit.http.Path;
 import retrofit.http.Query;
 import retrofit.http.QueryMap;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
+import ru.loftschool.loftblogmoneytracker.rest.models.SyncWrapper;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryDataModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
@@ -49,18 +50,9 @@ public interface UserCategoryAPI {
                                  @Query("auth_token") String token);
 
     @GET("/categories/synch")
-    void synchCategory(@Query("data") Map<Integer, String> data,
-                       @Query("auth_token") String token,  Callback<SynchCategoryModel> synch);
-
-//    @GET("/categories/synch")
-//    void synchCategory(@Query("data") List<SCD> data,
-//                       @Query("auth_token") String token,  Callback<SynchCategoryModel> synch);
-
-//    @FormUrlEncoded
-//    @POST("/categories/synch?data=")
-//    void synchCategory(@Field("id[\"name\"]") List<Long> id,
-//                       @Field("title[\"name\"]") List<String> title,
-//                       @Query("auth_token") String token,  Callback<SynchCategoryModel> synch);
+    void synchCategory (@Query(value = "data", encodeName = false, encodeValue = false) SyncWrapper data,
+                        @Query("google_token") String gToken,
+                        @Query("auth_token") String token,  Callback<SynchCategoryModel> synch);
 
     @GET("/categories/{id}")
     ArrayList<GetCategoryTransactionModel> getCT(@Path("id") int id,

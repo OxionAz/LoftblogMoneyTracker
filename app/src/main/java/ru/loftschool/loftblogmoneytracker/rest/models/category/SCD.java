@@ -5,14 +5,14 @@ import com.google.gson.annotations.SerializedName;
 
 public class SCD {
 
-    private Long id;
+    private int id;
     private String title;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(int id) {
+        this.id = id+1;
     }
 
     public String getTitle() {
@@ -20,5 +20,10 @@ public class SCD {
     }
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public String toString(){
+        return "{\"id\":"+id+",\"title\":\""+title+"\"}";
     }
 }

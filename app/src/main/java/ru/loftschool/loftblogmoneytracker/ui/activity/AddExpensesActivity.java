@@ -1,8 +1,6 @@
 package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +14,6 @@ import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.LongClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
@@ -28,7 +25,7 @@ import java.util.List;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
-import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
+import ru.loftschool.loftblogmoneytracker.util.NotificationUtil;
 
 /**
  * Created by Александр on 06.09.2015.
@@ -132,8 +129,7 @@ public class AddExpensesActivity extends AppCompatActivity {
                             String.valueOf(dateFormat.format(new Date())),
                     Toast.LENGTH_SHORT).show();
 
-//            etName.setText(null);
-//            etPrice.setText(null);
+            NotificationUtil.updateNotification(this);
             onBackPressed();
         }
     }

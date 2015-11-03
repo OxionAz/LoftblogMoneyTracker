@@ -1,7 +1,6 @@
 package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -23,12 +22,8 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -37,6 +32,7 @@ import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
 import ru.loftschool.loftblogmoneytracker.rest.models.BalanceModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.SyncWrapper;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.GoogleTokenStatusModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryDataModel;
@@ -57,7 +53,7 @@ import ru.loftschool.loftblogmoneytracker.rest.status.UserTransactionStatus;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment_;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
 import ru.loftschool.loftblogmoneytracker.R;
-import ru.loftschool.loftblogmoneytracker.ui.fragments.SettingsFragment_;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.SettingsFragment;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment_;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
@@ -110,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 //            addTransactionsToServer(); //Work!
 
 //            deleteCategoryOnServer(); //don`tWork!!!
-//            if (!MoneyTrackerApp.getToken(this).equals("1")) synchCategories(); //not ready
+            if (!MoneyTrackerApp.getToken(this).equals("1")) synchCategories(); //Work!
 //            if (!MoneyTrackerApp.getToken(this).equals("1")) synchTransactions(); //not ready
 
 //            getAllTransaction(); //Work!
@@ -310,112 +306,19 @@ public class MainActivity extends AppCompatActivity {
         List<SCD> data = new ArrayList<>();
         for (int i=0; i< getCategories().size(); i++) {
             SCD category = new SCD();
-            category.setId(getCategories().get(i).getId());
+            category.setId(i);
             category.setTitle(getCategories().get(i).category);
             data.add(category);
         }
         return data;
     }
 
-    private Map<Integer,String> getSynchCategoryListMap(){
-        Map<Integer, String> data = new Map<Integer, String>() {
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public boolean containsKey(Object key) {
-                return false;
-            }
-
-            @Override
-            public boolean containsValue(Object value) {
-                return false;
-            }
-
-            @NonNull
-            @Override
-            public Set<Entry<Integer, String>> entrySet() {
-                return null;
-            }
-
-            @Override
-            public String get(Object key) {
-                return null;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @NonNull
-            @Override
-            public Set<Integer> keySet() {
-                return null;
-            }
-
-            @Override
-            public String put(Integer key, String value) {
-                return null;
-            }
-
-            @Override
-            public void putAll(Map<? extends Integer, ? extends String> map) {
-
-            }
-
-            @Override
-            public String remove(Object key) {
-                return null;
-            }
-
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @NonNull
-            @Override
-            public Collection<String> values() {
-                return null;
-            }
-        };
-
-        for (int i=0; i< getCategories().size(); i++) {
-            data.put(Integer.valueOf(getCategories().get(i).getId().toString()), getCategories().get(i).category);
-        }
-        return data;
-    }
-
     @Background
     public void synchCategories(){
-
         RestClient restClient = new RestClient();
-//        List<Categories> categories = getCategories();
-//
-//        List<Long> id = new ArrayList<>();
-//        List<String> title = new ArrayList<>();
-//        for (int i=0; i< categories.size(); i++) {
-//            id.add(categories.get(i).getId());
-//            title.add(categories.get(i).category);
-//        }
-//
-//        restClient.getUserCategoryAPI().synchCategory(id, title, MoneyTrackerApp.getToken(this), new Callback<SynchCategoryModel>() {
-//            @Override
-//            public void success(SynchCategoryModel synchCategoryModel, Response response) {
-//                for (SynchCategoryDataModel category : synchCategoryModel.getData()){
-//                    Log.d(LOG_TAG, "Category: "+category.getTitle()+", id: "+category.getId());
-//                }
-//            }
-//            @Override
-//            public void failure(RetrofitError error) {
-//                unknownError();
-//            }
-//        });
+        SyncWrapper syncWrapper = new SyncWrapper(getSynchCategoryList());
 
-        restClient.getUserCategoryAPI().synchCategory(getSynchCategoryListMap(), MoneyTrackerApp.getToken(this), new Callback<SynchCategoryModel>() {
+        restClient.getUserCategoryAPI().synchCategory(syncWrapper, MoneyTrackerApp.getGoogleToken(this), MoneyTrackerApp.getToken(this), new Callback<SynchCategoryModel>() {
             @Override
             public void success(SynchCategoryModel synchCategoryModel, Response response) {
                 Log.d(LOG_TAG, "Status: " + synchCategoryModel.getStatus());
@@ -503,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new StatisticsFragment_()).addToBackStack(null).commit();
                 break;
             case R.id.drawer_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment_()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).commit();
                 break;
         }
     }

@@ -5,9 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import java.util.List;
-
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.ui.view.Oval;
@@ -18,11 +16,13 @@ import ru.loftschool.loftblogmoneytracker.ui.view.Oval;
 public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.CardViewHolder> {
 
     List<Categories> categories;
-    List<Integer> color;
+    int[] color;
+    float[] sum;
 
-    public StatisticAdapter(List<Categories> categories, List<Integer> color){
+    public StatisticAdapter(List<Categories> categories, int[] color, float[] sum){
         this.categories=categories;
         this.color = color;
+        this.sum = sum;
     }
 
     @Override
@@ -35,7 +35,9 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Card
     public void onBindViewHolder(StatisticAdapter.CardViewHolder holder, int position) {
         Categories category = categories.get(position);
         holder.category.setText(category.toString());
-        holder.view.SetColor(color.get(position));
+        holder.view.SetColor(color[position]);
+        String s = String.valueOf(sum[position]);
+        holder.sum.setText(s);
     }
 
     @Override
@@ -46,11 +48,13 @@ public class StatisticAdapter extends RecyclerView.Adapter<StatisticAdapter.Card
     public class CardViewHolder extends RecyclerView.ViewHolder{
         protected Oval view;
         protected TextView category;
+        protected TextView sum;
 
         public CardViewHolder(View itemView) {
             super(itemView);
             this.category = (TextView) itemView.findViewById(R.id.name_text);
             this.view = (Oval) itemView.findViewById(R.id.color_oval);
+            this.sum = (TextView) itemView.findViewById(R.id.sum_text);
         }
     }
 }
