@@ -1,16 +1,11 @@
 package ru.loftschool.loftblogmoneytracker.ui.view;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-
-import java.util.Random;
 
 /**
  * Created by Александр on 23.10.2015.
@@ -35,7 +30,6 @@ public class Oval extends View {
         int endBottom = getWidth();
         int endRight = endBottom;
 
-        Random random = new Random();
         rectF = new RectF(startLeft, startTop, endRight, endBottom);
         canvas.drawOval(rectF, paint);
     }

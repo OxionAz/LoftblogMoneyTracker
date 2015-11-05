@@ -5,6 +5,8 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionDataModel;
+
 /**
  * Created by Александр on 10.10.2015.
  */
@@ -15,7 +17,7 @@ public class GetTransactionModel {
     private String status;
     @SerializedName("data")
     @Expose
-    private List<GetTransactionDataModel> data = new ArrayList<GetTransactionDataModel>();
+    private List<GetCategoryTransactionDataModel> data = new ArrayList<GetCategoryTransactionDataModel>();
 
     /**
      *
@@ -40,7 +42,7 @@ public class GetTransactionModel {
      * @return
      * The data
      */
-    public List<GetTransactionDataModel> getData() {
+    public List<GetCategoryTransactionDataModel> getData() {
         return data;
     }
 
@@ -49,7 +51,7 @@ public class GetTransactionModel {
      * @param data
      * The data
      */
-    public void setData(List<GetTransactionDataModel> data) {
+    public void setData(List<GetCategoryTransactionDataModel> data) {
         this.data = data;
     }
 }

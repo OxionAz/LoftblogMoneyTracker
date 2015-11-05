@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // to get fields in the main UI thread from background thread use Handler
     private final WeakRefHandler handler = new WeakRefHandler(this);
-    private static final String LOG_TAG = "MainActivity";
+    private static final String LOG_TAG = "LoginActivity";
 
     @ViewById(R.id.login_content)
     View login_content;

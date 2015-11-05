@@ -11,17 +11,22 @@ import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+
+import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
+import ru.loftschool.loftblogmoneytracker.rest.Queries;
 
 /**
  * Created by Александр on 08.10.2015.
  */
 public class TrackerSyncAdapter extends AbstractThreadedSyncAdapter {
 
+    private Queries queries;
     private static final String LOG_TAG = TrackerSyncAdapter.class.getSimpleName();
 
     public TrackerSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        this.queries = new Queries(context);
     }
 
     public static void initializeSyncAdapter(Context context) {
@@ -30,7 +35,9 @@ public class TrackerSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(LOG_TAG, "Hello from sync adapter");
+        queries.synchCategories(); //Work!
+        queries.synchTransactions();
+        Log.d(LOG_TAG, "Hello from syncAdapter");
     }
 
     public static void syncImmediately(Context context) {

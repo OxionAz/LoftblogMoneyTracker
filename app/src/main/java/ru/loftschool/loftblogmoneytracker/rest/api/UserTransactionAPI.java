@@ -1,15 +1,13 @@
 package ru.loftschool.loftblogmoneytracker.rest.api;
 
 import java.util.ArrayList;
-import java.util.List;
-
+import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;
-import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionDataModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.AddTransactionModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.transaction.GetTransactionByCategoriesModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.GetTransactionModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.transaction.SynchTransactionModel;
 
 /**
  * Created by Александр on 10.10.2015.
@@ -29,10 +27,11 @@ public interface UserTransactionAPI {
                                         @Query("auth_token") String token);
 
     @GET("/transactions/synch")
-    SynchTransactionModel synchTransaction(@Query("data") List<Expenses> expenses,
-                                           @Query("auth_token") String token);
+    void synchTransaction(@Query("data") String expenses,
+                          @Query("auth_token") String token,
+                          Callback<GetTransactionModel> synch);
 
     @GET("/transcat")
-    ArrayList<GetTransactionByCategoriesModel> getTransCat(@Query("google_token") String gToken,
-                                                           @Query("auth_token") String token);
+    ArrayList<GetCategoryTransactionModel> getTransCat(@Query("google_token") String gToken,
+                                                       @Query("auth_token") String token);
 }

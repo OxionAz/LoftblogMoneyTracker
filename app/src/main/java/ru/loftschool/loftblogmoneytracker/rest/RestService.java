@@ -1,22 +1,16 @@
 package ru.loftschool.loftblogmoneytracker.rest;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 import ru.loftschool.loftblogmoneytracker.rest.models.BalanceModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.category.SynchCategoryDataModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.category.SynchCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.login.UserLoginModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.login.UserLogoutModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.login.UserRegisterModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.AddTransactionModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.transaction.GetTransactionByCategoriesModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.GetTransactionModel;
-import ru.loftschool.loftblogmoneytracker.rest.models.transaction.SynchTransactionModel;
 
 /**
  * Created by Александр on 16.09.2015.
@@ -76,12 +70,8 @@ public class RestService {
         return restClient.getUserTransactionAPI().getTransaction(gToken, token);
     }
 
-    public ArrayList<GetTransactionByCategoriesModel> getTransCat(String gToken, String token){
+    public ArrayList<GetCategoryTransactionModel> getTransCat(String gToken, String token){
         return restClient.getUserTransactionAPI().getTransCat(gToken, token);
-    }
-
-    public SynchTransactionModel synchTransaction(List<Expenses> expenses,String token){
-        return restClient.getUserTransactionAPI().synchTransaction(expenses, token);
     }
 
     //BalanceQueries

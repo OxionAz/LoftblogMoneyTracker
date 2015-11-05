@@ -14,7 +14,7 @@ public class GetCategoryModel {
     private String status;
     @SerializedName("data")
     @Expose
-    private List<GetCategoryDataModel> data = new ArrayList<GetCategoryDataModel>();
+    private List<CategoryDataModel> data = new ArrayList<CategoryDataModel>();
 
     /**
      *
@@ -39,7 +39,7 @@ public class GetCategoryModel {
      * @return
      * The data
      */
-    public List<GetCategoryDataModel> getData() {
+    public List<CategoryDataModel> getData() {
         return data;
     }
 
@@ -48,7 +48,7 @@ public class GetCategoryModel {
      * @param categoriesItems
      * The data
      */
-    public void setData(List<GetCategoryDataModel> categoriesItems) {
+    public void setData(List<CategoryDataModel> categoriesItems) {
         this.data = categoriesItems;
     }
 }
