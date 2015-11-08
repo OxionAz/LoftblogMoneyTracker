@@ -36,7 +36,7 @@ public class TrackerSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         queries.synchCategories(); //Work!
-        queries.synchTransactions();
+        queries.synchTransactions(); //Work!
         Log.d(LOG_TAG, "Hello from syncAdapter");
     }
 

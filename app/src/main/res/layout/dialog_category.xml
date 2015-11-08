@@ -10,8 +10,8 @@
     android:layout_centerInParent="true"
     android:layout_centerVertical="true"
     android:background="@color/white"
-    android:elevation="24dp"
-    card_view:cardCornerRadius="@dimen/radius"
+    android:elevation="@dimen/alert_dialog_elevation"
+    card_view:cardCornerRadius="@dimen/small_radius"
     tools:ignore="UnusedAttribute">
 
     <LinearLayout android:layout_width="match_parent"
@@ -22,14 +22,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="@dimen/alert_dialog_elevation">
 
         <TextView
             android:id="@+id/dialog_category_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textSize="18sp"
+            android:layout_marginBottom="@dimen/element_margin"
+            android:textSize="@dimen/medium_main_text"
             android:text="@string/alert_dialog_text_title"
             android:textColor="@android:color/black"
             android:textStyle="bold"/>
@@ -38,8 +38,8 @@
             android:id="@+id/dialog_category_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:textSize="16sp"
+            android:layout_marginBottom="@dimen/element_margin"
+            android:textSize="@dimen/pie_chart_text1_size"
             android:text="@string/alert_dialog_text_content"/>
 
         <EditText
@@ -55,16 +55,16 @@
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:gravity="end"
-                  android:padding="8dp"
+                  android:padding="@dimen/alert_dialog_element_padding"
                   android:orientation="horizontal">
         <Button
             android:id="@+id/dialog_category_cancelButton"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:padding="8dp"
+            android:layout_height="@dimen/alert_dialog_button_height"
+            android:padding="@dimen/alert_dialog_element_padding"
             android:background="?android:attr/selectableItemBackground"
             android:layout_gravity="end"
-            android:minWidth="64dp"
+            android:minWidth="@dimen/alert_dialog_button_min_width"
             android:shadowColor="@android:color/transparent"
             android:text="@string/alert_dialog_text_cancel"
             android:textColor="@color/primary"/>
@@ -72,10 +72,10 @@
         <Button
             android:id="@+id/dialog_category_okButton"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:padding="8dp"
-            android:minWidth="64dp"
-            android:layout_marginLeft="8dp"
+            android:layout_height="@dimen/alert_dialog_button_height"
+            android:padding="@dimen/alert_dialog_element_padding"
+            android:minWidth="@dimen/alert_dialog_button_min_width"
+            android:layout_marginLeft="@dimen/alert_dialog_element_padding"
             android:background="?android:attr/selectableItemBackground"
             android:shadowColor="@android:color/transparent"
             android:layout_gravity="end"

@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = "MainActivity";
 
     @Bean
-    Queries queries = new Queries(this);
+    Queries queries;
 
     @ViewById
     Toolbar toolbar;
@@ -77,23 +77,20 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initNavigationDrawer();
         setCategories();
+        queries = new Queries(this);
 
         if (NetworkConnectionUtil.isNetworkConnected(this)) {
             if (!MoneyTrackerApp.getGoogleToken(this).equals("1")) getUserInfo(); //Work!
 //            queries.editCategoryOnServer(); //Work!
 //            queries.addToServerCategories(); //Work!
 //            queries.addTransactionsToServer(); //Work!
-
 //            queries.deleteCategoryOnServer(); //don`tWork!!!
-
 //            queries.getAllTransaction(); //Work!
 //            queries.getAllCategories(); //Work!
 //            queries.getAllInfoFromCategories(); //Work!
 //            queries.getCategoryInfo(); //Work!
 //            queries.getBalance(); //Work!
 //            queries.setBalance("3200"); //Work!
-
-            queries.synchTransactions();
         }
     }
 
@@ -189,8 +186,8 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Background
     public void logout(MenuItem item){
+        queries.logout();
         MoneyTrackerApp.setToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         MoneyTrackerApp.setGoogleToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         startLoginActivity();

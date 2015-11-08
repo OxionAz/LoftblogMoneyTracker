@@ -10,7 +10,7 @@
         android:id="@+id/add_expense_card"
         android:layout_width="@dimen/card_weight"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/radius"
+        android:layout_margin="@dimen/activity_vertical_margin"
         card_view:cardCornerRadius="@dimen/radius"
         card_view:cardBackgroundColor="@color/white">
 
@@ -18,8 +18,8 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/activity_vertical_margin"
                 android:id="@+id/addExpenseGrid"
-                android:columnCount="2"
-                android:rowCount="5">
+                android:columnCount="@integer/row_count_land"
+                android:rowCount="@integer/row_count">
         <TextView
             android:id="@+id/name_add"
             android:layout_width="wrap_content"
@@ -34,6 +34,7 @@
             android:id="@+id/etName"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
+            android:layout_columnSpan="@integer/column_count"
             android:layout_gravity="fill|bottom"
             android:inputType="textNoSuggestions"
             android:textStyle="italic"
@@ -55,8 +56,9 @@
             android:id="@+id/etPrice"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
+            android:layout_columnSpan="@integer/column_count"
             android:layout_gravity="fill|bottom"
-            android:inputType="number|textNoSuggestions"
+            android:inputType="numberDecimal|textNoSuggestions"
             android:textStyle="italic"
             android:textSize="@dimen/small_main_text"
             android:hint="@string/hint_text_sum"
@@ -76,6 +78,7 @@
             android:id="@+id/etCategory"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
+            android:layout_columnSpan="@integer/column_count"
             android:layout_gravity="fill"
             android:spinnerMode="dropdown"
             />
@@ -100,11 +103,19 @@
             android:textSize="@dimen/small_main_text"
             android:hint="@string/segodnya"
             />
+        <Button
+            android:id="@+id/date_picker_day"
+            android:layout_gravity="end|center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/primary"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/add_date"/>
 
     </GridLayout>
 
         <Button
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="@dimen/button_margin_top"
             android:id="@+id/add_expense_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

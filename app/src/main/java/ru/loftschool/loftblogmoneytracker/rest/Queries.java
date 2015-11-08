@@ -8,7 +8,6 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -23,6 +22,7 @@ import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionDataModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoriesWrapper;
+import ru.loftschool.loftblogmoneytracker.rest.models.login.UserLogoutModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.AddTransactionModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.GetTransactionModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.TransactionsWrapper;
@@ -114,7 +114,7 @@ public class Queries {
 
         if (!getExpenses().isEmpty()) {
             for (Expenses expenses : getExpenses()) {
-                addTransactionModel = restService.addTransaction(expenses.sum, expenses.name, expenses.category.getId(), new SimpleDateFormat("yyyy/MM/dd").format(new Date()),
+                addTransactionModel = restService.addTransaction(expenses.sum, expenses.name, expenses.category.getId(), new SimpleDateFormat("yyyy/MM/dd").format(expenses.date),
                         MoneyTrackerApp.getGoogleToken(context), MoneyTrackerApp.getToken(context));
                 if (UserTransactionStatus.STATUS_SUCCESS.equals(addTransactionModel.getStatus())) {
                     Log.d(LOG_TAG,"Status: "+addTransactionModel.getStatus()+
@@ -210,7 +210,9 @@ public class Queries {
                             for (CategoryDataModel category : synchCategoryModel.getData()) {
                                 Log.d(LOG_TAG, "Category: " + category.getTitle() + ", id: " + category.getId());
                             }
-                        } else {unknownError();}
+                        } else {
+                            unknownError();
+                        }
                     }
 
                     @Override
@@ -231,7 +233,7 @@ public class Queries {
             transaction.setCategoryId(expense.category.getId());
             transaction.setComment(expense.name);
             transaction.setSum(expense.sum);
-            transaction.setDate(expense.date);
+            transaction.setDate(new SimpleDateFormat("yyyy/MM/dd").format(expense.date));
             data.add(transaction);
         }
         for (int i=0; i<expenses.size(); i++){
@@ -246,7 +248,8 @@ public class Queries {
 
         RestClient restClient = new RestClient();
         restClient.getUserTransactionAPI().synchTransaction(createSynchTransactionQuery(),
-                MoneyTrackerApp.getToken(context), new Callback<GetTransactionModel>() {
+                MoneyTrackerApp.getGoogleToken(context), MoneyTrackerApp.getToken(context),
+                new Callback<GetTransactionModel>() {
                     @Override
                     public void success(GetTransactionModel synchTransactionModel, Response response) {
                         if (UserTransactionStatus.STATUS_SUCCESS.equals(synchTransactionModel.getStatus())) {
@@ -290,6 +293,17 @@ public class Queries {
         BalanceModel balanceResp = restService.setBalance(balance, MoneyTrackerApp.getGoogleToken(context), MoneyTrackerApp.getToken(context));
         if ("success".equalsIgnoreCase(balanceResp.getStatus())) {
             Log.e(LOG_TAG, "New balance: " + balanceResp.getBalance());
+        } else {
+            unknownError();
+        }
+    }
+
+    @Background
+    public void logout(){
+        RestService restService = new RestService();
+        UserLogoutModel logoutModel = restService.logout();
+        if ("success".equalsIgnoreCase(logoutModel.getStatus())) {
+            Log.e(LOG_TAG, "Вы успешно разлогинились");
         } else {
             unknownError();
         }

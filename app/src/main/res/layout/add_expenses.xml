@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/activity_vertical_margin"
                 android:id="@+id/addExpenseGrid"
-                android:columnCount="2"
+                android:columnCount="3"
                 android:rowCount="5">
         <TextView
             android:id="@+id/name_add"
@@ -38,6 +38,7 @@
             android:inputType="textNoSuggestions"
             android:textStyle="italic"
             android:textSize="@dimen/small_main_text"
+            android:layout_columnSpan="@integer/column_count"
             android:hint="@string/hint_text_name"
             />
 
@@ -56,9 +57,10 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill|bottom"
-            android:inputType="number|textNoSuggestions"
+            android:inputType="numberDecimal|textNoSuggestions"
             android:textStyle="italic"
             android:textSize="@dimen/small_main_text"
+            android:layout_columnSpan="@integer/column_count"
             android:hint="@string/hint_text_sum"
             />
 
@@ -78,6 +80,7 @@
             android:layout_height="@dimen/content_height"
             android:layout_gravity="fill"
             android:spinnerMode="dropdown"
+            android:layout_columnSpan="@integer/column_count"
             />
 
         <TextView
@@ -94,17 +97,24 @@
             android:id="@+id/etDate"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/content_height"
-            android:layout_gravity="fill"
             android:gravity="start|center"
             android:textStyle="italic"
             android:textSize="@dimen/small_main_text"
             android:hint="@string/segodnya"
             />
+        <Button
+            android:id="@+id/date_picker_day"
+            android:layout_gravity="end|center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/primary"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/add_date"/>
 
     </GridLayout>
 
         <Button
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="@dimen/button_margin_top"
             android:id="@+id/add_expense_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

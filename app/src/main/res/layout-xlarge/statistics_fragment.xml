@@ -18,7 +18,7 @@
             android:id="@+id/chart"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/diagram_height"/>
+            android:layout_height="@dimen/large_diagram_height"/>
 
             <android.support.v7.widget.RecyclerView
                 android:layout_below="@id/chart"

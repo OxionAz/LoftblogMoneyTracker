@@ -1,15 +1,15 @@
 package ru.loftschool.loftblogmoneytracker.util;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.res.StringRes;
-
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
-import ru.loftschool.loftblogmoneytracker.ui.activity.MainActivity;
 
 /**
  * Created by Александр on 04.10.2015.
@@ -19,7 +19,8 @@ import ru.loftschool.loftblogmoneytracker.ui.activity.MainActivity;
 public class TextInputCheck {
 
     @StringRes
-    String reg_name_empty, reg_password_empty, category_name_empty, category_name_used;
+    String reg_name_empty, reg_password_empty, category_name_empty,
+            category_name_used, expense_name_empty, expense_sum_empty;
 
     public boolean inputValidation(EditText login, EditText password) {
 
@@ -33,7 +34,6 @@ public class TextInputCheck {
             password.setError(reg_password_empty);
             isValid = false;
         }
-
         return isValid;
     }
 
@@ -52,7 +52,25 @@ public class TextInputCheck {
             name.setAnimation(AnimationUtils.loadAnimation(context, R.anim.shake));
             isValid = false;
         }
+        return isValid;
+    }
 
+    public boolean addExpensesInputValidation(EditText etName, EditText etPrice, Spinner etCategory, Context context) {
+
+        boolean isValid = true;
+
+        if (etName.getText().toString().isEmpty()) {
+            etName.setError(expense_name_empty);
+            isValid = false;
+        }
+        if (etPrice.getText().toString().isEmpty()) {
+            etPrice.setError(expense_sum_empty);
+            isValid = false;
+        }
+        if (etCategory.getSelectedItem() == null) {
+            Toast.makeText(context, "Список категорий пуст!", Toast.LENGTH_SHORT).show();
+            isValid = false;
+        }
         return isValid;
     }
 }

@@ -4,6 +4,8 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 
+import java.util.Date;
+
 /**
  * Created by Александр on 08.09.2015.
  */
@@ -18,7 +20,7 @@ public class Expenses extends Model {
     public String sum;
 
     @Column(name = "date")
-    public String date;
+    public Date date;
 
     @Column(name = "Category")
     public Categories category;
@@ -27,7 +29,7 @@ public class Expenses extends Model {
         super();
     }
 
-    public Expenses(String name, String sum, String date, Categories category){
+    public Expenses(String name, String sum, Date date, Categories category){
         super();
         this.name = name;
         this.sum = sum;

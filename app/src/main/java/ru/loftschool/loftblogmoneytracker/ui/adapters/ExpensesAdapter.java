@@ -1,7 +1,6 @@
 package ru.loftschool.loftblogmoneytracker.ui.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Animatable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,9 +10,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-
-import com.activeandroid.query.Delete;
-
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,7 +20,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
-
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
@@ -33,6 +30,7 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
 
     private List<Expenses> expenses;
     private CardViewHolder.ClickListener clickListener;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM y", myDateFormatSymbols);
 
     private Context context;
     private int lastPositions = -1;
@@ -58,11 +56,21 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
         Expenses expense = expenses.get(position);
         holder.name.setText(expense.name);
         holder.sum.setText(expense.sum);
-        holder.date.setText(expense.date);
+        holder.date.setText(dateFormat.format(expense.date));
         holder.category.setText(expense.category.toString());
         holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
         setAnimation(holder.cardView, position);
     }
+
+    private static DateFormatSymbols myDateFormatSymbols = new DateFormatSymbols(){
+
+        @Override
+        public String[] getMonths() {
+            return new String[]{"января", "февраля", "марта", "апреля", "мая", "июня",
+                    "июля", "августа", "сентября", "октября", "ноября", "декабря"};
+        }
+
+    };
 
     private void setAnimation(View viewToAnimate, int position){
         if (position > lastPositions) {
@@ -94,27 +102,6 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
             }
         }
         multipleRemove = false;
-
-//        while (!positions.isEmpty()){
-//            if(positions.size() == 1){
-//                removeItem(positions.get(0));
-//                positions.remove(0);
-//            } else {
-
-//                int count = 1;
-//                while (positions.size() > count && positions.get(count).equals(positions.get(count - 1) - 1)){
-//                    count++;
-//                }
-//                if (count == 1) {
-//                    removeItem(positions.get(0));
-//                } else {
-//                    removeRange(positions.get(count-1), count);
-//                }
-//                for (int i = 0; i < count; i++){
-//                    positions.remove(0);
-//                }
-//            }
-//        }
     }
 
     public void removeItem(int position){
@@ -190,13 +177,6 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
             expenses.remove(positions);
         }
     }
-
-//    private void removeRange(int positionStart, int itemCount) {
-//        for (int position = 0; position < itemCount; position++){
-//            removeExpenses(positionStart);
-//        }
-//        notifyItemRangeChanged(positionStart, itemCount);
-//    }
 
     @Override
     public int getItemCount() {

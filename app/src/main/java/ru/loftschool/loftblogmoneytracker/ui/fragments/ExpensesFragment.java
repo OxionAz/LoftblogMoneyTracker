@@ -1,11 +1,9 @@
 package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -15,16 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Toast;
-
 import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -32,20 +25,14 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.OptionsMenuItem;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.api.BackgroundExecutor;
-
 import java.util.List;
-import java.util.TimerTask;
-
 import ru.loftschool.loftblogmoneytracker.ui.activity.AddExpensesActivity_;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
-import ru.loftschool.loftblogmoneytracker.ui.activity.LoginActivity_;
 import ru.loftschool.loftblogmoneytracker.ui.adapters.ExpensesAdapter;
-import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 
 /**
  * Created by Александр on 28.08.2015.
@@ -65,6 +52,9 @@ public class ExpensesFragment extends Fragment {
 
     @ViewById(R.id.fab)
     FloatingActionButton fab;
+
+    @ViewById(R.id.navigation_view)
+    NavigationView navView;
 
     @ViewById(R.id.refresh_expenses)
     SwipeRefreshLayout swipeRefreshLayout;

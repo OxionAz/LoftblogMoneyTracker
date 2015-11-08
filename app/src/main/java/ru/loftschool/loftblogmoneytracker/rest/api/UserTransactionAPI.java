@@ -28,6 +28,7 @@ public interface UserTransactionAPI {
 
     @GET("/transactions/synch")
     void synchTransaction(@Query("data") String expenses,
+                          @Query("google_token") String gToken,
                           @Query("auth_token") String token,
                           Callback<GetTransactionModel> synch);
 

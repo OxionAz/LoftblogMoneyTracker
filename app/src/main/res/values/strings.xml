@@ -92,5 +92,6 @@
     <string name="pref_enable_indicator_default" translatable="false">true</string>
 
         <!--Строки для notification bar-->
-    <string name="notification_message">There is a notification!</string>
+    <string name="notification_message">Данные синхронизированы!</string>
+    <string name="add_date">Выбрать дату</string>
 </resources>
