@@ -6,6 +6,7 @@ import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryDeleteModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionModel;
@@ -31,7 +32,7 @@ public interface UserCategoryAPI {
                                @Query("auth_token") String token);
 
     @GET("/categories/del")
-    CategoryModel deleteCategory(@Query("id") Integer id,
+    CategoryDeleteModel deleteCategory(@Query("id") Integer id,
                                  @Query("google_token") String gToken,
                                  @Query("auth_token") String token);
 

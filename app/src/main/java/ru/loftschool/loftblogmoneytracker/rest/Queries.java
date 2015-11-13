@@ -17,6 +17,7 @@ import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 import ru.loftschool.loftblogmoneytracker.rest.models.BalanceModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryDataModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryDeleteModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionDataModel;
@@ -61,12 +62,11 @@ public class Queries {
     @Background
     public void deleteCategoryOnServer() {
         RestService restService = new RestService();
-        CategoryModel deleteCategoryModel = restService.deleteCategory(1712,
+        CategoryDeleteModel deleteCategoryModel = restService.deleteCategory(2129,
                 MoneyTrackerApp.getGoogleToken(context), MoneyTrackerApp.getToken(context));
         if (UserTransactionStatus.STATUS_SUCCESS.equalsIgnoreCase(deleteCategoryModel.getStatus())){
             Log.e(LOG_TAG, "Status: " + deleteCategoryModel.getStatus() +
-                    ", Category: " + deleteCategoryModel.getData().getTitle() +
-                    ", Id: " + deleteCategoryModel.getData().getId());
+                    ", Data: " + deleteCategoryModel.getData());
         } else {
             unknownError();
         }

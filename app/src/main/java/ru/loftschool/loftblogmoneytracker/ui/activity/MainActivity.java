@@ -8,11 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.activeandroid.query.Select;
 import com.squareup.picasso.Picasso;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -21,7 +19,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import java.util.List;
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.rest.Queries;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
@@ -31,7 +28,7 @@ import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.SettingsFragment;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment_;
-import ru.loftschool.loftblogmoneytracker.database.models.Categories;
+import ru.loftschool.loftblogmoneytracker.util.AddDefaultCategories;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 
 @EActivity(R.layout.activity_main)
@@ -40,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = "MainActivity";
 
     @Bean
-    Queries queries;
+    Queries queries = new Queries(this);
 
     @ViewById
     Toolbar toolbar;
@@ -76,20 +73,19 @@ public class MainActivity extends AppCompatActivity {
     void ready(){
         initToolbar();
         initNavigationDrawer();
-        setCategories();
-        queries = new Queries(this);
+        AddDefaultCategories.setCategories();
 
         if (NetworkConnectionUtil.isNetworkConnected(this)) {
             if (!MoneyTrackerApp.getGoogleToken(this).equals("1")) getUserInfo(); //Work!
 //            queries.editCategoryOnServer(); //Work!
 //            queries.addToServerCategories(); //Work!
 //            queries.addTransactionsToServer(); //Work!
-//            queries.deleteCategoryOnServer(); //don`tWork!!!
+//            queries.deleteCategoryOnServer(); //Work!
 //            queries.getAllTransaction(); //Work!
 //            queries.getAllCategories(); //Work!
 //            queries.getAllInfoFromCategories(); //Work!
 //            queries.getCategoryInfo(); //Work!
-//            queries.getBalance(); //Work!
+//            queries.getBalance(); //Work!)
 //            queries.setBalance("3200"); //Work!
         }
     }
@@ -122,16 +118,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             super.onBackPressed();
-        }
-    }
-
-    public void setCategories(){
-        if (getCategories().isEmpty()){
-            new Categories("Food").save();
-            new Categories("Stuff").save();
-            new Categories("Clothes").save();
-            new Categories("Fun").save();
-            new Categories("Other").save();
         }
     }
 
@@ -169,31 +155,23 @@ public class MainActivity extends AppCompatActivity {
             case R.id.drawer_settings:
                 getFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).commit();
                 break;
+            case R.id.drawer_exit:
+                logout();
+                break;
         }
     }
 
-    @UiThread
     void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity_.class);
         startActivity(intent);
         finish();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    public void logout(MenuItem item){
+    public void logout(){
         queries.logout();
         MoneyTrackerApp.setToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         MoneyTrackerApp.setGoogleToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         startLoginActivity();
-    }
-
-    private List<Categories> getCategories(){
-        return new Select().from(Categories.class).execute();
+        finish();
     }
 }

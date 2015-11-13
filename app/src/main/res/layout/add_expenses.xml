@@ -18,8 +18,8 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/activity_vertical_margin"
                 android:id="@+id/addExpenseGrid"
-                android:columnCount="3"
-                android:rowCount="5">
+                android:columnCount="@integer/row_count_land"
+                android:rowCount="@integer/row_count">
         <TextView
             android:id="@+id/name_add"
             android:layout_width="wrap_content"

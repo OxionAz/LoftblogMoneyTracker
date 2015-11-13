@@ -16,6 +16,8 @@
     <string name="nav.drawer.categories">Категории</string>
     <string name="nav.drawer.statistics">Статистика</string>
     <string name="nav.drawer.settings">Настройки</string>
+    <string name="nav.drawer.exit">Выход</string>
+    <string name="nav.drawer.sync">Синхронизация</string>
     <string name="avatar">Avatar</string>
     <string name="header_name">Alexandr Zotkin</string>
     <string name="header_email">oxionaz@gmail.com</string>

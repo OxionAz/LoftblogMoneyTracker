@@ -3,6 +3,7 @@ package ru.loftschool.loftblogmoneytracker.rest;
 import java.util.ArrayList;
 
 import ru.loftschool.loftblogmoneytracker.rest.models.BalanceModel;
+import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryDeleteModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.CategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryModel;
 import ru.loftschool.loftblogmoneytracker.rest.models.category.GetCategoryTransactionModel;
@@ -48,7 +49,7 @@ public class RestService {
         return restClient.getUserCategoryAPI().editCategory(title, id, gToken, token);
     }
 
-    public CategoryModel deleteCategory(Integer id, String gToken, String token){
+    public CategoryDeleteModel deleteCategory(Integer id, String gToken, String token){
         return restClient.getUserCategoryAPI().deleteCategory(id, gToken, token);
     }
 
