@@ -2,6 +2,8 @@ package ru.loftschool.loftblogmoneytracker.ui.activity;
 
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +25,12 @@ import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.rest.Queries;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
 import ru.loftschool.loftblogmoneytracker.rest.models.GoogleTokenStatusModel;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment_;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
 import ru.loftschool.loftblogmoneytracker.R;
-import ru.loftschool.loftblogmoneytracker.ui.fragments.SettingsFragment;
+import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment_;
 import ru.loftschool.loftblogmoneytracker.util.AddDefaultCategories;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
@@ -35,6 +39,7 @@ import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
+    private int defaultItemId = R.id.drawer_expenses;
 
     @Bean
     Queries queries = new Queries(this);
@@ -117,7 +122,36 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(navView);
         }
         else{
-            super.onBackPressed();
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                super.onBackPressed();
+            } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                super.onBackPressed();
+                navView.setCheckedItem(R.id.drawer_expenses);
+                this.defaultItemId = R.id.drawer_expenses;
+            } else {
+                super.onBackPressed();
+                getLastFragmentChecked();
+            }
+        }
+    }
+
+    private void getLastFragmentChecked() {
+        FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1);
+        String str = backEntry.getName();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(str);
+        updateSelectedItem(fragment);
+    }
+
+    private void updateSelectedItem(Fragment fragment) {
+        if (fragment instanceof ExpensesFragment) {
+            navView.setCheckedItem(R.id.drawer_expenses);
+            this.defaultItemId = R.id.drawer_expenses;
+        } else if (fragment instanceof CategoriesFragment) {
+            navView.setCheckedItem(R.id.drawer_categories);
+            this.defaultItemId = R.id.drawer_categories;
+        } else if (fragment instanceof StatisticsFragment) {
+            navView.setCheckedItem(R.id.drawer_statistics);
+            this.defaultItemId = R.id.drawer_statistics;
         }
     }
 
@@ -144,20 +178,27 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.drawer_expenses:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment_()).addToBackStack(null).commit();
+                checkBackstack(new ExpensesFragment_(), menuItem.getItemId());
                 break;
             case R.id.drawer_categories:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new CategoriesFragment_()).addToBackStack(null).commit();
+                checkBackstack(new CategoriesFragment_(), menuItem.getItemId());
                 break;
             case R.id.drawer_statistics:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new StatisticsFragment_()).addToBackStack(null).commit();
+                checkBackstack(new StatisticsFragment_(), menuItem.getItemId());
                 break;
             case R.id.drawer_settings:
-                getFragmentManager().beginTransaction().replace(R.id.frame_container, new SettingsFragment()).addToBackStack(null).commit();
+                startActivity(new Intent(this, SettingsActivity_.class));
                 break;
             case R.id.drawer_exit:
                 logout();
                 break;
+        }
+    }
+
+    private void checkBackstack(Fragment fragment, int itemId){
+        if (itemId != defaultItemId){
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
+            this.defaultItemId = itemId;
         }
     }
 
@@ -168,7 +209,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout(){
-        queries.logout();
+        if (NetworkConnectionUtil.isNetworkConnected(this)) {
+            queries.logout();
+        }
         MoneyTrackerApp.setToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         MoneyTrackerApp.setGoogleToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         startLoginActivity();

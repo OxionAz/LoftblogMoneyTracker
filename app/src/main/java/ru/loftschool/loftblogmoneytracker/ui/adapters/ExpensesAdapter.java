@@ -1,6 +1,7 @@
 package ru.loftschool.loftblogmoneytracker.ui.adapters;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,16 +11,18 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.TreeMap;
+
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 
@@ -29,18 +32,15 @@ import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
 public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewHolder> {
 
     private List<Expenses> expenses;
+    private List<Expenses> saveExpensesVH;
     private CardViewHolder.ClickListener clickListener;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM y", myDateFormatSymbols);
-
     private Context context;
     private int lastPositions = -1;
-    private Timer undoRemoveTimer;
-    private static final long UNDO_TIMEOUT = 3600L;
-    private boolean multipleRemove = false;
-    private Map<Integer, Expenses> removedExpensesMap;
 
     public ExpensesAdapter(List<Expenses> expenses, CardViewHolder.ClickListener clickListener){
         this.expenses = expenses;
+        this.saveExpensesVH = new ArrayList<>(expenses.size());
         this.clickListener = clickListener;
     }
 
@@ -81,100 +81,34 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
     }
 
     public void removeItems(List<Integer> positions){
-        if (positions.size() > 1) {
-            multipleRemove = true;
-        }
-        saveRemovedItems(positions);
+        if (!saveExpensesVH.isEmpty()) saveExpensesVH.clear();
+        for (Expenses expense : expenses) saveExpensesVH.add(expense);
 
-        Collections.sort(positions, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer lhs, Integer rhs) {
-                return rhs - lhs;
-            }
-        });
-
-        while (!positions.isEmpty()) {
-
+        if (positions.size() <= 1){
+            removeItem(positions.get(0));
+        } else {
             for (int i = 0; i < positions.size(); i++) {
-                removeItem(positions.get(0) - i);
-                Log.d("DeletedItem: ", String.valueOf(positions.get(0)));
-                positions.remove(0);
+                    removeItem(positions.get(i)-i);
+                    Log.d("DeletedItem: ", String.valueOf(positions.get(0)));
             }
         }
-        multipleRemove = false;
     }
 
     public void removeItem(int position){
-        if (!multipleRemove) {
-            saveRemovedItem(position);
-        }
-        removeExpenses(position);
+        expenses.get(position).delete();
+        expenses.remove(position);
         notifyItemRemoved(position);
     }
 
-    private void completelyRemoveExpensesFromDB() {
-        if (removedExpensesMap != null) {
-            for (Map.Entry<Integer, Expenses> pair : removedExpensesMap.entrySet()) {
-                pair.getValue().delete();
-            }
-            removedExpensesMap = null;
+    public void restoreItem(List<Integer> position){
+        expenses.clear();
+        new Delete().from(Expenses.class).execute();
+        for (Expenses expense : saveExpensesVH){
+            expenses.add(expense);
+            new Expenses(expense.name, expense.sum, expense.date, expense.category).save();
         }
-    }
-
-    private void saveRemovedItems(List<Integer> positions) {
-        if (removedExpensesMap != null) {
-            completelyRemoveExpensesFromDB();
-        }
-        removedExpensesMap = new TreeMap<>();
-        for (int position : positions) {
-            removedExpensesMap.put(position, expenses.get(position));
-        }
-    }
-
-    private void saveRemovedItem(int position) {
-        if (removedExpensesMap != null) {
-            completelyRemoveExpensesFromDB();
-        }
-        ArrayList<Integer> positions = new ArrayList<>(1);
-        positions.add(position);
-        saveRemovedItems(positions);
-    }
-
-    public void restoreRemovedItems() {
-        stopUndoTimer();
-        for (Map.Entry<Integer, Expenses> pair : removedExpensesMap.entrySet()){
-            expenses.add(pair.getKey(), pair.getValue());
-            notifyItemInserted(pair.getKey());
-        }
-        removedExpensesMap = null;
-    }
-
-    public void startUndoTimer(long timeout) {
-        stopUndoTimer();
-        this.undoRemoveTimer = new Timer();
-        this.undoRemoveTimer.schedule(new UndoTimer(), timeout > 0 ? timeout : UNDO_TIMEOUT);
-    }
-
-    private void stopUndoTimer() {
-        if (this.undoRemoveTimer != null) {
-            this.undoRemoveTimer.cancel();
-            this.undoRemoveTimer = null;
-        }
-    }
-
-    private class UndoTimer extends TimerTask {
-        @Override
-        public void run() {
-            undoRemoveTimer = null;
-            completelyRemoveExpensesFromDB();
-            removedExpensesMap = null;
-        }
-    }
-
-    private void removeExpenses(int positions){
-        if (expenses.get(positions) != null){
-//            expenses.get(positions).delete();
-            expenses.remove(positions);
+        for(Integer i : position){
+            notifyItemInserted(i);
         }
     }
 

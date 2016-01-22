@@ -28,6 +28,7 @@ import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.api.BackgroundExecutor;
+import java.util.ArrayList;
 import java.util.List;
 import ru.loftschool.loftblogmoneytracker.ui.activity.AddExpensesActivity_;
 import ru.loftschool.loftblogmoneytracker.R;
@@ -122,7 +123,7 @@ public class ExpensesFragment extends Fragment {
         super.onResume();
         loadData("");
 
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT){
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.ANIMATION_TYPE_SWIPE_SUCCESS|ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT|ItemTouchHelper.UP|ItemTouchHelper.DOWN){
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -130,25 +131,25 @@ public class ExpensesFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                expensesAdapter.removeItem(viewHolder.getAdapterPosition());
-                undoSnackbarShow();
+                List<Integer> item = new ArrayList<>(1);
+                item.add(viewHolder.getAdapterPosition());
+                expensesAdapter.removeItems(item);
+                notifyDelete(item);
             }
         };
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void undoSnackbarShow() {
-        Snackbar.make(recyclerView, expensesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена" : "Траты удалены", Snackbar.LENGTH_LONG)
-                .setAction("Отменить", new View.OnClickListener() {
+    private void notifyDelete(final List<Integer> positions){
+        Snackbar.make(recyclerView, expensesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена "+positions.get(0) : "Траты удалены", Snackbar.LENGTH_LONG)
+                .setAction("Восстановить", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        expensesAdapter.restoreRemovedItems();
+                        expensesAdapter.restoreItem(positions);
                     }
                 })
                 .show();
-        expensesAdapter.startUndoTimer(3500);
     }
 
     private void loadData(final String filter) {
@@ -232,7 +233,7 @@ public class ExpensesFragment extends Fragment {
             switch (item.getItemId()){
                 case R.id.menu_remove:
                     expensesAdapter.removeItems(expensesAdapter.getSelectedItems());
-                    undoSnackbarShow();
+                    notifyDelete(expensesAdapter.getSelectedItems());
                     mode.finish();
                     return true;
                 case R.id.menu_select_all:

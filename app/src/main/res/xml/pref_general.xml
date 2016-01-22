@@ -13,18 +13,21 @@
     <PreferenceCategory
         android:title="@string/pref_notification_settings_section">
         <CheckBoxPreference
+            android:enabled="@string/pref_disable"
             android:title="@string/pref_enable_sound_label"
             android:key="@string/pref_enable_sound_key"
             android:summaryOff="@string/pref_enable_notifications_false"
             android:summaryOn="@string/pref_enable_notifications_true"
             android:defaultValue="@string/pref_enable_sound_default"/>
         <CheckBoxPreference
+            android:enabled="@string/pref_disable"
             android:title="@string/pref_enable_vibration_label"
             android:key="@string/pref_enable_vibration_key"
             android:summaryOff="@string/pref_enable_notifications_false"
             android:summaryOn="@string/pref_enable_notifications_true"
             android:defaultValue="@string/pref_enable_vibration_default"/>
         <CheckBoxPreference
+            android:enabled="@string/pref_disable"
             android:title="@string/pref_enable_indicator_label"
             android:key="@string/pref_enable_indicator_key"
             android:summaryOff="@string/pref_enable_notifications_false"

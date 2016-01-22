@@ -31,7 +31,7 @@ public class NotificationUtil {
         boolean enableVibration = pref.getBoolean(enableVibrationKey, Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
         String enableIndicatorKey = context.getString(R.string.pref_enable_indicator_key);
         boolean enableIndicator = pref.getBoolean(enableIndicatorKey, Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
-
+        
         if (displayNotifications){
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
             Intent intent = new Intent(context, MainActivity_.class);
@@ -40,7 +40,7 @@ public class NotificationUtil {
             builder.setContentIntent(pendingIntent);
 
             builder.setSmallIcon(R.mipmap.ic_launcher);
-            if (enableIndicator) builder.setLights(Color.BLUE, 300, 1500);
+            if (enableIndicator) builder.setLights(Color.GREEN, 300, 1500);
             if (enableVibration) builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
             if (enableSound) builder.setSound(Settings.System.DEFAULT_NOTIFICATION_URI);
             builder.setAutoCancel(true);
