@@ -127,13 +127,6 @@ public class AddExpensesActivity extends AppCompatActivity implements DatePicker
         onBackPressed();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(this, MainActivity_.class));
-        finish();
-    }
-
     private List<Categories> getCategories(){
         return new Select().from(Categories.class).execute();
     }

@@ -8,7 +8,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +35,7 @@ import java.util.List;
 import ru.loftschool.loftblogmoneytracker.ui.activity.AddExpensesActivity_;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
+import ru.loftschool.loftblogmoneytracker.ui.activity.MainActivity;
 import ru.loftschool.loftblogmoneytracker.ui.adapters.ExpensesAdapter;
 
 /**
@@ -44,7 +47,7 @@ import ru.loftschool.loftblogmoneytracker.ui.adapters.ExpensesAdapter;
 public class ExpensesFragment extends Fragment {
 
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
-    private ActionMode actionMode;
+    private static ActionMode actionMode;
     private ExpensesAdapter expensesAdapter;
     private final static String FILTER_ID = "filter_id";
 
@@ -53,9 +56,6 @@ public class ExpensesFragment extends Fragment {
 
     @ViewById(R.id.fab)
     FloatingActionButton fab;
-
-    @ViewById(R.id.navigation_view)
-    NavigationView navView;
 
     @ViewById(R.id.refresh_expenses)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -91,10 +91,19 @@ public class ExpensesFragment extends Fragment {
             for (Expenses expense : getDataList(null)) Log.d("Category: ", String.valueOf(expense.category));
     }
 
+    public static ActionMode getActionMode(){
+        return actionMode;
+    }
+
+    public static void finishActionMode(){
+        actionMode.finish();
+    }
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         final android.widget.SearchView searchView = (android.widget.SearchView) menuItem.getActionView();
+        searchView.isActivated();
         searchView.setQueryHint(search_hint);
         searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -123,7 +132,7 @@ public class ExpensesFragment extends Fragment {
         super.onResume();
         loadData("");
 
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.ANIMATION_TYPE_SWIPE_SUCCESS|ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT|ItemTouchHelper.UP|ItemTouchHelper.DOWN){
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.RIGHT|ItemTouchHelper.LEFT){
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -131,6 +140,7 @@ public class ExpensesFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                if (actionMode != null) actionMode.finish();
                 List<Integer> item = new ArrayList<>(1);
                 item.add(viewHolder.getAdapterPosition());
                 expensesAdapter.removeItems(item);
@@ -142,7 +152,7 @@ public class ExpensesFragment extends Fragment {
     }
 
     private void notifyDelete(final List<Integer> positions){
-        Snackbar.make(recyclerView, expensesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена "+positions.get(0) : "Траты удалены", Snackbar.LENGTH_LONG)
+        Snackbar.make(recyclerView, expensesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена " : "Траты удалены", Snackbar.LENGTH_LONG)
                 .setAction("Восстановить", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -207,14 +217,6 @@ public class ExpensesFragment extends Fragment {
         }
     }
 
-    private List<Expenses> getDataList(String filter){
-        return new Select()
-                .from(Expenses.class)
-                .where("name LIKE ?", new String[]{'%' + filter + '%'})
-                .orderBy("date DESC")
-                .execute();
-    }
-
     private class ActionModeCallback implements ActionMode.Callback{
 
         @Override
@@ -255,5 +257,13 @@ public class ExpensesFragment extends Fragment {
             expensesAdapter.clearSelection();
             actionMode = null;
         }
+    }
+
+    private List<Expenses> getDataList(String filter){
+        return new Select()
+                .from(Expenses.class)
+                .where("name LIKE ?", new String[]{'%' + filter + '%'})
+                .orderBy("date DESC")
+                .execute();
     }
 }

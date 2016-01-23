@@ -82,7 +82,7 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
 
     public void removeItems(List<Integer> positions){
         if (!saveExpensesVH.isEmpty()) saveExpensesVH.clear();
-        for (Expenses expense : expenses) saveExpensesVH.add(expense);
+        saveExpensesVH.addAll(expenses);
 
         if (positions.size() <= 1){
             removeItem(positions.get(0));
@@ -103,8 +103,8 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
     public void restoreItem(List<Integer> position){
         expenses.clear();
         new Delete().from(Expenses.class).execute();
+        expenses.addAll(saveExpensesVH);
         for (Expenses expense : saveExpensesVH){
-            expenses.add(expense);
             new Expenses(expense.name, expense.sum, expense.date, expense.category).save();
         }
         for(Integer i : position){
@@ -157,5 +157,4 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
             boolean OnItemLongClicked(int position);
         }
     }
-
 }

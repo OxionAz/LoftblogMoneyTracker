@@ -3,9 +3,13 @@ package ru.loftschool.loftblogmoneytracker.rest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
+
 import com.activeandroid.query.Select;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -211,7 +215,7 @@ public class Queries {
                                 Log.d(LOG_TAG, "Category: " + category.getTitle() + ", id: " + category.getId());
                             }
                         } else {
-                            unknownError();
+                            dataError();
                         }
                     }
 
@@ -264,7 +268,7 @@ public class Queries {
                                                 ", Date: " + transaction.getTrDate());
                             }
                         } else {
-                            unknownError();
+                            dataError();
                         }
                     }
 
@@ -309,8 +313,13 @@ public class Queries {
         }
     }
 
+    @UiThread
     void unknownError(){
-        Log.e(LOG_TAG, "Ошибка сервера");
+        Toast.makeText(context, "Ошибка сервера", Toast.LENGTH_SHORT).show();
+    }
+
+    void dataError(){
+        Toast.makeText(context, "Не удалось синхронизировать данные", Toast.LENGTH_SHORT).show();
     }
 
     private List<Expenses> getExpenses(){

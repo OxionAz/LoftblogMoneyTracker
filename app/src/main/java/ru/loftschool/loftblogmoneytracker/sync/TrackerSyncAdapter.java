@@ -21,12 +21,11 @@ import ru.loftschool.loftblogmoneytracker.rest.Queries;
  */
 public class TrackerSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    private Queries queries;
+    private Queries queries = new Queries(getContext());
     private static final String LOG_TAG = TrackerSyncAdapter.class.getSimpleName();
 
     public TrackerSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        this.queries = new Queries(context);
     }
 
     public static void initializeSyncAdapter(Context context) {

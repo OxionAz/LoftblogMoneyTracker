@@ -1,6 +1,7 @@
 package ru.loftschool.loftblogmoneytracker.ui.adapters;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,17 +29,16 @@ import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
  */
 public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardViewHolder>{
     private List<Categories> categories;
+    private List<Categories> saveCategoriesVH;
+    private List<Boolean> itemsForDelete;
     private CardViewHolder.ClickListener clickListener;
-
     private Context context;
     private int lastPositions = -1;
-    private Timer undoRemoveTimer;
-    private static final long UNDO_TIMEOUT = 3600L;
-    private boolean multipleRemove = false;
-    private Map<Integer, Categories> removedCategoriesMap;
 
     public CategoriesAdapter(List<Categories> categories, CardViewHolder.ClickListener clickListener){
         this.categories = categories;
+        this.saveCategoriesVH = new ArrayList<>(categories.size());
+        this.itemsForDelete = new ArrayList<>(categories.size());
         this.clickListener = clickListener;
     }
 
@@ -46,6 +46,7 @@ public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardV
     public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_category, parent, false);
         context = parent.getContext();
+        for (int i = 0; i < categories.size(); i++) itemsForDelete.add(false);
         return new CardViewHolder(itemView, clickListener);
     }
 
@@ -66,109 +67,55 @@ public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardV
     }
 
     public void removeItems(List<Integer> positions) {
-        if (positions.size() > 1) {
-            multipleRemove = true;
-        }
-        saveRemovedItems(positions);
+        if (!saveCategoriesVH.isEmpty()) saveCategoriesVH.clear();
+        saveCategoriesVH.addAll(categories);
 
-        Collections.sort(positions, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer lhs, Integer rhs) {
-                return rhs - lhs;
-            }
-        });
-
-        while (!positions.isEmpty()) {
-
+        if (positions.size() <= 1){
+            removeItem(positions.get(0));
+            itemsForDelete.set(positions.get(0), true);
+            delayDeleteFromDB(positions);
+        } else {
             for (int i = 0; i < positions.size(); i++) {
-                new Delete().from(Expenses.class).where("Category = ?", categories.get(positions.get(0) - i).getId()).execute();
-                Log.d("DeletedCategoriesName: ", categories.get(positions.get(0) - i).category);
-                removeItem(positions.get(0) - i);
+                removeItem(positions.get(i)-i);
+                itemsForDelete.set(positions.get(i), true);
                 Log.d("DeletedItem: ", String.valueOf(positions.get(0)));
-                positions.remove(0);
             }
+            delayDeleteFromDB(positions);
         }
-        multipleRemove = false;
     }
 
     public void removeItem(int position){
-        if (!multipleRemove) {
-            saveRemovedItem(position);
-        }
-        removeCategory(position);
+        categories.remove(position);
         notifyItemRemoved(position);
     }
 
-    private void completelyRemoveExpensesFromDB() {
-        if (removedCategoriesMap != null) {
-            for (Map.Entry<Integer, Categories> pair : removedCategoriesMap.entrySet()) {
-                pair.getValue().delete();
+    public void delayDeleteFromDB(final List<Integer> position){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < position.size(); i++){
+                    if (itemsForDelete.get(position.get(i))) saveCategoriesVH.get(position.get(i)).delete();
+                    Log.d("Delete message: ", "position: "+position.get(i)+" "+
+                            saveCategoriesVH.get(position.get(i))+" "+itemsForDelete.get(position.get(i)));
+                }
             }
-            removedCategoriesMap = null;
+        }, 3400);
+    }
+
+    public void restoreItem(List<Integer> position){
+        categories.clear();
+        categories.addAll(saveCategoriesVH);
+        for(Integer i : position){
+            itemsForDelete.set(i, false);
+            notifyItemInserted(i);
         }
     }
 
-    private void saveRemovedItems(List<Integer> positions) {
-        if (removedCategoriesMap != null) {
-            completelyRemoveExpensesFromDB();
-        }
-        removedCategoriesMap = new TreeMap<>();
-        for (int position : positions) {
-            removedCategoriesMap.put(position, categories.get(position));
-        }
-    }
-
-    private void saveRemovedItem(int position) {
-        if (removedCategoriesMap != null) {
-            completelyRemoveExpensesFromDB();
-        }
-        ArrayList<Integer> positions = new ArrayList<>(1);
-        positions.add(position);
-        saveRemovedItems(positions);
-    }
-
-    public void restoreRemovedItems() {
-        stopUndoTimer();
-        for (Map.Entry<Integer, Categories> pair : removedCategoriesMap.entrySet()){
-            categories.add(pair.getKey(), pair.getValue());
-            notifyItemInserted(pair.getKey());
-        }
-        removedCategoriesMap = null;
-    }
-
-    public void startUndoTimer(long timeout) {
-        stopUndoTimer();
-        this.undoRemoveTimer = new Timer();
-        this.undoRemoveTimer.schedule(new UndoTimer(), timeout > 0 ? timeout : UNDO_TIMEOUT);
-    }
-
-    private void stopUndoTimer() {
-        if (this.undoRemoveTimer != null) {
-            this.undoRemoveTimer.cancel();
-            this.undoRemoveTimer = null;
-        }
-    }
-
-    private class UndoTimer extends TimerTask {
-        @Override
-        public void run() {
-            undoRemoveTimer = null;
-            completelyRemoveExpensesFromDB();
-        }
-    }
-
-    private void removeCategory(int positions){
-        if (categories.get(positions) != null){
-//            categories.get(positions).delete();
-            categories.remove(positions);
-        }
-    }
-
-    public void addCategory(String name){
-        Categories category = new Categories(name);
-        category.save();
-        categories.add(category);
-        notifyItemInserted(getItemCount()-1);
+    public void addCategory(String category) {
+        Categories cat = new Categories(category);
+        cat.save();
+        categories.add(cat);
+        notifyItemInserted(getItemCount());
     }
 
     @Override

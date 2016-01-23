@@ -22,6 +22,7 @@ import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
 import ru.loftschool.loftblogmoneytracker.rest.models.GoogleTokenStatusModel;
 import ru.loftschool.loftblogmoneytracker.sync.TrackerSyncAdapter;
+import ru.loftschool.loftblogmoneytracker.util.AddDefaultCategories;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 
 /**
@@ -51,7 +52,7 @@ public class SplashActivity extends Activity {
 
     @AfterViews
     void ready(){
-
+        AddDefaultCategories.setCategories();
         token = MoneyTrackerApp.getToken(this);
         googleToken = MoneyTrackerApp.getGoogleToken(this);
         restClient = new RestClient();

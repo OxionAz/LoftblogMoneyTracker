@@ -29,6 +29,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
+
+import java.util.ArrayList;
 import java.util.List;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
@@ -41,7 +43,7 @@ import ru.loftschool.loftblogmoneytracker.util.TextInputCheck;
 @EFragment(R.layout.categories_fragment)
 public class CategoriesFragment extends Fragment {
 
-    private ActionMode actionMode;
+    private static ActionMode actionMode;
     private ActionModeCallback actionModeCallback = new ActionModeCallback();
     private CategoriesAdapter categoriesAdapter;
 
@@ -85,8 +87,11 @@ public class CategoriesFragment extends Fragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                categoriesAdapter.removeItem(viewHolder.getAdapterPosition());
-                undoSnackbarShow();
+                if (actionMode != null) actionMode.finish();
+                List<Integer> item = new ArrayList<>(1);
+                item.add(viewHolder.getAdapterPosition());
+                categoriesAdapter.removeItems(item);
+                notifyDelete(item);
             }
         };
 
@@ -94,16 +99,15 @@ public class CategoriesFragment extends Fragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void undoSnackbarShow() {
-        Snackbar.make(recyclerView, categoriesAdapter.getSelectedItemsCount() <= 1 ? "Трата удалена" : "Траты удалены", Snackbar.LENGTH_LONG)
-                .setAction("Отменить", new View.OnClickListener() {
+    private void notifyDelete(final List<Integer> positions){
+        Snackbar.make(recyclerView, categoriesAdapter.getSelectedItemsCount() <= 1 ? "Категория удалена " : "Категории удалены", Snackbar.LENGTH_LONG)
+                .setAction("Восстановить", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        categoriesAdapter.restoreRemovedItems();
+                        categoriesAdapter.restoreItem(positions);
                     }
                 })
                 .show();
-        categoriesAdapter.startUndoTimer(3500);
     }
 
     private void loadData() {
@@ -218,7 +222,7 @@ public class CategoriesFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     // Accept action
                                     categoriesAdapter.removeItems(categoriesAdapter.getSelectedItems());
-                                    undoSnackbarShow();
+                                    notifyDelete(categoriesAdapter.getSelectedItems());
                                     mode.finish();
                                 }
                             })
@@ -255,5 +259,13 @@ public class CategoriesFragment extends Fragment {
             categoriesAdapter.clearSelection();
             actionMode = null;
         }
+    }
+
+    public static ActionMode getActionMode(){
+        return actionMode;
+    }
+
+    public static void finishActionMode(){
+        actionMode.finish();
     }
 }

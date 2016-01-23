@@ -1,16 +1,22 @@
 package ru.loftschool.loftblogmoneytracker.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.internal.app.ToolbarActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -21,6 +27,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.StringRes;
+
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.rest.Queries;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
@@ -39,7 +47,8 @@ import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "MainActivity";
-    private int defaultItemId = R.id.drawer_expenses;
+    private static int defaultItemId = R.id.drawer_expenses;
+    private static boolean exit = false;
 
     @Bean
     Queries queries = new Queries(this);
@@ -59,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     TextView user_name, user_email;
 
+    @StringRes
+    String no_internet_connection;
+
     @OptionsItem(android.R.id.home)
     void drawer(){
         if (drawerLayout.isDrawerOpen(navView)){
@@ -70,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment_()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment_())
+                    .commit();
         }
     }
 
@@ -78,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
     void ready(){
         initToolbar();
         initNavigationDrawer();
-        AddDefaultCategories.setCategories();
 
         if (NetworkConnectionUtil.isNetworkConnected(this)) {
             if (!MoneyTrackerApp.getGoogleToken(this).equals("1")) getUserInfo(); //Work!
@@ -114,44 +126,59 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                hideKeyboard();
+                if (ExpensesFragment.getActionMode() != null)
+                    ExpensesFragment.finishActionMode();
+                if (CategoriesFragment.getActionMode() != null)
+                    CategoriesFragment.finishActionMode();
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+    }
+
+    private void hideKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
+                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     @Override
     public void onBackPressed(){
-        if(drawerLayout.isDrawerOpen(navView)){
+        if(drawerLayout.isDrawerOpen(navView)) {
             drawerLayout.closeDrawer(navView);
-        }
-        else{
-            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
-                super.onBackPressed();
-            } else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                super.onBackPressed();
-                navView.setCheckedItem(R.id.drawer_expenses);
-                this.defaultItemId = R.id.drawer_expenses;
-            } else {
-                super.onBackPressed();
-                getLastFragmentChecked();
-            }
-        }
-    }
-
-    private void getLastFragmentChecked() {
-        FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1);
-        String str = backEntry.getName();
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(str);
-        updateSelectedItem(fragment);
-    }
-
-    private void updateSelectedItem(Fragment fragment) {
-        if (fragment instanceof ExpensesFragment) {
+        } else if (R.id.drawer_expenses != defaultItemId) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new ExpensesFragment_()).commit();
             navView.setCheckedItem(R.id.drawer_expenses);
-            this.defaultItemId = R.id.drawer_expenses;
-        } else if (fragment instanceof CategoriesFragment) {
-            navView.setCheckedItem(R.id.drawer_categories);
-            this.defaultItemId = R.id.drawer_categories;
-        } else if (fragment instanceof StatisticsFragment) {
-            navView.setCheckedItem(R.id.drawer_statistics);
-            this.defaultItemId = R.id.drawer_statistics;
+            defaultItemId = R.id.drawer_expenses;
+        } else {
+            if (exit) super.onBackPressed();
+            exit = true;
+            Snackbar.make(drawerLayout, "Нажмите еще раз для выхода", Snackbar.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 2000);
         }
     }
 
@@ -189,6 +216,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.drawer_settings:
                 startActivity(new Intent(this, SettingsActivity_.class));
                 break;
+            case R.id.drawer_item_sync:
+                if (NetworkConnectionUtil.isNetworkConnected(this)) {
+                    queries.synchCategories();
+                    queries.synchTransactions();
+                } else {
+                    Snackbar.make(drawerLayout, no_internet_connection, Snackbar.LENGTH_SHORT).show();
+                }
+                break;
             case R.id.drawer_exit:
                 logout();
                 break;
@@ -197,8 +232,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkBackstack(Fragment fragment, int itemId){
         if (itemId != defaultItemId){
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null).commit();
-            this.defaultItemId = itemId;
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, fragment).commit();
+            defaultItemId = itemId;
         }
     }
 
