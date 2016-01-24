@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 import ru.loftschool.loftblogmoneytracker.R;
 
@@ -26,6 +27,11 @@ public class SettingsActivity extends AppCompatActivity{
 
     @ViewById
     Toolbar toolbar;
+
+    @OptionsItem(android.R.id.home)
+    void back(){
+        onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

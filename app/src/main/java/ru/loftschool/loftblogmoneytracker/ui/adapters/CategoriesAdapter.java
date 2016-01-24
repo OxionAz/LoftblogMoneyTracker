@@ -53,7 +53,9 @@ public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardV
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Categories category = categories.get(position);
+        String counter = String.valueOf(category.expenses().size());
         holder.name.setText(category.category);
+        holder.count.setText(counter);
         holder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
         setAnimation(holder.cardView, position);
     }
@@ -125,6 +127,7 @@ public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardV
 
     public static class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         protected TextView name;
+        protected TextView count;
         protected View selectedOverlay;
         protected CardView cardView;
         private ClickListener clickListener;
@@ -133,6 +136,7 @@ public class CategoriesAdapter extends SelectableAdapter<CategoriesAdapter.CardV
             super(itemView);
             this.clickListener = clickListener;
             name = (TextView) itemView.findViewById(R.id.name_text);
+            count = (TextView) itemView.findViewById(R.id.count_text);
             selectedOverlay = itemView.findViewById(R.id.categories_selected_overlay);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
 

@@ -72,6 +72,13 @@
                 android:configChanges="orientation|screenSize"
                 android:value=".ui.activity.MainActivity_"/>
         </activity>
+        <activity
+            android:name=".ui.activity.ExpensesByCategoryActivity_">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:configChanges="orientation|screenSize"
+                android:value=".ui.activity.MainActivity_"/>
+        </activity>
 
         <provider
             android:authorities="@string/content_authority"

@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import ru.loftschool.loftblogmoneytracker.R;
@@ -88,7 +89,7 @@ public class ExpensesAdapter extends SelectableAdapter<ExpensesAdapter.CardViewH
             removeItem(positions.get(0));
         } else {
             for (int i = 0; i < positions.size(); i++) {
-                    removeItem(positions.get(i)-i);
+                    removeItem(positions.get(i) - i);
                     Log.d("DeletedItem: ", String.valueOf(positions.get(0)));
             }
         }

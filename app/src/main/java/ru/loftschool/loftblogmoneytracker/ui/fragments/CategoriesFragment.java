@@ -2,6 +2,7 @@ package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,6 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
+import ru.loftschool.loftblogmoneytracker.ui.activity.ExpensesByCategoryActivity;
+import ru.loftschool.loftblogmoneytracker.ui.activity.ExpensesByCategoryActivity_;
 import ru.loftschool.loftblogmoneytracker.ui.adapters.CategoriesAdapter;
 import ru.loftschool.loftblogmoneytracker.util.TextInputCheck;
 
@@ -129,7 +132,13 @@ public class CategoriesFragment extends Fragment {
                 categoriesAdapter = new CategoriesAdapter(getDataList(), new CategoriesAdapter.CardViewHolder.ClickListener() {
                     @Override
                     public void OnItemClicked(int position) {
-                        if (actionMode != null) toggleSelection(position);
+                        if (actionMode != null) {
+                            toggleSelection(position);
+                        } else if (getDataList().get(position).expenses().size() > 0) {
+                            Intent openActivityIntent = new Intent(getActivity(), ExpensesByCategoryActivity_.class);
+                            getActivity().startActivity(openActivityIntent);
+                            ExpensesByCategoryActivity.postCategory(getDataList().get(position));
+                        }
                     }
 
                     @Override
