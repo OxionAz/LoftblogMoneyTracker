@@ -28,11 +28,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.0'
     defaultConfig {
-        applicationId "ru.loftschool.loftblogmoneytracker"
+        applicationId 'ru.loftschool.moneytrackerbyoxion'
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "beta"
         signingConfig signingConfigs.realase
     }
     buildTypes {
