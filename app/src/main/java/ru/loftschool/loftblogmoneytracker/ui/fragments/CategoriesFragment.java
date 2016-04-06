@@ -1,11 +1,14 @@
 package ru.loftschool.loftblogmoneytracker.ui.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -16,7 +19,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +37,13 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
-
 import java.util.ArrayList;
 import java.util.List;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.ui.activity.ExpensesByCategoryActivity;
 import ru.loftschool.loftblogmoneytracker.ui.activity.ExpensesByCategoryActivity_;
+import ru.loftschool.loftblogmoneytracker.ui.activity.SettingsActivity_;
 import ru.loftschool.loftblogmoneytracker.ui.adapters.CategoriesAdapter;
 import ru.loftschool.loftblogmoneytracker.util.TextInputCheck;
 
@@ -66,6 +73,12 @@ public class CategoriesFragment extends Fragment {
     @Click
     void fab() {
         alertDialog();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupWindowAnimations();
     }
 
     @AfterViews
@@ -130,13 +143,17 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onLoadFinished(Loader<List<Categories>> loader, List<Categories> data) {
                 categoriesAdapter = new CategoriesAdapter(getDataList(), new CategoriesAdapter.CardViewHolder.ClickListener() {
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void OnItemClicked(int position) {
                         if (actionMode != null) {
                             toggleSelection(position);
                         } else if (getDataList().get(position).expenses().size() > 0) {
                             Intent openActivityIntent = new Intent(getActivity(), ExpensesByCategoryActivity_.class);
-                            getActivity().startActivity(openActivityIntent);
+                            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                    // the context of the activity
+                                    getActivity());
+                            getActivity().startActivity(openActivityIntent, options.toBundle());
                             ExpensesByCategoryActivity.postCategory(getDataList().get(position));
                         }
                     }
@@ -276,5 +293,12 @@ public class CategoriesFragment extends Fragment {
 
     public static void finishActionMode(){
         actionMode.finish();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupWindowAnimations() {
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getActivity().getWindow().setExitTransition(fade);
     }
 }

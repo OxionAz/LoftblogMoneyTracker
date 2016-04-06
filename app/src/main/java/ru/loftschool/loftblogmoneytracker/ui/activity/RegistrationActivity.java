@@ -22,6 +22,8 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import java.lang.ref.WeakReference;
+
+import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.rest.RestService;
 import ru.loftschool.loftblogmoneytracker.rest.models.login.UserRegisterModel;
@@ -72,7 +74,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setTitle(getString(R.string.registation_bar));
     }
 
-    @Click(R.id.registration_button)
+    @Click(R.id.registration_text_button)
     public  void addRegistrationButton(){
         hideKeyboard();
         if (check.inputValidation(etLogin,etPassword))
@@ -108,6 +110,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (UserRegisterStatus.STATUS_SUCCESS.equals(response.getStatus())){
             success();
+            MoneyTrackerApp.setUserName(this, etLogin.getText().toString());
             Intent openActivityIntent = new Intent(RegistrationActivity.this, MainActivity_.class);
             startActivity(openActivityIntent);
             finish();

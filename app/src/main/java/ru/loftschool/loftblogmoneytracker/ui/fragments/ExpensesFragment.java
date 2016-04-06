@@ -104,6 +104,7 @@ public class ExpensesFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
         final android.widget.SearchView searchView = (android.widget.SearchView) menuItem.getActionView();
         searchView.isActivated();
+        searchView.setVisibility(getDataList(null).isEmpty() ? View.GONE : View.VISIBLE);
         searchView.setQueryHint(search_hint);
         searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override

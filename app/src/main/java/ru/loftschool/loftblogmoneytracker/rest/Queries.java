@@ -33,11 +33,9 @@ import ru.loftschool.loftblogmoneytracker.rest.models.transaction.GetTransaction
 import ru.loftschool.loftblogmoneytracker.rest.models.transaction.TransactionsWrapper;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserCategoriesStatus;
 import ru.loftschool.loftblogmoneytracker.rest.status.UserTransactionStatus;
+import ru.loftschool.loftblogmoneytracker.util.CheckUserData;
 import ru.loftschool.loftblogmoneytracker.util.NotificationUtil;
 
-/**
- * Created by Александр on 05.11.2015.
- */
 @EBean
 public class Queries {
 
@@ -92,6 +90,17 @@ public class Queries {
         }
 
     }
+
+//    @Background
+//    public void checkUserCategories() {
+//        RestService restService = new RestService();
+//        GetCategoryModel getAllCategories = restService.getCategory(MoneyTrackerApp.getGoogleToken(context),
+//                MoneyTrackerApp.getToken(context));
+//        if ((UserCategoriesStatus.STATUS_SUCCESS.equalsIgnoreCase(getAllCategories.getStatus())
+//                && getAllCategories.getData().isEmpty()))
+//            CheckUserData.chek = true;
+//        else CheckUserData.chek = false;
+//    }
 
     @Background
     public void addToServerCategories(){

@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Click(R.id.registration_button)
+    @Click(R.id.registration_text_button)
     public void addRegistration() {
         Intent openActivityRegistrationIntent = new Intent(LoginActivity.this, RegistrationActivity_.class);
         startActivity(openActivityRegistrationIntent);
@@ -114,6 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (UserLoginStatus.STATUS_SUCCESS.equals(login.getStatus())){
             MoneyTrackerApp.setToken(this, login.getAuthToken());
+            MoneyTrackerApp.setUserName(this, etLogin.getText().toString());
             completeLogin();
         } else {message.errorLoginMessage(login.getStatus(), login_content, handler);}
     }

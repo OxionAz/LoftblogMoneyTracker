@@ -1,24 +1,20 @@
 package ru.loftschool.loftblogmoneytracker.ui.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
+import android.transition.Fade;
 
-import com.activeandroid.query.Select;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
-import org.androidannotations.annotations.OptionsMenuItem;
 import org.androidannotations.annotations.ViewById;
-import java.util.List;
+
 import ru.loftschool.loftblogmoneytracker.R;
 import ru.loftschool.loftblogmoneytracker.database.models.Categories;
 import ru.loftschool.loftblogmoneytracker.database.models.Expenses;
@@ -43,6 +39,12 @@ public class ExpensesByCategoryActivity extends AppCompatActivity {
     @OptionsItem(android.R.id.home)
     void back(){
         onBackPressed();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupWindowAnimations();
     }
 
     @AfterViews
@@ -71,7 +73,7 @@ public class ExpensesByCategoryActivity extends AppCompatActivity {
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(category.category);
-            actionBar.setSubtitle(getSumm());
+            actionBar.setSubtitle(getSum());
         }
     }
 
@@ -79,9 +81,16 @@ public class ExpensesByCategoryActivity extends AppCompatActivity {
         category = cat;
     }
 
-    private String getSumm(){
+    private String getSum(){
         long sum = 0;
         for (Expenses expenses : category.expenses()) sum += Long.valueOf(expenses.sum);
         return String.valueOf(sum);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupWindowAnimations() {
+        Fade fade = new Fade();
+        fade.setDuration(1000);
+        getWindow().setEnterTransition(fade);
     }
 }

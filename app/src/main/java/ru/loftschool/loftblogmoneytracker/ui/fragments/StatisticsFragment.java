@@ -74,8 +74,8 @@ public class StatisticsFragment extends Fragment {
         if(!getDefinedCategoryList().isEmpty()) {
             generatePieChartData(color, getPercent());
             chart.setOnValueTouchListener(new ValueTouchListener());
-            addButton.setVisibility(View.INVISIBLE);
-            addText.setVisibility(View.INVISIBLE);
+            addButton.setVisibility(View.GONE);
+            addText.setVisibility(View.GONE);
         }
     }
 

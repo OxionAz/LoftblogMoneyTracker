@@ -1,5 +1,5 @@
-<resources>
-
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/primary</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeStyle">@style/LoftActionMode</item>
+    </style>
+
+    <style name="MaterialAnimations" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowContentTransitions" tools:targetApi="lollipop">true</item>
     </style>
 
     <style name="splashScreenTheme" parent="@android:style/Theme.NoTitleBar.Fullscreen">
@@ -22,7 +26,7 @@
     </style>
 
     <style name="Container.Background">
-        <item name="android:background">@drawable/background_3</item>
+        <item name="android:background">@drawable/background_vertical</item>
     </style>
 
     <style name="Container_Land">

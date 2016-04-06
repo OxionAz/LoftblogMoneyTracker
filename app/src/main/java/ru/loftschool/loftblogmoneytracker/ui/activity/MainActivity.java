@@ -6,12 +6,10 @@ import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.internal.app.ToolbarActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,7 +26,6 @@ import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
-
 import ru.loftschool.loftblogmoneytracker.MoneyTrackerApp;
 import ru.loftschool.loftblogmoneytracker.rest.Queries;
 import ru.loftschool.loftblogmoneytracker.rest.RestClient;
@@ -38,9 +35,7 @@ import ru.loftschool.loftblogmoneytracker.ui.fragments.CategoriesFragment_;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.ExpensesFragment_;
 import ru.loftschool.loftblogmoneytracker.R;
-import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment;
 import ru.loftschool.loftblogmoneytracker.ui.fragments.StatisticsFragment_;
-import ru.loftschool.loftblogmoneytracker.util.AddDefaultCategories;
 import ru.loftschool.loftblogmoneytracker.util.NetworkConnectionUtil;
 
 @EActivity(R.layout.activity_main)
@@ -91,9 +86,7 @@ public class MainActivity extends AppCompatActivity {
     void ready(){
         initToolbar();
         initNavigationDrawer();
-
-        if (NetworkConnectionUtil.isNetworkConnected(this)) {
-            if (!MoneyTrackerApp.getGoogleToken(this).equals("1")) getUserInfo(); //Work!
+//        if (NetworkConnectionUtil.isNetworkConnected(this)) {
 //            queries.editCategoryOnServer(); //Work!
 //            queries.addToServerCategories(); //Work!
 //            queries.addTransactionsToServer(); //Work!
@@ -104,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 //            queries.getCategoryInfo(); //Work!
 //            queries.getBalance(); //Work!)
 //            queries.setBalance("3200"); //Work!
-        }
+//        }
     }
 
     private void initToolbar(){
@@ -117,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNavigationDrawer(){
+        if (!MoneyTrackerApp.getToken(this).equals("1")) setUserInfo();
+        if (NetworkConnectionUtil.isNetworkConnected(this)) {
+            if (!MoneyTrackerApp.getGoogleToken(this).equals("1")) getUserInfo();
+        }
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -189,17 +186,22 @@ public class MainActivity extends AppCompatActivity {
         Log.d(LOG_TAG, "Status: " + userInfo.getStatus() + ", User name: " + userInfo.getName() + ", email: " + userInfo.getEmail());
 
         if (userInfo.getStatus() == null) {
-            setUserInfo(userInfo);
+            setUserInfoGoogle(userInfo);
         } else {
             Log.e(LOG_TAG, "Ошибка сервера");
         }
     }
 
     @UiThread
-    public void setUserInfo(GoogleTokenStatusModel userInfo){
+    public void setUserInfoGoogle(GoogleTokenStatusModel userInfo){
         Picasso.with(this).load(userInfo.getPicture()).into(avatar);
         user_name.setText(userInfo.getName());
         user_email.setText(userInfo.getEmail());
+        user_email.setVisibility(View.VISIBLE);
+    }
+
+    private void setUserInfo(){
+        user_name.setText(MoneyTrackerApp.getUserName(this));
     }
 
     private void selectItem(MenuItem menuItem) {
@@ -249,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
         }
         MoneyTrackerApp.setToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         MoneyTrackerApp.setGoogleToken(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
+        MoneyTrackerApp.setUserName(this, MoneyTrackerApp.DEFAULT_TOKEN_KEY);
         startLoginActivity();
         finish();
     }
